@@ -10,7 +10,9 @@
 *.fot
 *.cb
 *.cb2
+*.hd
 .*.lb
+gdutthesis.pdf
 
 ## Intermediate documents:
 *.dvi
