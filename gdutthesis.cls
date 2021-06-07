@@ -1,0 +1,1270 @@
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{expl3}
+\ProvidesExplClass{gdutthesis}
+  {2021/05/01}{v1.0}{Thesis Template for Guangdong University of Technology}
+\RequirePackage { xparse, xtemplate, l3keys2e }
+\clist_map_inline:nn { expl3, xparse, xtemplate, l3keys2e }
+  {
+    \@ifpackagelater {#1} { 2018/05/12 }
+      { } { \msg_error:nnn { gdutthesis } { l3-too-old } {#1} }
+  }
+\msg_new:nnn { gdutthesis } { l3-too-old }
+  {
+    Package~ "#1"~ is~ too~ old. \\\\
+    Please~ update~ an~ up-to-date~ version~ of~ the~ bundles \\
+    "l3kernel"~ and~ "l3packages"~ using~ your~ TeX~ package \\
+    manager~ or~ from~ CTAN.
+  }
+\sys_if_engine_xetex:F
+  {
+    \sys_if_engine_luatex:F
+      {
+        \msg_fatal:nnx { gdutthesis } { unsupported-engine }
+          { \c_sys_engine_str }
+      }
+  }
+\msg_new:nnn { gdutthesis } { unsupported-engine }
+  {
+    The~ gdutthesis~ class~ requires~ either~ XeTeX~ or~ LuaTeX. \\\\
+    "#1"~ is~ not~ supported~ at~ present.~ You~ must~ change \\
+    your~ typesetting~ engine~ to~ "xelatex"~ or~ "lualatex".
+  }
+\int_new:N \g__gdut_thesis_type_int
+\clist_new:N \g__gdut_to_ctexbook_clist
+\clist_new:N \g__gdut_to_hyperref_clist
+\bool_new:N \g__gdut_draft_bool
+\cs_generate_variant:Nn \cs_generate_variant:Nn { cn }
+\cs_generate_variant:Nn \file_input:n           { V  }
+\cs_generate_variant:Nn \int_to_arabic:n        { v  }
+\cs_generate_variant:Nn \keys_define:nn         { nx }
+\cs_generate_variant:Nn \tl_map_inline:nn       { xn }
+\prg_generate_conditional_variant:Nnn \tl_if_eq:nn { Vn } { T, TF }
+\cs_new_protected:Npn \__gdut_appto_cmd:Nn #1#2
+  {
+    \ctex_appto_cmd:NnnTF #1 { } {#2}
+      { } { \ctex_patch_failure:N #1 }
+  }
+\cs_new_protected:Npn \__gdut_define_fn_style:nn #1#2
+  { \tl_const:cn { c__gdut_fn_style_ #1 _tl } {#2} }
+\cs_new_protected:Npn \__gdut_define_punct:nn #1#2
+  { \tl_const:cn { c__gdut_ #1 _tl } { \__gdut_symbol:n {#2} } }
+\cs_new_protected:Npn \__gdut_define_name:nn #1#2
+  { \tl_const:cn { c__gdut_name_ #1 _tl } {#2} }
+\cs_new_protected:Npn \__gdut_define_name:nnn #1#2#3
+  {
+    \tl_const:cn { c__gdut_name_ #1    _tl } {#2}
+    \tl_const:cn { c__gdut_name_ #1 _en_tl } {#3}
+  }
+\cs_new:Npn \__gdut_msg_new:nn  { \msg_new:nnn      { gdutthesis } }
+\cs_new:Npn \__gdut_error:n     { \msg_error:nn     { gdutthesis } }
+\cs_new:Npn \__gdut_error:nn    { \msg_error:nnn    { gdutthesis } }
+\cs_new:Npn \__gdut_error:nx    { \msg_error:nnx    { gdutthesis } }
+\cs_new:Npn \__gdut_error:nnn   { \msg_error:nnnn   { gdutthesis } }
+\cs_new:Npn \__gdut_warning:n   { \msg_warning:nn   { gdutthesis } }
+\cs_new:Npn \__gdut_warning:nn  { \msg_warning:nnn  { gdutthesis } }
+\cs_new:Npn \__gdut_warning:nxx { \msg_warning:nnxx { gdutthesis } }
+\cs_new:Npn \__gdut_info:nx     { \msg_info:nnx     { gdutthesis } }
+\keys_define:nn { gdut / option }
+  {
+    type .choice:,
+    type .value_required:n = true,
+    type .choices:nn =
+      { doctor, master, promaster }
+      { \int_set_eq:NN \g__gdut_thesis_type_int \l_keys_choice_int },
+    type .initial:n = master,
+    draft .choice:,
+    draft / true  .code:n =
+      {
+        \bool_set_true:N     \g__gdut_draft_bool
+        \clist_gput_right:Nn \g__gdut_to_ctexbook_clist { draft }
+      },
+    draft / false .code:n =
+      { \bool_set_false:N    \g__gdut_draft_bool },
+    draft .default:n = true,
+    draft .initial:n = false,
+    unknown .code:n = { \__gdut_error:n { unknown-option } }
+  }
+\__gdut_msg_new:nn { unknown-option }
+  { Class~ option~ "\l_keys_key_tl"~ is~ unknown. }
+\ProcessKeysOptions { gdut / option }
+\cs_new_protected:Npn \__gdut_thesis_type:
+  {
+    \clist_item:Nn \c__gdut_thesis_type_clist
+      { \g__gdut_thesis_type_int }
+  }
+\cs_new_protected:Npn \__gdut_course_name:
+  {
+    \clist_item:Nn \c__gdut_course_name_clist
+      { \g__gdut_thesis_type_int }
+  }
+\cs_new_protected:Npn \__gdut_degree_type:
+  {
+    \clist_item:Nn \c__gdut_degree_type_clist
+      { \l__gdut_info_degree_type_int }
+  }
+\cs_new_protected:Npn \__gdut_degree_en_type:
+  {
+    \clist_item:Nn \c__gdut_degree_type_en_clist
+      { \l__gdut_info_degree_type_int }
+  }
+%% 模板需要自定义的命令
+% 西文日期
+\DeclareExpandableDocumentCommand \engdate { +m } {
+  \__english_date:www #1 \q_stop
+}
+\cs_new:Npn \__english_date:www #1/#2/#3 \q_stop {
+  \ifcase #2 \or January~\or February~\or March~\or %
+  April~\or May ~\or June~\or July~\or August~\or September~\or October~\or November~\or %
+  December~\fi#1
+}
+% 独创性声明
+\tl_const:Nn \c__gdut_orig_decl_text_tl
+  {
+    本人郑重声明：所呈交的学位论文是我个人在导师的指导下进行的研究工作
+    及取得的研究成果。尽我所知，除了文中特别加以标注和致谢的地方外，论
+    文中不包含其他人已经发表或撰写过的研究成果。与我一同工作的同志对本
+    研究所做的任何贡献均已在论文中作了明确的说明，并表示了谢意。本人依
+    法享有和承担由此论文所产生的权利和责任。
+  }
+\tl_const:Nn \c__gdut_auth_decl_text_tl
+  {
+    本学位论文作者完全了解学校有关保存、使用学位论文的规定：“研究生在
+    广东工业大学学习和工作期间参与广东工业大学研究项目或承担广东工业大
+    学安排的任务所完成的发明创造及其他技术成果，除另有协议外，归广东工
+    业大学享有或特有”。同意授权广东工业大学保留并向国家有关部门或机构
+    送交该论文的印刷本和电子版本，允许该论文被查阅和借阅。同意授权广东
+    工业大学可以将本学位论文的全部或部分内容编入有关数据库进行检索，可
+    以采用影印、缩印、扫描或数字化等其他复制手段保存和汇编本学位论文。
+    保密论文在解密后遵守此规定。
+  }
+% 定义可更换的名称
+\clist_const:Nn \c__gdut_thesis_type_clist
+  { 博士学位, 硕士学位, 硕士专业学位 }
+\clist_const:Nn \c__gdut_course_name_clist
+  { 一级学科（二级学科）, 一级学科（二级学科）, 专业学位类别（领域） }
+\clist_const:Nn \c__gdut_degree_type_clist
+  { 工学硕士, 管理学硕士, 理学硕士, 艺术学硕士, 工程硕士, 工商管理硕士, 工程管理硕士, 会计硕士, 翻译硕士 }
+\clist_const:Nn \c__gdut_degree_type_en_clist
+  { Master~of~Engineering~Science, Master~of~Management~Science, Master~of~Science, Master~of~Art, Master~of~Engineering, Master~of~Business~Administration, Master~of~Engineering~Management, Master~of~Professional~Accounting, Master~of~Translation~and~Interpreting }
+\clist_const:Nn \c__gdut_secret_clist { 秘密, 机密, 绝密 }
+\PassOptionsToClass
+  {
+    UTF8,
+    fontset    = none,
+    zihao      = -4,
+    \g__gdut_to_ctexbook_clist
+  }
+  { ctexbook }
+\clist_map_inline:nn
+  {
+    { no-math           } { fontspec },
+    { titles            } { tocloft  },
+    { UseMSWordMultipleLineSpacing, MSWordLineSpacingMultiple=1.5 } { zhlineskip },
+  }
+  { \PassOptionsToPackage #1 }
+\RequirePackage { etoolbox }
+\LoadClass { ctexbook }
+\RequirePackage
+  {
+    amsmath,
+    unicode-math,
+    geometry,
+    fancyhdr,
+    graphicx,
+    longtable,
+    caption,
+    bicaption,
+    xcolor,
+    xeCJKfntef,
+    xpatch,
+    array,
+    multirow,
+    booktabs,
+    calc,
+    enumitem,
+    tocloft,
+    subfig,
+    zhlineskip,
+  }
+%% 调整目录格式
+% 纵向间距
+\setlength{\cftbeforechapskip}{0pt}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+% 缩进
+\setlength{\cftsecindent}{2\ccwd}
+\setlength{\cftsubsecindent}{4\ccwd}
+% 设置字体
+\renewcommand\cftchapfont{\sffamily}
+\renewcommand\cftchapleader{\sffamily\cftdotfill{\cftchapdotsep}}
+\renewcommand\cftchappagefont{\sffamily}
+% 设置引导符
+\renewcommand{\cftdot}{.}
+\renewcommand\cftchapdotsep{\cftdotsep}
+\renewcommand{\cftdotsep}{0.1}
+% 设置引导符到页码的距离
+\newlength{\yema}
+\settowidth{\yema}{\cftchappagefont VII}
+\cftsetpnumwidth{\yema}
+% 设置计数器盒子的宽度
+\setlength\cftchapnumwidth{3\ccwd}
+\newlength{\secjuli}
+\settowidth{\secjuli}{\cftsecfont 1.1}
+\setlength\cftsecnumwidth{\secjuli}
+\newlength{\subsecjuli}
+\settowidth{\subsecjuli}{\cftsubsecfont 1.1.1}
+\setlength\cftsubsecnumwidth{\subsecjuli}
+%% 设置中西文列表
+\newlist{gdutenum}{enumerate}{1}
+\setlist[gdutenum,1]{leftmargin=0pt,labelsep=0pt,itemindent=2\ccwd+23.29015pt,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt,listparindent=2\ccwd}
+\renewcommand\thegdutenumi{\arabic{gdutenumi}}
+\def\labelgdutenumi{（\thegdutenumi）}
+
+\newlist{gdutenenum}{enumerate}{1}
+\newlength{\enlabellengthi}
+\setlength{\enlabellengthi}{0pt}
+\setlist[gdutenenum,1]{leftmargin=0pt,labelsep=3pt,itemindent=2\ccwd+\the\enlabellengthi+3pt,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt,listparindent=2\ccwd}
+\def\setmythegdutenenumi#1{\setlength{\enlabellengthi}{\widthof{#1}}\def\labelgdutenenumi{#1}}
+\renewcommand\thegdutenenumi{\arabic{gdutenenumi}}
+\setmythegdutenenumi{(\thegdutenenumi)}
+
+
+%% 设置目录中章后面的间距
+\cs_set_protected:Npn \CTEX@toc@width@n #1
+  {
+    \hbox_set:Nn \l__ctex_tmp_box {#1\space}
+    \dim_set:Nn \@tempdima
+      {
+        \box_wd:N \l__ctex_tmp_box
+      }
+  }
+\xpatchcmd{\tableofcontents}
+  {\chapter*{\contentsname
+  \@mkboth{%
+     \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}}{\chapter{\contentsname}}
+  {}{}
+%% 定义双语目录
+\def\en@toc@ext{tec}
+\def\en@contentsname{CONTENTS}
+
+%% two user commands
+\newcommand\enTableOfContents{
+  \begingroup
+    % restore \contentsname
+    \let\contentsname\en@contentsname
+    % output en-toc
+    \@enTableOfContents
+  \endgroup
+}
+
+\newcommand\enSectionTitle[1]{
+  \def\@currentTitle{#1}
+  \ignorespaces
+}
+
+%% provide \@enTableOfContents
+\let\@enTableOfContents\tableofcontents
+\@ifundefined {chapter}
+  { % e.g., article.cls
+    \xpatchcmd\@enTableOfContents
+      {\@starttoc{toc}}
+      {\endgroup\@starttoc{\en@toc@ext}}
+      {}{\fail}
+  }
+  { % e.g., book.cls
+    \xpatchcmd\@enTableOfContents
+      {\chapter}
+      {
+        \begingroup
+        \chapter
+      }
+      {}{\fail}
+    \xpatchcmd\@enTableOfContents
+      {\@starttoc{toc}}
+      {\endgroup\@starttoc{\en@toc@ext}}
+      {}{\fail}
+  }
+
+%% modify to write two toc entries
+\cs_set_protected:Npn \CTEX@addtocline #1#2
+  {
+    % write cn-toc entry
+    \addcontentsline { toc } {#1}
+      { \use:c { CTEX@#1@tocline } {#1} {#2} }
+    \begingroup
+      \@ifundefined {chapter}
+        {}
+        {
+          \ctexset{
+            chapter/name   = {Chapter\ },
+            chapter/number = \arabic{chapter},
+          }
+        }
+      % write en-toc entry
+      \addcontentsline \en@toc@ext {#1}
+        { \use:c { CTEX@#1@tocline } {#1} { \@currentTitle } }
+    \endgroup
+  }
+
+%% 设置章节格式
+\setlength{\parskip}{0pt}
+\renewcommand{\theparagraph}{\arabic{paragraph}.}
+\renewcommand{\thesubparagraph}{(\arabic{subparagraph})}
+
+\cs_new_protected:Npn \__gdut_check_package:nnn #1#2#3
+  {
+    \@ifpackagelater {#1} {#2}
+      { } { \__gdut_error:nnn { package-too-old } {#1} {#3} }
+  }
+\__gdut_msg_new:nn { package-too-old }
+  {
+    Package~ "#1"~ is~ too~ old. \\
+    The~ gdutthesis~ class~ only~ supports~ "#1"~ with~ a~ version \\
+    higher~ than~ v#2. \\\\
+    Please~ update~ an~ up-to-date~ version~ of~ it~ using~ your \\
+    TeX~ package~ manager~ or~ from~ CTAN.
+  }
+\__gdut_check_package:nnn { ctex         } { 2017/08/07 } { 2.4.10 }
+\__gdut_check_package:nnn { fontspec     } { 2017/09/22 } { 2.6e   }
+\__gdut_check_package:nnn { unicode-math } { 2017/11/18 } { 0.8i   }
+\sys_if_engine_xetex:T
+  { \__gdut_check_package:nnn { xeCJK          } { 2017/08/07 } { 3.5.0 } }
+\sys_if_engine_luatex:T
+  { \__gdut_check_package:nnn { xunicode-addon } { 2018/04/30 } { 3.7.1 } }
+%% 设置页面
+\geometry{
+  paper       = a4paper,
+  margin      = 2.6cm,
+  headheight  = 0.77cm,
+  headsep     = 0.415cm,
+  footskip    = 12pt,
+}
+\bool_if:NT \g__gdut_draft_bool { \geometry { showframe } }
+\tl_new:N \g__gdut_fontset_tl
+\tl_new:N \g__gdut_cjk_fontset_tl
+\keys_define:nn { gdut / style }
+  {
+    font .choices:nn =
+      { times, times*, none }
+      { \tl_set_eq:NN \g__gdut_fontset_tl \l_keys_choice_tl }
+  }
+\keys_define:nn { gdut / style }
+  {
+    cjk-font .choices:nn =
+      { fandol, founder, mac, sourcehan, noto, windows, none }
+      { \tl_set_eq:NN \g__gdut_cjk_fontset_tl \l_keys_choice_tl }
+  }
+\cs_new_protected:Npn \__gdut_setmainfont:nn #1#2
+  { \__fontspec_main_setmainfont:nn {#2} {#1} }
+\cs_new_protected:Npn \__gdut_setsansfont:nn #1#2
+  { \__fontspec_main_setsansfont:nn {#2} {#1} }
+\cs_new_protected:Npn \__gdut_setmonofont:nn #1#2
+  { \__fontspec_main_setmonofont:nn {#2} {#1} }
+\cs_new_protected:Npn \__gdut_setmathfont:nn #1#2
+  { \__um_setmathfont:nn {#2} {#1} }
+\cs_new_protected:Npn \__gdut_setCJKmainfont:nn #1#2
+  { \__gdut_set_family:nnn { \CJKrmdefault } {#2} {#1} }
+\cs_new_protected:Npn \__gdut_setCJKsansfont:nn #1#2
+  { \__gdut_set_family:nnn { \CJKsfdefault } {#2} {#1} }
+\cs_new_protected:Npn \__gdut_setCJKmonofont:nn #1#2
+  { \__gdut_set_family:nnn { \CJKttdefault } {#2} {#1} }
+\cs_new_protected:Npn \__gdut_set_cjk_font_kai:nn #1#2
+  { \__gdut_set_family:nnn { gdut@kai } {#2} {#1} \newfontfamily \gdutenkai {#1} }
+\cs_new_protected:Npn \gdut@kai
+  { \__gdut_switch_family:n { gdut@kai } }
+\tl_const:Nn \__gdut_cjk_font_options:
+ { UprightFont = *, ItalicFont = *, AutoFakeBold = true }
+\cs_new_protected:Npx \__gdut_setCJKmainfont:n   #1
+  { \__gdut_setCJKmainfont:nn   {#1} { \__gdut_cjk_font_options: } }
+\cs_new_protected:Npx \__gdut_setCJKsansfont:n   #1
+  { \__gdut_setCJKsansfont:nn   {#1} { \__gdut_cjk_font_options: } }
+\cs_new_protected:Npx \__gdut_setCJKmonofont:n   #1
+  { \__gdut_setCJKmonofont:nn   {#1} { \__gdut_cjk_font_options: } }
+\cs_new_protected:Npx \__gdut_set_cjk_font_kai:n #1
+  { \__gdut_set_cjk_font_kai:nn {#1} { \__gdut_cjk_font_options: } }
+\sys_if_engine_xetex:TF
+  {
+    \cs_new_eq:NN \__gdut_set_family:nnn  \xeCJK_set_family:nnn
+    \cs_new_eq:NN \__gdut_switch_family:n \xeCJK_switch_family:n
+  }
+  {
+    \cs_new_eq:NN \__gdut_set_family:nnn  \ctex_ltj_set_family:nnn
+    \cs_new_eq:NN \__gdut_switch_family:n \ctex_ltj_switch_family:n
+  }
+\cs_new_protected:Npn \__gdut_set_font_helper:n #1
+  {
+    \exp_args:Nc \RenewDocumentCommand { set #1 font } { O { } m O { } }
+      {
+        \ctex_at_end_preamble:n
+          { \use:c { __gdut_set #1 font:nn } {##2} { ##1, ##3 } }
+      }
+  }
+\clist_map_inline:nn { main, sans, mono, math    } { \__gdut_set_font_helper:n {#1} }
+\clist_map_inline:nn { CJKmain, CJKsans, CJKmono } { \__gdut_set_font_helper:n {#1} }
+\tl_new:N \g__gdut_font_family_xits_tl
+\tl_new:N \g__gdut_font_style_xits_rm_tl
+\tl_new:N \g__gdut_font_style_xits_bf_tl
+\tl_new:N \g__gdut_font_style_xits_it_tl
+\tl_new:N \g__gdut_font_style_xits_bfit_tl
+\tl_new:N \g__gdut_font_name_libertinus_serif_tl
+\tl_new:N \g__gdut_font_name_libertinus_sans_tl
+\tl_new:N \g__gdut_font_name_libertinus_math_tl
+\tl_new:N \g__gdut_font_name_xits_tl
+\tl_new:N \g__gdut_font_name_xits_math_rm_tl
+\tl_new:N \g__gdut_font_name_xits_math_bf_tl
+\fontspec_font_if_exist:nTF { XITS-Regular.otf }
+  {
+    \tl_set:Nn \g__gdut_font_family_xits_tl        { XITS             }
+    \tl_set:Nn \g__gdut_font_style_xits_rm_tl      { Regular          }
+    \tl_set:Nn \g__gdut_font_style_xits_bf_tl      { Bold             }
+    \tl_set:Nn \g__gdut_font_style_xits_it_tl      { Italic           }
+    \tl_set:Nn \g__gdut_font_style_xits_bfit_tl    { BoldItalic       }
+    \tl_set:Nn \g__gdut_font_name_xits_math_rm_tl  { XITSMath-Regular }
+    \tl_set:Nn \g__gdut_font_name_xits_math_bf_tl  { XITSMath-Bold    }
+  }
+  {
+    \tl_set:Nn \g__gdut_font_family_xits_tl        { xits          }
+    \tl_set:Nn \g__gdut_font_style_xits_rm_tl      { regular       }
+    \tl_set:Nn \g__gdut_font_style_xits_bf_tl      { bold          }
+    \tl_set:Nn \g__gdut_font_style_xits_it_tl      { italic        }
+    \tl_set:Nn \g__gdut_font_style_xits_bfit_tl    { bolditalic    }
+    \tl_set:Nn \g__gdut_font_name_xits_math_rm_tl  { xits-math     }
+    \tl_set:Nn \g__gdut_font_name_xits_math_bf_tl  { xits-mathbold }
+  }
+\cs_new_protected:Npn \__gdut_load_font_times:
+  {
+    \__gdut_setmainfont:nn { \g__gdut_font_family_xits_tl }
+      {
+        Extension          = .otf,
+        UprightFont        = *-\g__gdut_font_style_xits_rm_tl,
+        BoldFont           = *-\g__gdut_font_style_xits_bf_tl,
+        ItalicFont         = *-\g__gdut_font_style_xits_it_tl,
+        BoldItalicFont     = *-\g__gdut_font_style_xits_bfit_tl
+      }
+    \__gdut_setsansfont:nn { texgyreheros }
+      {
+        Extension      = .otf,
+        UprightFont    = *-regular,
+        BoldFont       = *-bold,
+        ItalicFont     = *-italic,
+        BoldItalicFont = *-bolditalic
+      }
+    \__gdut_setmonofont:nn { texgyrecursor }
+      {
+        Extension      = .otf,
+        UprightFont    = *-regular,
+        BoldFont       = *-bold,
+        ItalicFont     = *-italic,
+        BoldItalicFont = *-bolditalic,
+        Ligatures      = CommonOff
+      }
+    \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
+      { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf }
+  }
+\cs_new_protected:cpn { __gdut_load_font_ times* : }
+  {
+    \__gdut_setmainfont:nn { Times~ New~ Roman    } { }
+    \__gdut_setsansfont:nn { Arial                } { }
+    \__gdut_setmonofont:nn { Courier~ New         } { }
+    \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
+      { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf }
+  }
+\cs_new_protected:Npn \__gdut_load_cjk_font_fandol:
+  {
+    \__gdut_setCJKmainfont:nn   { FandolSong }
+      {
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Bold
+      }
+    \__gdut_setCJKsansfont:nn   { FandolHei  }
+      {
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Bold
+      }
+    \__gdut_setCJKmonofont:nn   { FandolFang }
+      {
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Regular,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Regular
+      }
+    \__gdut_set_cjk_font_kai:nn { FandolKai  }
+      {
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Regular,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Regular
+      }
+  }
+\cs_new_protected:Npn \__gdut_load_cjk_font_founder:
+  {
+    \__gdut_setCJKmainfont:n   { FZShuSong-Z01  }
+    \__gdut_setCJKsansfont:n   { FZHei-B01      }
+    \__gdut_setCJKmonofont:n   { FZFangSong-Z02 }
+    \__gdut_set_cjk_font_kai:n { FZKai-Z03      }
+  }
+\cs_new_protected:Npn \__gdut_load_cjk_font_mac:
+  {
+    \__gdut_setCJKmainfont:nn   { STSongti-SC }
+      {
+        UprightFont    = *-Light,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Light,
+        BoldItalicFont = *-Bold
+      }
+    \__gdut_setCJKsansfont:nn   { STHeitiSC   }
+      {
+        UprightFont    = *-Medium,
+        AutoFakeBold   = true,
+        ItalicFont     = *-Medium,
+        BoldItalicFont = *-Medium
+      }
+    \__gdut_setCJKmonofont:n    { STFangsong  }
+    \__gdut_set_cjk_font_kai:nn { STKaitiSC   }
+      {
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Bold
+      }
+  }
+\cs_new_protected:Npn \__gdut_load_cjk_font_sourcehan:
+  {
+    \__gdut_setCJKmainfont:nn { Source~Han~Serif~SC }
+      {
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Bold
+      }
+    \__gdut_setCJKsansfont:nn { Source~Han~Sans~SC  }
+      {
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Bold
+      }
+    \__gdut_setCJKmonofont:nn   { FandolFang }
+      {
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Regular,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Regular
+      }
+    \__gdut_set_cjk_font_kai:nn { FandolKai  }
+      {
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Regular,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Regular
+      }
+  }
+\cs_new_protected:Npn \__gdut_load_cjk_font_noto:
+  {
+    \__gdut_setCJKmainfont:nn { Noto~Serif~CJK~SC }
+      {
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Bold
+      }
+    \__gdut_setCJKsansfont:nn { Noto~Sans~CJK~SC  }
+      {
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Bold
+      }
+    \__gdut_setCJKmonofont:nn { Noto~Sans~Mono~CJK~SC }
+      {
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Bold
+      }
+    \__gdut_set_cjk_font_kai:nn { FandolKai  }
+      {
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Regular,
+        ItalicFont     = *-Regular,
+        BoldItalicFont = *-Regular
+      }
+  }
+\cs_new_protected:Npn \__gdut_load_cjk_font_windows:
+  {
+    \__gdut_setCJKmainfont:n   { SimSun   }
+    \__gdut_setCJKsansfont:n   { SimHei   }
+    \__gdut_setCJKmonofont:n   { FangSong }
+    \__gdut_set_cjk_font_kai:n { KaiTi    }
+  }
+\cs_new_protected:Npn \__gdut_load_font:
+  {
+    \use:c { __gdut_load_font_     \g__gdut_fontset_tl     : }
+    \use:c { __gdut_load_cjk_font_ \g__gdut_cjk_fontset_tl : }
+  }
+\ctex_at_end_preamble:n { \__gdut_load_font: }
+\keys_set:nn { unicode-math }
+  {
+    math-style = ISO,
+    bold-style = ISO,
+  }
+\keys_define:nn { gdut / style }
+  {
+    fullwidth-stop .choice:,
+    fullwidth-stop .value_required:n = true,
+    fullwidth-stop / catcode .code:n =
+      { \__gdut_set_fullwidth_stop_catcode: },
+    fullwidth-stop / mapping .code:n =
+      {
+        \sys_if_engine_xetex:TF
+          {
+            \clist_gset:Nn \g__xeCJK_default_features_clist
+              { Mapping = fullwidth-stop }
+          }
+          {
+            \sys_if_engine_luatex:T
+              {
+                \__gdut_warning:n { mapping-not-available }
+                \__gdut_set_fullwidth_stop_catcode:
+              }
+          }
+      },
+    fullwidth-stop / false .code:n = { }
+  }
+\__gdut_msg_new:nn { mapping-not-available }
+  {
+    Option~ "fullwidth-stop = mapping"~ is~ not~ available~ in~ LuaTeX. \\
+    "fullwidth-stop = catcode"~ will~ be~ set~ instead.
+  }
+\cs_new:Npn \__gdut_set_fullwidth_stop_catcode:
+  {
+    \char_set_active_eq:nN { "3002 } \c__gdut_fwid_full_stop_tl
+    \char_set_catcode_active:n { "3002 }
+  }
+%% 设置页眉页脚
+\fancyhf{}
+\fancyfoot[C]{\zihao{-5}\thepage}
+\fancyhead[CO]{\zihao{-5}\gdut@kai\gdutenkai \leftmark}
+\fancyhead[CE]{\zihao{-5}\gdut@kai\gdutenkai 广东工业大学 \__gdut_thesis_type: 论文}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\headruleskip}{6.2pt}
+\newcommand{\myheadrulewidth}{0.8pt}
+  \def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi
+      \hrule\@height\headrulewidth\@width\headwidth
+      \vskip0.75pt
+      \hrule\@height\myheadrulewidth\@width\headwidth
+      \vskip-\headrulewidth\vskip-\myheadrulewidth
+      }}%
+\renewcommand{\footrulewidth}{0pt}
+\pagestyle { fancy }
+%% 设置章节格式
+\keys_set:nn { ctex }
+{
+  secnumdepth=5,
+  chapter = {
+    format      = \zihao{-2}\sffamily\centering,
+    pagestyle   = fancy,
+    aftername   = \hspace{\ccwd},
+    beforeskip  = 0pt,
+    afterskip   = 1.5\baselineskip-1.5\ccwd,
+    fixskip     = true,
+    tocline     = \CTEXnumberline{#1}#2,
+  },
+  section = {
+    format      = \zihao{-3}\sffamily\raggedright,
+    aftername   = {~},
+    beforeskip  = 1.25\baselineskip-1.25\ccwd,
+    afterskip   = 1.25\baselineskip-1.25\ccwd,
+    fixskip     = true,
+  },
+  subsection = {
+    format      = \zihao{4}\sffamily\raggedright,
+    aftername   = {~},
+    beforeskip  = 1.167\baselineskip-1.167\ccwd,
+    afterskip   = 1.167\baselineskip-1.167\ccwd,
+    fixskip     = true,
+  },
+  subsubsection = {
+    runin       = true,
+    format      = \zihao{-4}\sffamily\raggedright,
+    aftername   = {~},
+    beforeskip  = \baselineskip-\ccwd,
+    afterskip   = \ccwd,
+    aftertitle  = {},
+    fixskip     = true,
+  },
+  paragraph = {
+    format      = \zihao{-4}\sffamily\raggedright,
+    indent      = 2\ccwd,
+    aftername   = {~},
+    beforeskip  = \baselineskip-\ccwd,
+    afterskip   = 0pt,
+    fixskip     = true,
+  },
+  subparagraph = {
+    format      = \zihao{-4}\sffamily\raggedright,
+    indent      = 2\ccwd,
+    aftername   = {~},
+    beforeskip  = \baselineskip-\ccwd,
+    afterskip   = 0pt,
+    fixskip     = true,
+  },
+}
+%% 设置图表格式
+\DeclareCaptionLabelFormat{english}{#1#2}
+\captionsetup{labelsep=space,labelformat=english,font=small}
+\captionsetup[figure][bi-second]{name=Fig.}
+\captionsetup[table][bi-second]{name=Table.}
+\captionsetup[subfloat]{labelformat=simple,font=small,captionskip=4pt,nearskip=-5pt,farskip=0pt}
+\cs_set:Npn\thesubfigure{(\alph{subfigure})}
+\cs_set:Npn\thetable{\thechapter-\arabic{table}}
+\cs_set:Npn\thefigure{\thechapter-\arabic{figure}}
+%% 设置引用格式
+\newcommand{\subfigureautorefname}{图}
+\newcommand{\figureautorefname}{图}
+\newcommand{\tableautorefname}{表}
+\labelformat{equation}{(#1)}
+\newcommand{\equationautorefname}{公式}
+%% 设置浮动体间距
+\setlength{\floatsep}{2\baselineskip-2\ccwd-1pt}
+\setlength{\textfloatsep}{2\baselineskip-2\ccwd-1pt}
+\setlength{\intextsep}{2\baselineskip-2\ccwd-1pt}
+\patchcmd{\@addtocurcol}%
+    {\ifnum\outputpenalty <-\@Mii \vskip -\parskip\fi}%
+    {}%
+    {\typeout{*** SUCCESS ***}}{\typeout{*** FAIL ***}}
+
+\patchcmd{\@addtocurcol}%
+    {\vskip \intextsep}%
+    {\addvspace\intextsep
+      \ifnum\outputpenalty <-\@Mii \vskip\parskip\fi}%
+    {\typeout{*** SUCCESS ***}}{\typeout{*** FAIL ***}}
+
+\patchcmd{\@addtocurcol}%
+    {\vskip\intextsep}{\fix@second@intextsep}%
+    {\typeout{*** SUCCESS ***}}%
+    {\typeout{*** FAIL ***}}
+
+\def\fix@second@intextsep {%
+% was the float seen in vertical mode?
+   \ifnum\outputpenalty <-\@Mii 
+      \aftergroup\vskip\aftergroup\intextsep
+      \aftergroup\nointerlineskip
+  \else
+      \vskip\intextsep
+  \fi
+}
+%% 设置浮动体格式
+\AtBeginEnvironment{figure}{%
+  \def\@floatboxreset{\centering}%
+}
+\AtBeginEnvironment{table}{%
+  \def\@floatboxreset{\centering}%
+}
+\AtBeginEnvironment{table}{\small}
+\clist_map_inline:nn
+  {
+    title, date, author, supervisor, department, major, student_id,
+  }
+  { \tl_new:c { l__gdut_info_ #1 _tl } }
+\clist_new:N \l__gdut_info_keywords_clist
+\clist_map_inline:nn
+  { title, author, supervisor, department }
+  { \tl_new:c { l__gdut_info_ #1 _en_tl } }
+\clist_new:N \l__gdut_info_keywords_en_clist
+\int_new:N \l__gdut_info_degree_type_int
+\keys_define:nn { gdut / info }
+  {
+    degree      .choices:nn  =
+      { Eng-Sci, Man-Sci, Sci, Art, Eng, Bus-Adm, Eng-Man, Pro-Acc, Tra-Int }
+      { \int_set_eq:NN \l__gdut_info_degree_type_int \l_keys_choice_int },
+    title       .tl_set:N    = \l__gdut_info_title_tl,
+    title*      .tl_set:N    = \l__gdut_info_title_en_tl,
+    date        .tl_set:N    = \l__gdut_info_date_tl,
+    author      .tl_set:N    = \l__gdut_info_author_tl,
+    author*     .tl_set:N    = \l__gdut_info_author_en_tl,
+    supervisor  .tl_set:N    = \l__gdut_info_supervisor_tl,
+    supervisor* .tl_set:N    = \l__gdut_info_supervisor_en_tl,
+    % instructors .clist_set:N = \l__gdut_info_instructors_clist,
+    department  .tl_set:N    = \l__gdut_info_department_tl,
+    department* .tl_set:N    = \l__gdut_info_department_en_tl,
+    major       .tl_set:N    = \l__gdut_info_major_tl,
+    student-id  .tl_set:N    = \l__gdut_info_student_id_tl,
+    % school-id   .tl_set:N    = \l__gdut_info_school_id_tl,
+    keywords    .clist_set:N = \l__gdut_info_keywords_clist,
+    keywords*   .clist_set:N = \l__gdut_info_keywords_en_clist,
+    % clc         .tl_set:N    = \l__gdut_info_clc_tl
+  }
+\bool_new:N \l__gdut_secret_bool
+\tl_new:N \l__gdut_info_secret_level_tl
+\keys_define:nn { gdut / info }
+  {
+    secret-level .choices:nn  =
+      { none, i, ii, iii }
+      {
+        \int_compare:nTF { \l_keys_choice_int >= 2 }
+          {
+            \bool_set_true:N \l__gdut_secret_bool
+            \tl_set:Nn \l__gdut_info_secret_level_tl
+              {
+                \clist_item:Nn \c__gdut_secret_clist
+                  { \l_keys_choice_int - 1 }
+              }
+          }
+          { \bool_set_false:N \l__gdut_secret_bool }
+      },
+    secret-level .value_required:n = true,
+  }
+%% 设置数学间距
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{0pt}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+  \setlength{\belowdisplayshortskip}{0pt}%
+  \setlength{\belowdisplayskip}{0pt}%
+}
+%% 输出封面
+\AtBeginDocument{%
+  \gdutmaketitle
+}
+%% 定义双语章节
+\let\mychapter=\chapter
+\let\mysection=\section
+\let\mysubsection=\subsection
+\def\gdutchapter#1#2{\enSectionTitle{#2}\mychapter{#1}}
+\def\gdutsection#1#2{\enSectionTitle{#2}\mysection{#1}}
+\def\gdutsubsection#1#2{\enSectionTitle{#2}\mysubsection{#1}}
+\def\gdutbackmatter{\ctexset{chapter/numbering=false}}
+\def\gdutbacksection#1{\section*{#1}}
+%% 定义成果列表
+\newenvironment{results}
+     {\list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{99}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+%% 定义独创性声明
+\def\gdutstatement{
+  \chapter*{学位论文独创性声明}
+  \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
+  \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
+  \markboth{学位论文独创性声明及学位论文版权使用授权声明}{}
+  \vspace*{\baselineskip+0.9\ccwd}
+  \c__gdut_orig_decl_text_tl\par
+  \vspace*{\baselineskip}
+  \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
+  \ctexset{chapter/break = {}}
+  \vspace*{3\baselineskip}
+  \chapter*{学位论文版权使用授权声明}
+  \vspace*{\baselineskip+0.9\ccwd}
+  \c__gdut_auth_decl_text_tl\par
+  \vspace*{\baselineskip}
+  \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
+  \vspace*{\baselineskip}
+  \begingroup \centering \hspace*{5\ccwd}指导教师签名：\hspace*{5\ccwd}日期：\par \endgroup
+  \ctexset{chapter/break = \if@openright\cleardoublepage\else\clearpage\fi}
+}
+\cs_new:Npn \gdutappendix {
+  \ctexset{chapter/numbering=true}
+  \appendix
+  \makeatletter
+  \ExplSyntaxOn
+  \xpatchcmd{\CTEX@addtocline}
+  {
+    chapter/name   = {Chapter\ },
+    chapter/number = \arabic{chapter},
+  }{
+    chapter/name   = {Appendix\ },
+    chapter/number = \Alph{chapter},
+  }
+  {}{}
+  \ExplSyntaxOff
+  \makeatother
+}
+\NewDocumentEnvironment { abstract  } { }
+  { \pagestyle{fancy}\__gdut_abstract_begin:    } { \__gdut_abstract_end:      }
+\NewDocumentEnvironment { abstract* } { }
+  { \__gdut_abstract_en_begin: } { \__gdut_abstract_en_end: }
+\cs_new_protected:Npn \__gdut_abstract_begin:
+  { \pagestyle{fancy}\pagenumbering{Roman}\gdutchapter{摘要}{ABSTRACT(IN~CHINESE)}     }
+\cs_new_protected:Npn \__gdut_abstract_en_begin:
+  { \gdutchapter{ABSTRACT}{ABSTRACT(IN~ENGLISH)} }
+\cs_new_protected:Npn \__gdut_abstract_end:
+  {
+    \__gdut_keywords:nNn
+      { \sffamily 关键词： }
+      \l__gdut_info_keywords_clist { ； }
+  }
+\cs_new_protected:Npn \__gdut_abstract_en_end:
+  {
+    \__gdut_keywords:nNn
+      { \bfseries Key~words:~ }
+      \l__gdut_info_keywords_en_clist { ; ~ }
+  }
+\cs_new_protected:Npn \__gdut_keywords:nNn #1#2#3
+  {
+    \par \mode_leave_vertical: \par \noindent
+    \group_begin: #1 \group_end:
+        \clist_use:Nn #2 {#3} \par
+  }
+\NewDocumentEnvironment { notation } { O { l p { 7.5 cm } } }
+  {
+    \__gdut_notation_begin:
+    \group_begin: \zihao{5}
+      \__gdut_notation_long_table_setup:
+      \longtable {#1}
+  }
+  {
+      \endlongtable
+    \group_end:
+  }
+\cs_new_protected:Npn \__gdut_notation_begin:
+  {
+    \gdutchapter{物理量名称及符号表}{Table~of~physical~quantity~names~and~symbols}
+  }
+\cs_new_protected:Npn \__gdut_notation_long_table_setup:
+  {
+    \dim_set_eq:NN \LTpre  \c_zero_dim
+    \dim_set_eq:NN \LTpost \c_zero_dim
+  }
+\bool_new:N \l__gdut_bibtex_bool
+\tl_new:N \l__gdut_bib_style_tl
+\tl_new:N \l__gdut_bib_gb_style_tl
+\tl_new:N \l__gdut_cite_style_tl
+\clist_new:N \l__gdut_bib_resource_clist
+\keys_define:nn { gdut / style }
+  {
+    bib-backend .choice:,
+    bib-backend .value_required:n = true,
+    bib-backend / bibtex   .code:n =
+      { \bool_set_true:N  \l__gdut_bibtex_bool },
+    bib-backend / biblatex .code:n =
+      { \bool_set_false:N \l__gdut_bibtex_bool },
+    bib-style .choice:,
+    bib-style .value_required:n = true,
+    bib-style / numerical    .code:n =
+      {
+        \tl_set:Nn  \l__gdut_bib_gb_style_tl { numerical  }
+        \tl_clear:N \l__gdut_bib_style_tl
+      },
+    bib-style / author-year .code:n =
+      {
+        \tl_set:Nn  \l__gdut_bib_gb_style_tl { author-year }
+        \tl_clear:N \l__gdut_bib_style_tl
+      },
+    bib-style / unknown     .code:n =
+      { \tl_set_eq:NN \l__gdut_bib_style_tl \l_keys_value_tl },
+    cite-style .code:n =
+      {
+        \bool_if:NTF \l__gdut_bibtex_bool
+          { \__gdut_warning:n { cite-style-not-available } }
+          { \tl_set:Nn \l__gdut_cite_style_tl {#1} }
+      },
+    bib-resource .clist_set:N = \l__gdut_bib_resource_clist
+  }
+\__gdut_msg_new:nn { cite-style-not-available }
+  { Option~ "cite-style"~ is~ not~ available~ in~ BibTeX. }
+\ctex_at_end_preamble:n
+  {
+    \bool_if:NT \l__gdut_bibtex_bool
+      {
+        \RequirePackage [ sort & compress ] { natbib }
+        \__gdut_bibtex_setup:
+      }
+  }
+\AddToHook
+  { env/document/begin }
+  {
+    \bool_if:NF \l__gdut_bibtex_bool
+      {
+        \__gdut_biblatex_pre_setup:
+        \RequirePackage { biblatex }
+        \__gdut_biblatex_post_setup:
+      }
+  }
+\cs_new_protected:Npn \__gdut_bibtex_setup:
+  {
+    \tl_if_empty:NTF \l__gdut_bib_style_tl
+      {
+        \tl_if_eq:VnTF \l__gdut_bib_gb_style_tl { numerical }
+          {
+            \bibliographystyle { gbt7714-numerical }
+            \__gdut_set_cite_style_numerical:
+          }
+          {
+            \tl_if_eq:VnT \l__gdut_bib_gb_style_tl { author-year }
+              {
+                \bibliographystyle { gbt7714-author-year }
+                \__gdut_set_cite_style_author_year:
+                \cs_set_eq:NN \cite \citep
+              }
+          }
+      }
+      { \exp_args:NV \bibliographystyle \l__gdut_bib_style_tl }
+    \cs_set:Npn \bibsection { \gdutchapter{参考文献}{References} }
+    \NewDocumentCommand \printbibliography { o }
+      {
+        \exp_args:NV \bibliography \l__gdut_bib_resource_clist
+        \IfValueT {##1}
+          { \__gdut_warning:nn { invalid-option-in-bibtex } {##1} }
+      }
+  }
+\__gdut_msg_new:nn { invalid-option-in-bibtex }
+  { Option(s)~ "#1"~ are~ invalid~ in~ BibTeX. }
+\cs_new_protected:Npn \__gdut_biblatex_pre_setup:
+  {
+    \tl_if_empty:NTF \l__gdut_bib_style_tl
+      {
+        \tl_if_eq:VnTF \l__gdut_bib_gb_style_tl { numerical }
+          { \__gdut_pass_options_to_biblatex:n { style = gb7714-2015 } }
+          {
+            \tl_if_eq:VnT \l__gdut_bib_gb_style_tl { author-year }
+              { \__gdut_pass_options_to_biblatex:n { style = gb7714-2015ay } }
+          }
+      }
+      { \__gdut_pass_options_to_biblatex:n { style = \l__gdut_bib_style_tl } }
+    \tl_if_empty:NF \l__gdut_cite_style_tl
+      { \__gdut_pass_options_to_biblatex:n { citestyle = \l__gdut_cite_style_tl } }
+    \__gdut_pass_options_to_biblatex:n { backend = biber, hyperref = manual, natbib }
+  }
+\cs_new_protected:Npn \__gdut_biblatex_post_setup:
+  {
+    \clist_map_function:NN \l__gdut_bib_resource_clist \addbibresource
+    \__gdut_biblatex_allow_url_break:
+    \defbibheading { bibliography } [ 参考文献 ] { \gdutchapter{##1}{References}  }
+  }
+\cs_new_protected:Npn \__gdut_pass_options_to_biblatex:n #1
+  { \PassOptionsToPackage {#1} { biblatex } }
+\cs_new:Npn \__gdut_biblatex_allow_url_break:
+  {
+    \int_set_eq:NN \c@biburlucpenalty  \c_one_int
+    \int_set_eq:NN \c@biburlnumpenalty \c_one_int
+    \int_set_eq:NN \c@biburllcpenalty  \c_one_int
+  }
+\cs_new:Npn \__gdut_set_cite_style_numerical:
+  {
+    \NAT@numberstrue \NAT@supertrue
+    \cs_set:Npn \NAT@open  { [  }
+    \cs_set:Npn \NAT@close { ]  }
+    \cs_set:Npn \NAT@sep   { ,~ }
+  }
+\cs_new:Npn \__gdut_set_cite_style_author_year:
+  {
+    \NAT@numbersfalse
+    \cs_set_eq:NN \NAT@open  \c__gdut_fwid_left_paren_tl
+    \cs_set_eq:NN \NAT@close \c__gdut_fwid_right_paren_tl
+    \cs_set_eq:NN \NAT@sep   \c__gdut_fwid_semicolon_tl
+    \cs_set_eq:NN \NAT@aysep \c__gdut_fwid_comma_tl
+    \cs_set_eq:NN \NAT@yrsep \c__gdut_ideo_comma_tl
+  }
+\NewDocumentCommand \hypersetup { m }
+  { \gdut_hyperref_setup:n {#1} }
+\cs_new_protected:Npn \gdut_hyperref_setup:n #1
+  { \clist_gput_right:Nn \g__gdut_to_hyperref_clist {#1} }
+\cs_new:Npn \__gdut_set_hyperlink_color_key:n #1
+  {
+    hyperlink-color / \clist_item:nn {#1} {1} .code:n =
+      {
+        \__gdut_define_hyperlink_color:nnn
+          { \clist_item:nn {#1} {2} }
+          { \clist_item:nn {#1} {3} }
+          { \clist_item:nn {#1} {4} }
+        \gdut_hyperref_setup:n
+          {
+            linkcolor = gdut@link, linkbordercolor = gdut@link,
+            urlcolor  = gdut@url,  urlbordercolor  = gdut@url,
+            citecolor = gdut@cite, citebordercolor = gdut@cite
+          }
+      },
+  }
+\cs_new_protected:Npn \__gdut_define_hyperlink_color:nnn #1#2#3
+  {
+    \definecolorset { HTML } { gdut@ } { }
+      { link, #1; url, #2; cite, #3 }
+  }
+\keys_define:nx { gdut / style }
+  {
+    hyperlink .choice:,
+    hyperlink .value_required:n = true,
+    hyperlink / border .code:n = { },
+    hyperlink / color  .code:n =
+      { \gdut_hyperref_setup:n { colorlinks = true } },
+    hyperlink / none   .code:n =
+      { \gdut_hyperref_setup:n { hidelinks  = true } },
+    hyperlink-color .choice:,
+    hyperlink-color .value_required:n = true,
+    \clist_map_function:nN
+      {
+        { autumn,    D70000, D75F00, AF8700 },
+        { business,  D14542, 295497, 1F6E43 },
+        { classic,   FF0000, 0000FF, 00FF00 },
+        { default,   990000, 0000B2, 007F00 },
+        { elegant,   961212, C31818, 9B764F },
+        { fantasy,   FF4A19, FF3F94, 934BA1 },
+        { material,  E91E63, 009688, 4CAF50 },
+        { science,   CA0619, 389F9D, FF8920 },
+        { summer,    00AFAF, 5F5FAF, 5F8700 },
+        { graylevel, 616161, 616161, 616161 },
+        { prl,       2D3092, 2D3092, 2D3092 }
+      }
+      \__gdut_set_hyperlink_color_key:n
+  }
+\cs_new:Npn \gdut_allow_url_break:
+  {
+    \cs_new:Npn \__gdut_add_url_break_points:
+      { \tl_map_function:NN \c__gdut_url_break_points_tl \do }
+    \__gdut_appto_cmd:Nn \UrlBreaks
+      { \UrlOrds \__gdut_add_url_break_points: }
+  }
+\tl_const:Nn \c__gdut_url_break_points_tl
+  {
+    abcdefghijklmnopqrstuvwxyz
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+    0123456789
+  }
+\ctex_at_end_preamble:n
+  {
+    \RequirePackage { hyperref }
+    \hypersetup
+      {
+        bookmarksnumbered = true,
+        psdextra          = true,
+        unicode           = true,
+        pdftitle    = \l__gdut_info_title_tl,
+        pdfauthor   = \l__gdut_info_author_tl,
+        pdfkeywords = \l__gdut_info_keywords_clist,
+      }
+    \exp_args:NV \hypersetup \g__gdut_to_hyperref_clist
+    \gdut_allow_url_break:
+    \bool_if:NF \l__gdut_bibtex_bool { \BiblatexManualHyperrefOn }
+  }
+\ctex_at_end_package:nn { hyperref }
+  {
+    \pdfstringdefDisableCommands
+      {
+        \cs_set_eq:NN \gdut@kai \prg_do_nothing:
+        \cs_set_eq:NN \quad    \c_space_tl
+        \cs_set_eq:NN \qquad   \c_space_tl
+      }
+  }
+\cs_new:Npn \gduttableofcontents {
+  \enSectionTitle{CONTENTS(IN~CHINESE)}
+  \renewcommand\cftchapaftersnumb{\hspace{6.5pt}}
+  \tableofcontents
+  \renewcommand\cftchapaftersnumb{\hspace{0pt}}
+  \enSectionTitle{CONTENTS(IN~ENGLISH)}
+  \enTableOfContents
+}
+\keys_define:nn { gdut }
+  {
+    info  .meta:nn = { gdut / info  } {#1},
+    style .meta:nn = { gdut / style } {#1}
+  }
+\keys_set:nn { gdut }
+  {
+    style   / font            = times,
+    style   / cjk-font        = fandol,
+    style   / fullwidth-stop  = false,
+    style   / hyperlink-color = default,
+    style   / bib-style       = numerical,
+    info    / secret-level    = none,
+    info    / date            = { 2021/5/1 },
+  }
+\NewDocumentCommand \gdutsetup { m }
+  { \keys_set:nn { gdut } {#1} }
+
+\cs_new:Npn \gdutmaketitle { 
+  \frontmatter\pagestyle{empty}\pagenumbering{Alph}
+  \vspace*{2\baselineskip-5pt}
+  \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
+  \begingroup \centering \__gdut_degree_type:\par \endgroup
+  \vspace*{3\baselineskip-0.5pt}
+  \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
+  \vspace*{3.3\baselineskip-1pt}
+  \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
+  \vspace*{9\baselineskip+2pt}
+  \begingroup \centering\zihao{4} \zhnumsetup{time=Chinese}\exp_args:No \zhdate{ \l__gdut_info_date_tl }\zhnumsetup{time=Arabic}\par \endgroup
+  \newpage
+  \vspace*{0.4\baselineskip-1.5pt}
+  \begingroup \centering
+    \begin{tabular}{>{\zihao{4}}r@{\hspace*{8\ccwd}}>{\zihao{4}\raggedright\arraybackslash}p{6\ccwd}@{\hspace*{6\ccwd}}>{\zihao{4}}p{12\ccwd}}
+      分类号： &        & 学校代号：11845 \\[5pt]
+      UDC：    & 密级：\bool_if:NT \l__gdut_secret_bool {\l__gdut_info_secret_level_tl} & 学\hspace*{2\ccwd}号：\l__gdut_info_student_id_tl
+    \end{tabular}
+  \par \endgroup
+  \vspace*{1.5\baselineskip+4pt}
+  \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
+  \begingroup \centering\zihao{4} \__gdut_degree_type:\par \endgroup
+  \vspace*{0.8\baselineskip+0.75pt}
+  \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
+  \vspace*{\baselineskip+5.75pt}
+  \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
+  \vspace*{7.5\baselineskip-5pt}
+  \begingroup \centering\zihao{4}
+  \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
+    \multirow{4}*{
+      \begin{CJKfilltwosides*}{0pt}
+        指导教师姓名、职称：\\
+        \__gdut_course_name: 名称：\\
+        学生所属学院：\\
+        论文答辩日期：
+      \end{CJKfilltwosides*}
+    } & \l__gdut_info_supervisor_tl \\
+    \cline{2-2}
+    & \l__gdut_info_major_tl \\
+    \cline{2-2}
+    & \l__gdut_info_department_tl \\
+    \cline{2-2}
+    & \exp_args:No \zhdate{\l__gdut_info_date_tl} \\
+    \cline{2-2}
+  \end{tabular}
+  \par \endgroup
+  \newpage
+  \vspace*{0.9\baselineskip}
+  \begingroup \centering\zihao{4}
+    A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~Master
+  \par \endgroup
+  \begingroup \centering\zihao{-4}
+    \__gdut_degree_en_type:
+  \par \endgroup
+  \vspace*{2\baselineskip}
+  \begingroup \centering\zihao{-2}\sffamily
+    \l__gdut_info_title_en_tl
+  \par \endgroup
+  \vspace*{6\baselineskip}
+  \begingroup \centering\zihao{-3}\sffamily
+    Candidate:~\l__gdut_info_author_en_tl\\
+    Supervisor:~\l__gdut_info_supervisor_en_tl
+  \par \endgroup
+  \vspace*{9\baselineskip}
+  \begingroup \centering\zihao{-4}\sffamily\linespread{1.15}\selectfont
+    \exp_args:No \engdate{\l__gdut_info_date_tl}\\
+    School~of~\l__gdut_info_department_en_tl\\
+    Guangdong~University~of~Technology\\
+    Guangzhou,~Guangdong,~P.~R.~China,~510006
+  \par \endgroup
+  \if@openright \cleardoublepage \else \clearpage \fi
+  \pagestyle{fancy}
+}
+\endinput
