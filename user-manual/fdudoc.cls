@@ -895,13 +895,9 @@
 \setcounter{tocdepth}{3}
 \pagestyle{plain}
 \sisetup{%
-  number-math-rm       = \ensuremath,
-  inter-unit-product   = \ensuremath{{}\cdot{}},
-  group-digits         = true,
-  group-minimum-digits = 4,
-  group-separator      = \text{~},
-  range-phrase         = \symbol{"FF5E},
-  separate-uncertainty = true}
+  inter-unit-product = \ensuremath{{}\cdot{}},
+  range-phrase       = {--},
+  uncertainty-mode   = separate}
 \hypersetup{%
   bookmarksdepth    = 4,
   bookmarksnumbered = true,
