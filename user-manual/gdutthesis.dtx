@@ -1533,12 +1533,13 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %^^A!
 %
 %^^A+
-% \begin{function}{info/degree}
-%   \begin{fdusyntax}[emph={[1]degree}]
-%     degree = (*<Eng-Sci|Man-Sci|Sci|Art|Eng|Bus-Adm|Eng-Man|Pro-Acc|Tra-Int>*)
+% \begin{function}{info/degree,info/degree*}
+%   \begin{fdusyntax}[emph={[1]degree,degree*}]
+%     degree  = (*\marg{学位类型（中文）}*)
+%     degree* = (*\marg{学位类型（英文）}*)
 %   \end{fdusyntax}
 %^^A-
-%   学位类型。依次表示工学硕士、管理学硕士、理学硕士、艺术学硕士、工程硕士、工商管理硕士、工程管理硕士、会计硕士、翻译硕士。
+%   学位类型。学位类型为下列之一：工学博士；工学硕士；管理学博士；管理学硕士；理学硕士；艺术学硕士；经济学硕士；工程硕士；工商管理硕士；工程管理硕士；会计硕士；翻译硕士；金融硕士；社会工作硕士；艺术硕士。
 % \end{function}
 %^^A!   Degree type. This option can only be used in master degree
 %^^A!   thesis.
@@ -1580,12 +1581,14 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %^^A! \end{function}
 %^^A!
 %
-% \begin{function}{info/supervisor,info/supervisor*}
-%   \begin{fdusyntax}[emph={[1]supervisor,supervisor*}]
-%     supervisor  = (*\marg{姓名及职称}*)
-%     supervisor* = (*\marg{英文姓名（或拼音）及职称}*) 
+% \begin{function}{info/supervisor,info/supervisor*,info/supervisor-two,info/supervisor-two*}
+%   \begin{fdusyntax}[emph={[1]supervisor,supervisor*,supervisor-two,supervisor-two*}]
+%     supervisor      = (*\marg{第一导师姓名及职称}*)
+%     supervisor*     = (*\marg{第一导师英文姓名（或拼音）及职称}*) 
+%     supervisor-two  = (*\marg{第二导师姓名及职称}*)
+%     supervisor-two* = (*\marg{第二导师英文姓名（或拼音）及职称}*) 
 %   \end{fdusyntax}
-%   导师姓名及职称。
+%   导师姓名及职称。若研究生配备了双导师，请按照“第一导师、第二导师”的顺序将导师姓名（职称）列明。
 % \end{function}
 %^^A! \begin{function}{info/supervisor}
 %^^A!   \begin{fdusyntax}[emph={[1]supervisor}]
@@ -1594,6 +1597,15 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %^^A!   Supervisor's name.
 %^^A! \end{function}
 %^^A!
+%
+% \begin{function}{info/chairman}
+%   \begin{fdusyntax}[emph={[1]chairman}]
+%     chairman = (*\marg{答辩委员会主席姓名及职称}*)
+%   \end{fdusyntax}
+%   答辩委员会主席姓名及职称。
+% \end{function}
+%
+%
 %
 % \begin{function}{info/department,info/department*}
 %   \begin{fdusyntax}[emph={[1]department,department*}]

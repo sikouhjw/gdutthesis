@@ -92,21 +92,21 @@
     \clist_item:Nn \c__gdut_thesis_type_clist
       { \g__gdut_thesis_type_int }
   }
-\cs_new_protected:Npn \__gdut_course_name:
-  {
-    \clist_item:Nn \c__gdut_course_name_clist
-      { \g__gdut_thesis_type_int }
-  }
-\cs_new_protected:Npn \__gdut_degree_type:
-  {
-    \clist_item:Nn \c__gdut_degree_type_clist
-      { \l__gdut_info_degree_type_int }
-  }
-\cs_new_protected:Npn \__gdut_degree_en_type:
-  {
-    \clist_item:Nn \c__gdut_degree_type_en_clist
-      { \l__gdut_info_degree_type_int }
-  }
+% \cs_new_protected:Npn \__gdut_course_name:
+%   {
+%     \clist_item:Nn \c__gdut_course_name_clist
+%       { \g__gdut_thesis_type_int }
+%   }
+% \cs_new_protected:Npn \__gdut_degree_type:
+%   {
+%     \clist_item:Nn \c__gdut_degree_type_clist
+%       { \l__gdut_info_degree_type_int }
+%   }
+% \cs_new_protected:Npn \__gdut_degree_en_type:
+%   {
+%     \clist_item:Nn \c__gdut_degree_type_en_clist
+%       { \l__gdut_info_degree_type_int }
+%   }
 %% 模板需要自定义的命令
 % 西文日期
 \DeclareExpandableDocumentCommand \engdate { +m } {
@@ -140,12 +140,12 @@
 % 定义可更换的名称
 \clist_const:Nn \c__gdut_thesis_type_clist
   { 博士学位, 硕士学位, 硕士专业学位 }
-\clist_const:Nn \c__gdut_course_name_clist
-  { 一级学科（二级学科）, 一级学科（二级学科）, 专业学位类别（领域） }
-\clist_const:Nn \c__gdut_degree_type_clist
-  { 工学硕士, 管理学硕士, 理学硕士, 艺术学硕士, 工程硕士, 工商管理硕士, 工程管理硕士, 会计硕士, 翻译硕士 }
-\clist_const:Nn \c__gdut_degree_type_en_clist
-  { Master~of~Engineering~Science, Master~of~Management~Science, Master~of~Science, Master~of~Art, Master~of~Engineering, Master~of~Business~Administration, Master~of~Engineering~Management, Master~of~Professional~Accounting, Master~of~Translation~and~Interpreting }
+% \clist_const:Nn \c__gdut_course_name_clist
+%   { 一级学科（二级学科）, 一级学科（二级学科）, 专业学位类别（领域） }
+% \clist_const:Nn \c__gdut_degree_type_clist
+%   { 工学硕士, 管理学硕士, 理学硕士, 艺术学硕士, 工程硕士, 工商管理硕士, 工程管理硕士, 会计硕士, 翻译硕士 }
+% \clist_const:Nn \c__gdut_degree_type_en_clist
+%   { Master~of~Engineering~Science, Master~of~Management~Science, Master~of~Science, Master~of~Art, Master~of~Engineering, Master~of~Business~Administration, Master~of~Engineering~Management, Master~of~Professional~Accounting, Master~of~Translation~and~Interpreting }
 \clist_const:Nn \c__gdut_secret_clist { 秘密, 机密, 绝密 }
 \PassOptionsToClass
   {
@@ -775,35 +775,40 @@
 \AtBeginEnvironment{table}{\small}
 \clist_map_inline:nn
   {
-    title, date, author, supervisor, department, major, student_id,
+    title, date, author, degree, supervisor, supervisor_two, department, major, student_id, chairman,
   }
   { \tl_new:c { l__gdut_info_ #1 _tl } }
 \clist_new:N \l__gdut_info_keywords_clist
 \clist_map_inline:nn
-  { title, author, supervisor, department }
+  { title, author, degree, supervisor, supervisor_two, department }
   { \tl_new:c { l__gdut_info_ #1 _en_tl } }
 \clist_new:N \l__gdut_info_keywords_en_clist
-\int_new:N \l__gdut_info_degree_type_int
+% \int_new:N \l__gdut_info_degree_type_int
 \keys_define:nn { gdut / info }
   {
-    degree      .choices:nn  =
-      { Eng-Sci, Man-Sci, Sci, Art, Eng, Bus-Adm, Eng-Man, Pro-Acc, Tra-Int }
-      { \int_set_eq:NN \l__gdut_info_degree_type_int \l_keys_choice_int },
-    title       .tl_set:N    = \l__gdut_info_title_tl,
-    title*      .tl_set:N    = \l__gdut_info_title_en_tl,
-    date        .tl_set:N    = \l__gdut_info_date_tl,
-    author      .tl_set:N    = \l__gdut_info_author_tl,
-    author*     .tl_set:N    = \l__gdut_info_author_en_tl,
-    supervisor  .tl_set:N    = \l__gdut_info_supervisor_tl,
-    supervisor* .tl_set:N    = \l__gdut_info_supervisor_en_tl,
+    % degree      .choices:nn  =
+    %   { Eng-Sci, Man-Sci, Sci, Art, Eng, Bus-Adm, Eng-Man, Pro-Acc, Tra-Int }
+    %   { \int_set_eq:NN \l__gdut_info_degree_type_int \l_keys_choice_int },
+    title           .tl_set:N    = \l__gdut_info_title_tl,
+    title*          .tl_set:N    = \l__gdut_info_title_en_tl,
+    date            .tl_set:N    = \l__gdut_info_date_tl,
+    author          .tl_set:N    = \l__gdut_info_author_tl,
+    author*         .tl_set:N    = \l__gdut_info_author_en_tl,
+    degree          .tl_set:N    = \l__gdut_info_degree_tl,
+    degree*         .tl_set:N    = \l__gdut_info_degree_en_tl,
+    supervisor      .tl_set:N    = \l__gdut_info_supervisor_tl,
+    supervisor*     .tl_set:N    = \l__gdut_info_supervisor_en_tl,
+    supervisor-two  .tl_set:N    = \l__gdut_info_supervisor_two_tl,
+    supervisor-two* .tl_set:N    = \l__gdut_info_supervisor_two_en_tl,
     % instructors .clist_set:N = \l__gdut_info_instructors_clist,
-    department  .tl_set:N    = \l__gdut_info_department_tl,
-    department* .tl_set:N    = \l__gdut_info_department_en_tl,
-    major       .tl_set:N    = \l__gdut_info_major_tl,
-    student-id  .tl_set:N    = \l__gdut_info_student_id_tl,
+    department      .tl_set:N    = \l__gdut_info_department_tl,
+    department*     .tl_set:N    = \l__gdut_info_department_en_tl,
+    major           .tl_set:N    = \l__gdut_info_major_tl,
+    student-id      .tl_set:N    = \l__gdut_info_student_id_tl,
     % school-id   .tl_set:N    = \l__gdut_info_school_id_tl,
-    keywords    .clist_set:N = \l__gdut_info_keywords_clist,
-    keywords*   .clist_set:N = \l__gdut_info_keywords_en_clist,
+    keywords        .clist_set:N = \l__gdut_info_keywords_clist,
+    keywords*       .clist_set:N = \l__gdut_info_keywords_en_clist,
+    chairman        .clist_set:N = \l__gdut_info_chairman_clist,
     % clc         .tl_set:N    = \l__gdut_info_clc_tl
   }
 \bool_new:N \l__gdut_secret_bool
@@ -1198,7 +1203,7 @@
   \frontmatter\pagestyle{empty}\pagenumbering{Alph}
   \vspace*{2\baselineskip-5pt}
   \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
-  \begingroup \centering \__gdut_degree_type:\par \endgroup
+  \begingroup \centering \l__gdut_info_degree_tl \par \endgroup
   \vspace*{3\baselineskip-0.5pt}
   \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
   \vspace*{3.3\baselineskip-1pt}
@@ -1215,26 +1220,35 @@
   \par \endgroup
   \vspace*{1.5\baselineskip+4pt}
   \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
-  \begingroup \centering\zihao{4} \__gdut_degree_type:\par \endgroup
+  \begingroup \centering\zihao{4} \l__gdut_info_degree_tl \par \endgroup
   \vspace*{0.8\baselineskip+0.75pt}
   \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
   \vspace*{\baselineskip+5.75pt}
   \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
-  \vspace*{7.5\baselineskip-5pt}
+  \vspace*{5.5\baselineskip-5pt}
   \begingroup \centering\zihao{4}
   \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
-    \multirow{4}*{
-      \begin{CJKfilltwosides*}{0pt}
-        指导教师姓名、职称：\\
-        \__gdut_course_name: 名称：\\
-        学生所属学院：\\
-        论文答辩日期：
+    \multirow{1}*{
+      \begin{CJKfilltwosides*}{11.3\ccwd}
+        导师姓名（职称）：
       \end{CJKfilltwosides*}
     } & \l__gdut_info_supervisor_tl \\
     \cline{2-2}
+    & \l__gdut_info_supervisor_two_tl \\
+    \cline{2-2}
+    \multirow{4}*{
+      \begin{CJKfilltwosides*}{0pt}
+        学科（专业）或领域名称：\\
+        学生所属学院：\\
+        答辩委员会主席：\\
+        论文答辩日期：
+      \end{CJKfilltwosides*}
+    }
     & \l__gdut_info_major_tl \\
     \cline{2-2}
     & \l__gdut_info_department_tl \\
+    \cline{2-2}
+    & \l__gdut_info_chairman_clist \\
     \cline{2-2}
     & \exp_args:No \zhdate{\l__gdut_info_date_tl} \\
     \cline{2-2}
@@ -1245,9 +1259,7 @@
   \begingroup \centering\zihao{4}
     A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~Master
   \par \endgroup
-  \begingroup \centering\zihao{-4}
-    \__gdut_degree_en_type:
-  \par \endgroup
+  \begingroup \centering\zihao{-4} \l__gdut_info_degree_en_tl \par \endgroup
   \vspace*{2\baselineskip}
   \begingroup \centering\zihao{-2}\sffamily
     \l__gdut_info_title_en_tl

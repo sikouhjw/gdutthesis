@@ -13,6 +13,8 @@
 *.hd
 .*.lb
 gdutthesis.pdf
+main.pdf
+*.tec
 
 ## Intermediate documents:
 *.dvi
