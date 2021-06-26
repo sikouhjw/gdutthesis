@@ -117,6 +117,23 @@
   April~\or May ~\or June~\or July~\or August~\or September~\or October~\or November~\or %
   December~\fi#1
 }
+
+% 封面日期
+\DeclareExpandableDocumentCommand \coverdate { +m } {
+  \__cover_date:www #1 \q_stop
+}
+\cs_new:Npn \__cover_date:www #1/#2/#3 \q_stop {
+  \__cover_date_aux:nnn {#1} {#2} {#3}
+}
+\cs_new:Npn \__cover_date_aux:nnn {
+  \__cover_date_aux:NNnnnn \zhnum_digits_null:n \zhnum_int:n { }
+}
+\cs_new:Npn \__cover_date_aux:NNnnnn #1#2#3#4#5#6
+{
+  #1 {#4} #3 \c__zhnum_year_tl #3
+  #2 {#5} #3 \c__zhnum_month_tl #3
+}
+\cs_generate_variant:Nn \__cover_date_aux:nnn { V }
 % 独创性声明
 \tl_const:Nn \c__gdut_orig_decl_text_tl
   {
@@ -160,6 +177,7 @@
     { no-math           } { fontspec },
     { titles            } { tocloft  },
     { UseMSWordMultipleLineSpacing, MSWordLineSpacingMultiple=1.5 } { zhlineskip },
+    { firstpage=true,angle=0,color=black,opacity=0.5 } { background },
   }
   { \PassOptionsToPackage #1 }
 \RequirePackage { etoolbox }
@@ -169,6 +187,7 @@
     amsmath,
     unicode-math,
     geometry,
+    background,
     fancyhdr,
     graphicx,
     longtable,
@@ -324,7 +343,7 @@
     Please~ update~ an~ up-to-date~ version~ of~ it~ using~ your \\
     TeX~ package~ manager~ or~ from~ CTAN.
   }
-\__gdut_check_package:nnn { ctex         } { 2017/08/07 } { 2.4.10 }
+% \__gdut_check_package:nnn { ctex         } { 2017/08/07 } { 2.4.10 }
 \__gdut_check_package:nnn { fontspec     } { 2017/09/22 } { 2.6e   }
 \__gdut_check_package:nnn { unicode-math } { 2017/11/18 } { 0.8i   }
 \sys_if_engine_xetex:T
@@ -1201,15 +1220,63 @@
 
 \cs_new:Npn \gdutmaketitle { 
   \frontmatter\pagestyle{empty}\pagenumbering{Alph}
-  \vspace*{2\baselineskip-5pt}
-  \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
-  \begingroup \centering \l__gdut_info_degree_tl \par \endgroup
-  \vspace*{3\baselineskip-0.5pt}
-  \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
-  \vspace*{3.3\baselineskip-1pt}
-  \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
-  \vspace*{9\baselineskip+2pt}
-  \begingroup \centering\zihao{4} \zhnumsetup{time=Chinese}\exp_args:No \zhdate{ \l__gdut_info_date_tl }\zhnumsetup{time=Arabic}\par \endgroup
+  \setlength{\paperwidth}{420mm}
+  \setlength{\pdfpagewidth}{420mm}
+  \setlength{\paperheight}{297mm}
+  \setlength{\pdfpageheight}{297mm}
+  \newgeometry{margin=0pt}
+    \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
+      \mbox{}%
+    \end{minipage}%
+    \parbox[c]{0.44cm}{%
+      \centering\zihao{5}\linespread{1.0807}\selectfont%
+      \mbox{}\vfill%
+      \l__gdut_info_title_tl\par%
+      \vspace{5cm}%
+      \l__gdut_info_author_tl\par%
+      \vspace{5cm}%
+      \exp_args:No \coverdate{\l__gdut_info_date_tl}\par%
+      \mbox{}\vfill%
+    }%
+    \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
+      \centering
+      \vspace*{2cm}
+      \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl \par \endgroup
+      \vspace*{3cm}
+      \begingroup \centering\zihao{4}\bfseries
+      \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
+        \multirow{4}*{
+          \begin{CJKfilltwosides*}{0pt}
+            作者姓名：\\
+            导师姓名：\\
+            学科（专业）或领域名称：\\
+            论文答辩年月：
+          \end{CJKfilltwosides*}
+        } & \l__gdut_info_author_tl \\
+        \cline{2-2}
+        & \l__gdut_info_supervisor_tl \\
+        \cline{2-2}
+        & \l__gdut_info_major_tl \\
+        \cline{2-2}
+        & \exp_args:No \coverdate{\l__gdut_info_date_tl} \\
+        \cline{2-2}
+      \end{tabular}
+      \par \endgroup
+    \end{minipage}%
+  \restoregeometry
+  \setlength{\paperwidth}{210mm}
+  \setlength{\pdfpagewidth}{210mm}
+  \setlength{\paperheight}{297mm}
+  \setlength{\pdfpageheight}{297mm}
+  % \vspace*{2\baselineskip-5pt}
+  % \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
+  % \begingroup \centering \l__gdut_info_degree_tl \par \endgroup
+  % \vspace*{3\baselineskip-0.5pt}
+  % \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
+  % \vspace*{3.3\baselineskip-1pt}
+  % \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
+  % \vspace*{9\baselineskip+2pt}
+  % \begingroup \centering\zihao{4} \zhnumsetup{time=Chinese}\exp_args:No \zhdate{ \l__gdut_info_date_tl }\zhnumsetup{time=Arabic}\par \endgroup
   \newpage
   \vspace*{0.4\baselineskip-1.5pt}
   \begingroup \centering
@@ -1220,12 +1287,12 @@
   \par \endgroup
   \vspace*{1.5\baselineskip+4pt}
   \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
-  \begingroup \centering\zihao{4} \l__gdut_info_degree_tl \par \endgroup
+  \begingroup \centering\zihao{4} （ \l__gdut_info_degree_tl ） \par \endgroup
   \vspace*{0.8\baselineskip+0.75pt}
   \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
   \vspace*{\baselineskip+5.75pt}
   \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
-  \vspace*{5.5\baselineskip-5pt}
+  \vspace*{9\baselineskip}
   \begingroup \centering\zihao{4}
   \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
     \multirow{1}*{
@@ -1279,4 +1346,13 @@
   \if@openright \cleardoublepage \else \clearpage \fi
   \pagestyle{fancy}
 }
+% 设置封面背景
+\clist_const:Nn \c__gdut_background_clist
+  { \backgroundsetup{scale=0.4796,position={38.5cm,-25.7cm},contents={\includegraphics{cover-background/doctor.jpeg}}}, \backgroundsetup{scale=0.4787,position={38.5cm,-25.7cm},contents={\includegraphics{cover-background/master.jpeg}}}, \backgroundsetup{scale=0.38327,position={48.1cm,-32.1cm},contents={\includegraphics{cover-background/promaster.jpeg}}} }
+\cs_new_protected:Npn \__gdut_background_type:
+  {
+    \clist_item:Nn \c__gdut_background_clist
+      { \g__gdut_thesis_type_int }
+  }
+\__gdut_background_type:
 \endinput
