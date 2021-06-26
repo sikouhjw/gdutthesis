@@ -60,6 +60,7 @@
 \cs_new:Npn \__gdut_error:nn    { \msg_error:nnn    { gdutthesis } }
 \cs_new:Npn \__gdut_error:nx    { \msg_error:nnx    { gdutthesis } }
 \cs_new:Npn \__gdut_error:nnn   { \msg_error:nnnn   { gdutthesis } }
+\cs_new:Npn \__gdut_error:nnnn  { \msg_error:nnnnn  { gdutthesis } }
 \cs_new:Npn \__gdut_warning:n   { \msg_warning:nn   { gdutthesis } }
 \cs_new:Npn \__gdut_warning:nn  { \msg_warning:nnn  { gdutthesis } }
 \cs_new:Npn \__gdut_warning:nxx { \msg_warning:nnxx { gdutthesis } }
@@ -182,11 +183,13 @@
   { \PassOptionsToPackage #1 }
 \RequirePackage { etoolbox }
 \LoadClass { ctexbook }
+\@namedef{ver@everypage.sty}{9999/99/99}
 \RequirePackage
   {
     amsmath,
     unicode-math,
     geometry,
+    everypage-1x,
     background,
     fancyhdr,
     graphicx,
@@ -333,17 +336,22 @@
 \cs_new_protected:Npn \__gdut_check_package:nnn #1#2#3
   {
     \@ifpackagelater {#1} {#2}
-      { } { \__gdut_error:nnn { package-too-old } {#1} {#3} }
+      { } { \__gdut_error:nnn { package-too-old } { Package } {#1} {#3} }
+  }
+\cs_new_protected:Npn \__gdut_check_class:nnn #1#2#3
+  {
+    \@ifclasslater {#1} {#2}
+      { } { \__gdut_error:nnnn { package-too-old } { Class } {#1} {#3} }
   }
 \__gdut_msg_new:nn { package-too-old }
   {
-    Package~ "#1"~ is~ too~ old. \\
-    The~ gdutthesis~ class~ only~ supports~ "#1"~ with~ a~ version \\
-    higher~ than~ v#2. \\\\
-    Please~ update~ an~ up-to-date~ version~ of~ it~ using~ your \\
-    TeX~ package~ manager~ or~ from~ CTAN.
+    #1~ "#2"~ is~ too~ old. \\
+    The~ fduthesis~ class~ only~ supports~ "#2" \\
+    with~ a~ version~ higher~ than~ v#3. \\\\
+    Please~ update~ an~ up-to-date~ version~ of~ it \\
+    using~ your~ TeX~ package~ manager~ or~ from~ CTAN.
   }
-% \__gdut_check_package:nnn { ctex         } { 2017/08/07 } { 2.4.10 }
+\__gdut_check_class:nnn   { ctexbook     } { 2017/08/07 } { 2.4.10 }
 \__gdut_check_package:nnn { fontspec     } { 2017/09/22 } { 2.6e   }
 \__gdut_check_package:nnn { unicode-math } { 2017/11/18 } { 0.8i   }
 \sys_if_engine_xetex:T
@@ -364,7 +372,7 @@
 \keys_define:nn { gdut / style }
   {
     font .choices:nn =
-      { times, times*, none }
+      { garamond, libertinus, lm, palatino, times, times*, none }
       { \tl_set_eq:NN \g__gdut_fontset_tl \l_keys_choice_tl }
   }
 \keys_define:nn { gdut / style }
@@ -420,6 +428,13 @@
   }
 \clist_map_inline:nn { main, sans, mono, math    } { \__gdut_set_font_helper:n {#1} }
 \clist_map_inline:nn { CJKmain, CJKsans, CJKmono } { \__gdut_set_font_helper:n {#1} }
+\tl_new:N \g__gdut_font_family_libertinus_serif_tl
+\tl_new:N \g__gdut_font_family_libertinus_sans_tl
+\tl_new:N \g__gdut_font_style_libertinus_rm_tl
+\tl_new:N \g__gdut_font_style_libertinus_bf_tl
+\tl_new:N \g__gdut_font_style_libertinus_it_tl
+\tl_new:N \g__gdut_font_style_libertinus_bfit_tl
+\tl_new:N \g__gdut_font_style_libertinus_bfsl_tl
 \tl_new:N \g__gdut_font_family_xits_tl
 \tl_new:N \g__gdut_font_style_xits_rm_tl
 \tl_new:N \g__gdut_font_style_xits_bf_tl
@@ -431,6 +446,27 @@
 \tl_new:N \g__gdut_font_name_xits_tl
 \tl_new:N \g__gdut_font_name_xits_math_rm_tl
 \tl_new:N \g__gdut_font_name_xits_math_bf_tl
+\fontspec_font_if_exist:nTF { LibertinusSerif-Regular.otf }
+  {
+    \tl_set:Nn \g__gdut_font_family_libertinus_serif_tl { LibertinusSerif }
+    \tl_set:Nn \g__gdut_font_family_libertinus_sans_tl  { LibertinusSans  }
+    \tl_set:Nn \g__gdut_font_family_libertinus_math_tl  { LibertinusMath  }
+    \tl_set:Nn \g__gdut_font_style_libertinus_rm_tl     { Regular         }
+    \tl_set:Nn \g__gdut_font_style_libertinus_bf_tl     { Bold            }
+    \tl_set:Nn \g__gdut_font_style_libertinus_it_tl     { Italic          }
+    \tl_set:Nn \g__gdut_font_style_libertinus_bfit_tl   { BoldItalic      }
+    \tl_set:Nn \g__gdut_font_style_libertinus_bfsl_tl   { BoldOblique     }
+  }
+  {
+    \tl_set:Nn \g__gdut_font_family_libertinus_serif_tl { libertinusserif }
+    \tl_set:Nn \g__gdut_font_family_libertinus_sans_tl  { libertinussans  }
+    \tl_set:Nn \g__gdut_font_family_libertinus_math_tl  { libertinusmath  }
+    \tl_set:Nn \g__gdut_font_style_libertinus_rm_tl     { regular         }
+    \tl_set:Nn \g__gdut_font_style_libertinus_bf_tl     { bold            }
+    \tl_set:Nn \g__gdut_font_style_libertinus_it_tl     { italic          }
+    \tl_set:Nn \g__gdut_font_style_libertinus_bfit_tl   { bolditalic      }
+    \tl_set:Nn \g__gdut_font_style_libertinus_bfsl_tl   { bolditalic      }
+  }
 \fontspec_font_if_exist:nTF { XITS-Regular.otf }
   {
     \tl_set:Nn \g__gdut_font_family_xits_tl        { XITS             }
@@ -449,6 +485,101 @@
     \tl_set:Nn \g__gdut_font_style_xits_bfit_tl    { bolditalic    }
     \tl_set:Nn \g__gdut_font_name_xits_math_rm_tl  { xits-math     }
     \tl_set:Nn \g__gdut_font_name_xits_math_bf_tl  { xits-mathbold }
+  }
+\tl_set:Nx \g__gdut_font_name_libertinus_serif_tl
+  { \g__gdut_font_family_libertinus_serif_tl - \g__gdut_font_style_libertinus_rm_tl }
+\tl_set:Nx \g__gdut_font_name_libertinus_sans_tl
+  { \g__gdut_font_family_libertinus_sans_tl  - \g__gdut_font_style_libertinus_rm_tl }
+\tl_set:Nx \g__gdut_font_name_libertinus_math_tl
+  { \g__gdut_font_family_libertinus_math_tl  - \g__gdut_font_style_libertinus_rm_tl }
+\tl_set:Nx \g__gdut_font_name_xits_tl
+  { \g__gdut_font_family_xits_tl - \g__gdut_font_style_xits_rm_tl }
+\cs_new_protected:Npn \__gdut_load_font_garamond:
+  {
+    \__gdut_setmainfont:nn { EBGaramond }
+      {
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Italic,
+        BoldItalicFont = *-BoldItalic
+      }
+    \__gdut_setsansfont:nn { \g__gdut_font_family_libertinus_sans_tl }
+      {
+        Extension      = .otf,
+        UprightFont    = *-\g__gdut_font_style_libertinus_rm_tl,
+        BoldFont       = *-\g__gdut_font_style_libertinus_bf_tl,
+        ItalicFont     = *-\g__gdut_font_style_libertinus_it_tl,
+        BoldItalicFont = *-\g__gdut_font_style_libertinus_bf_tl
+      }
+    \__gdut_setmonofont:nn { lmmonolt10 }
+      {
+        Extension      = .otf,
+        UprightFont    = *-regular,
+        BoldFont       = *-bold,
+        ItalicFont     = *-oblique,
+        BoldItalicFont = *-boldoblique
+      }
+    \__gdut_setmathfont:nn { Garamond-Math.otf } { }
+  }
+\cs_new_protected:Npn \__gdut_load_font_libertinus:
+  {
+    \__gdut_setmainfont:nn { \g__gdut_font_family_libertinus_serif_tl }
+      {
+        Extension      = .otf,
+        UprightFont    = *-\g__gdut_font_style_libertinus_rm_tl,
+        BoldFont       = *-\g__gdut_font_style_libertinus_bf_tl,
+        ItalicFont     = *-\g__gdut_font_style_libertinus_it_tl,
+        BoldItalicFont = *-\g__gdut_font_style_libertinus_bfit_tl
+      }
+    \__gdut_setsansfont:nn { \g__gdut_font_family_libertinus_sans_tl }
+      {
+        Extension      = .otf,
+        UprightFont    = *-\g__gdut_font_style_libertinus_rm_tl,
+        BoldFont       = *-\g__gdut_font_style_libertinus_bf_tl,
+        ItalicFont     = *-\g__gdut_font_style_libertinus_it_tl,
+        BoldItalicFont = *-\g__gdut_font_style_libertinus_bf_tl
+      }
+    \__gdut_setmonofont:nn { lmmonolt10 }
+      {
+        Extension      = .otf,
+        UprightFont    = *-regular,
+        BoldFont       = *-bold,
+        ItalicFont     = *-oblique,
+        BoldItalicFont = *-boldoblique
+      }
+    \__gdut_setmathfont:nn { \g__gdut_font_name_libertinus_math_tl .otf } { }
+  }
+\cs_new_protected:Npn \__gdut_load_font_lm:
+  { \__gdut_setmathfont:nn { latinmodern-math.otf } { } }
+\cs_new_protected:Npn \__gdut_load_font_palatino:
+  {
+    \__gdut_setmainfont:nn { texgyrepagella }
+      {
+        Extension      = .otf,
+        UprightFont    = *-regular,
+        BoldFont       = *-bold,
+        ItalicFont     = *-italic,
+        BoldItalicFont = *-bolditalic
+      }
+    \__gdut_setsansfont:nn { \g__gdut_font_family_libertinus_sans_tl }
+      {
+        Extension      = .otf,
+        UprightFont    = *-\g__gdut_font_style_libertinus_rm_tl,
+        BoldFont       = *-\g__gdut_font_style_libertinus_bf_tl,
+        ItalicFont     = *-\g__gdut_font_style_libertinus_it_tl,
+        BoldItalicFont = *-\g__gdut_font_style_libertinus_bf_tl,
+        Scale          = MatchUppercase
+      }
+    \__gdut_setmonofont:nn { lmmonolt10 }
+      {
+        Extension      = .otf,
+        UprightFont    = *-regular,
+        BoldFont       = *-bold,
+        ItalicFont     = *-oblique,
+        BoldItalicFont = *-boldoblique
+      }
+    \__gdut_setmathfont:nn { texgyrepagella-math.otf } { }
   }
 \cs_new_protected:Npn \__gdut_load_font_times:
   {
@@ -1348,7 +1479,23 @@
 }
 % 设置封面背景
 \clist_const:Nn \c__gdut_background_clist
-  { \backgroundsetup{scale=0.4796,position={38.5cm,-25.7cm},contents={\includegraphics{cover-background/doctor.jpeg}}}, \backgroundsetup{scale=0.4787,position={38.5cm,-25.7cm},contents={\includegraphics{cover-background/master.jpeg}}}, \backgroundsetup{scale=0.38327,position={48.1cm,-32.1cm},contents={\includegraphics{cover-background/promaster.jpeg}}} }
+  {
+    \backgroundsetup{
+      scale     = 0.4796,
+      position  = {38.5cm,-25.7cm},
+      contents  = { \includegraphics{cover-background/doctor.jpeg}    }
+      },
+    \backgroundsetup{
+      scale     = 0.4787,
+      position  = {38.5cm,-25.7cm},
+      contents  = { \includegraphics{cover-background/master.jpeg}    }
+      },
+    \backgroundsetup{
+      scale     = 0.38327,
+      position  = {48.1cm,-32.1cm},
+      contents  = { \includegraphics{cover-background/promaster.jpeg} }
+      }
+  }
 \cs_new_protected:Npn \__gdut_background_type:
   {
     \clist_item:Nn \c__gdut_background_clist
