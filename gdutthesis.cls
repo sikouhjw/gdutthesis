@@ -346,7 +346,7 @@
 \__gdut_msg_new:nn { package-too-old }
   {
     #1~ "#2"~ is~ too~ old. \\
-    The~ fduthesis~ class~ only~ supports~ "#2" \\
+    The~ gdutthesis~ class~ only~ supports~ "#2" \\
     with~ a~ version~ higher~ than~ v#3. \\\\
     Please~ update~ an~ up-to-date~ version~ of~ it \\
     using~ your~ TeX~ package~ manager~ or~ from~ CTAN.
