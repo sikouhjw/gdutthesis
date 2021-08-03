@@ -39,6 +39,7 @@
 \cs_generate_variant:Nn \keys_define:nn         { nx }
 \cs_generate_variant:Nn \tl_map_inline:nn       { xn }
 \prg_generate_conditional_variant:Nnn \tl_if_eq:nn { Vn } { T, TF }
+\cs_new:Npn \__gdut_symbol:n #1 { \tex_char:D #1 \scan_stop: }
 \cs_new_protected:Npn \__gdut_appto_cmd:Nn #1#2
   {
     \ctex_appto_cmd:NnnTF #1 { } {#2}
@@ -135,6 +136,18 @@
   #2 {#5} #3 \c__zhnum_month_tl #3
 }
 \cs_generate_variant:Nn \__cover_date_aux:nnn { V }
+\clist_map_inline:nn
+  {
+    { ideo_comma       } { "3001 },
+    { ideo_full_stop   } { "3002 },
+    { fwid_comma       } { "FF0C },
+    { fwid_full_stop   } { "FF0E },
+    { fwid_colon       } { "FF1A },
+    { fwid_semicolon   } { "FF1B },
+    { fwid_left_paren  } { "FF08 },
+    { fwid_right_paren } { "FF09 }
+  }
+  { \__gdut_define_punct:nn #1 }
 % 独创性声明
 \tl_const:Nn \c__gdut_orig_decl_text_tl
   {
