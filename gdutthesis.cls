@@ -202,6 +202,7 @@
     amsmath,
     unicode-math,
     geometry,
+    pdfpages,
     everypage-1x,
     background,
     fancyhdr,
@@ -1033,7 +1034,10 @@
        {\@latex@warning{Empty `thebibliography' environment}}%
       \endlist}
 %% 定义独创性声明
-\def\gdutstatement{
+\NewDocumentCommand {\gdutstatement} { s o } {
+  \IfBooleanTF {#1}
+  { \includepdf {#2} }
+  {%
   \chapter*{学位论文独创性声明}
   \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
   \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
@@ -1052,6 +1056,7 @@
   \vspace*{\baselineskip}
   \begingroup \centering \hspace*{5\ccwd}指导教师签名：\hspace*{5\ccwd}日期：\par \endgroup
   \ctexset{chapter/break = \if@openright\cleardoublepage\else\clearpage\fi}
+  }
 }
 \cs_new:Npn \gdutappendix {
   \ctexset{chapter/numbering=true}
