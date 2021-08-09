@@ -1036,26 +1036,33 @@
 %% 定义独创性声明
 \NewDocumentCommand {\gdutstatement} { s o } {
   \IfBooleanTF {#1}
-  { \includepdf {#2} }
-  {%
-  \chapter*{学位论文独创性声明}
-  \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
-  \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
-  \markboth{学位论文独创性声明及学位论文版权使用授权声明}{}
-  \vspace*{\baselineskip+0.9\ccwd}
-  \c__gdut_orig_decl_text_tl\par
-  \vspace*{\baselineskip}
-  \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
-  \ctexset{chapter/break = {}}
-  \vspace*{3\baselineskip}
-  \chapter*{学位论文版权使用授权声明}
-  \vspace*{\baselineskip+0.9\ccwd}
-  \c__gdut_auth_decl_text_tl\par
-  \vspace*{\baselineskip}
-  \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
-  \vspace*{\baselineskip}
-  \begingroup \centering \hspace*{5\ccwd}指导教师签名：\hspace*{5\ccwd}日期：\par \endgroup
-  \ctexset{chapter/break = \if@openright\cleardoublepage\else\clearpage\fi}
+  {
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \phantomsection
+    \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
+    \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
+    \includepdf {#2}
+  }
+  {
+    \phantomsection
+    \chapter*{学位论文独创性声明}
+    \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
+    \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
+    \markboth{学位论文独创性声明及学位论文版权使用授权声明}{}
+    \vspace*{\baselineskip+0.9\ccwd}
+    \c__gdut_orig_decl_text_tl\par
+    \vspace*{\baselineskip}
+    \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
+    \ctexset{chapter/break = {}}
+    \vspace*{3\baselineskip}
+    \chapter*{学位论文版权使用授权声明}
+    \vspace*{\baselineskip+0.9\ccwd}
+    \c__gdut_auth_decl_text_tl\par
+    \vspace*{\baselineskip}
+    \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
+    \vspace*{\baselineskip}
+    \begingroup \centering \hspace*{5\ccwd}指导教师签名：\hspace*{5\ccwd}日期：\par \endgroup
+    \ctexset{chapter/break = \if@openright\cleardoublepage\else\clearpage\fi}
   }
 }
 \cs_new:Npn \gdutappendix {
