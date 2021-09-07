@@ -1527,4 +1527,5 @@
       { \g__gdut_thesis_type_int }
   }
 \__gdut_background_type:
+\allowdisplaybreaks[4]
 \endinput
