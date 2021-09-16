@@ -1,11 +1,11 @@
-\NeedsTeXFormat{LaTeX2e}
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \RequirePackage{expl3}
 \ProvidesExplClass{gdutthesis}
   {2021/05/01}{v1.0}{Thesis Template for Guangdong University of Technology}
-\RequirePackage { xparse, xtemplate, l3keys2e }
-\clist_map_inline:nn { expl3, xparse, xtemplate, l3keys2e }
+\RequirePackage { xtemplate, l3keys2e }
+\clist_map_inline:nn { xtemplate, l3keys2e }
   {
-    \@ifpackagelater {#1} { 2018/05/12 }
+    \@ifpackagelater {#1} { 2020/07/17 }
       { } { \msg_error:nnn { gdutthesis } { l3-too-old } {#1} }
   }
 \msg_new:nnn { gdutthesis } { l3-too-old }
@@ -40,6 +40,9 @@
 \cs_generate_variant:Nn \tl_map_inline:nn       { xn }
 \prg_generate_conditional_variant:Nnn \tl_if_eq:nn { Vn } { T, TF }
 \cs_new:Npn \__gdut_symbol:n #1 { \tex_char:D #1 \scan_stop: }
+\cs_new_protected:Npn \__gdut_gadd_ltxhook:nn #1#2
+  { \hook_gput_code:nnn {#1} { . } {#2} }
+\hook_gset_rule:nnnn { begindocument/before } { . } { < } { xeCJK }
 \cs_new_protected:Npn \__gdut_appto_cmd:Nn #1#2
   {
     \ctex_appto_cmd:NnnTF #1 { } {#2}
@@ -87,7 +90,7 @@
     unknown .code:n = { \__gdut_error:n { unknown-option } }
   }
 \__gdut_msg_new:nn { unknown-option }
-  { Class~ option~ "\l_keys_key_tl"~ is~ unknown. }
+  { Class~ option~ "\l_keys_key_str"~ is~ unknown. }
 \ProcessKeysOptions { gdut / option }
 \cs_new_protected:Npn \__gdut_thesis_type:
   {
@@ -194,7 +197,6 @@
     { firstpage=true,angle=0,color=black,opacity=0.5 } { background },
   }
   { \PassOptionsToPackage #1 }
-\RequirePackage { etoolbox }
 \LoadClass { ctexbook }
 \@namedef{ver@everypage.sty}{9999/99/99}
 \RequirePackage
@@ -404,11 +406,11 @@
 \cs_new_protected:Npn \__gdut_setmathfont:nn #1#2
   { \__um_setmathfont:nn {#2} {#1} }
 \cs_new_protected:Npn \__gdut_setCJKmainfont:nn #1#2
-  { \__gdut_set_family:nnn { \CJKrmdefault } {#2} {#1} }
+  { \__gdut_set_family:xnn { \CJKrmdefault } {#2} {#1} }
 \cs_new_protected:Npn \__gdut_setCJKsansfont:nn #1#2
-  { \__gdut_set_family:nnn { \CJKsfdefault } {#2} {#1} }
+  { \__gdut_set_family:xnn { \CJKsfdefault } {#2} {#1} }
 \cs_new_protected:Npn \__gdut_setCJKmonofont:nn #1#2
-  { \__gdut_set_family:nnn { \CJKttdefault } {#2} {#1} }
+  { \__gdut_set_family:xnn { \CJKttdefault } {#2} {#1} }
 \cs_new_protected:Npn \__gdut_set_cjk_font_kai:nn #1#2
   { \__gdut_set_family:nnn { gdut@kai } {#2} {#1} \newfontfamily \gdutenkai {#1} }
 \cs_new_protected:Npn \gdut@kai
@@ -432,6 +434,7 @@
     \cs_new_eq:NN \__gdut_set_family:nnn  \ctex_ltj_set_family:nnn
     \cs_new_eq:NN \__gdut_switch_family:n \ctex_ltj_switch_family:n
   }
+\cs_generate_variant:Nn \__gdut_set_family:nnn { x }
 \cs_new_protected:Npn \__gdut_set_font_helper:n #1
   {
     \exp_args:Nc \RenewDocumentCommand { set #1 font } { O { } m O { } }
@@ -816,6 +819,11 @@
     \char_set_active_eq:nN { "3002 } \c__gdut_fwid_full_stop_tl
     \char_set_catcode_active:n { "3002 }
   }
+\DeclareEmphSequence
+  {
+    \itshape \gdut@kai,
+    \upshape \CJKfamily { \CJKfamilydefault },
+  }
 %% 设置页眉页脚
 \fancyhf{}
 \fancyfoot[C]{\zihao{-5}\thepage}
@@ -996,16 +1004,18 @@
     secret-level .value_required:n = true,
   }
 %% 设置数学间距
-\AtBeginDocument{%
-  \setlength{\abovedisplayskip}{0pt}%
-  \setlength{\abovedisplayshortskip}{0pt}%
-  \setlength{\belowdisplayshortskip}{0pt}%
-  \setlength{\belowdisplayskip}{0pt}%
-}
+\ctex_after_end_preamble:n
+  {
+    \setlength{\abovedisplayskip}{0pt}
+    \setlength{\abovedisplayshortskip}{0pt}
+    \setlength{\belowdisplayshortskip}{0pt}
+    \setlength{\belowdisplayskip}{0pt}
+  }
 %% 输出封面
-\AtBeginDocument{%
-  \gdutmaketitle
-}
+\ctex_after_end_preamble:n
+  {
+    \gdutmaketitle
+  }
 %% 定义双语章节
 \let\mychapter=\chapter
 \let\mysection=\section
@@ -1173,8 +1183,7 @@
         \__gdut_bibtex_setup:
       }
   }
-\AddToHook
-  { env/document/begin }
+\__gdut_gadd_ltxhook:nn { env/document/begin }
   {
     \bool_if:NF \l__gdut_bibtex_bool
       {
