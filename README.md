@@ -1,6 +1,9 @@
 # gdutthesis
- 广东工业大学 LaTeX 论文模板
- 
+广东工业大学 LaTeX 论文模板
+
+- [Overleaf](https://www.overleaf.com/latex/templates/gdutthesis/wcnrhjstrbws)
+- [Releases](https://github.com/sikouhjw/gdutthesis/releases/latest)
+
 ## 欢迎使用 gdutthesis（广东工业大学论文模板）
 
 本模板支持博士、硕士学位论文撰写。借助现代 LaTeX 技术，希望达到用户接口简明、内容格式规范和模板样式可定制的统一。
