@@ -1,7 +1,8 @@
 # gdutthesis
 广东工业大学 LaTeX 论文模板
 
-- [Overleaf](https://www.overleaf.com/latex/templates/gdutthesis/wcnrhjstrbws)
+- [support_gdutthesis@163.com](mailto:support_gdutthesis@163.com)
+- [Overleaf](https://cn.overleaf.com/latex/templates?q=gdutthesis)
 - [Releases](https://github.com/sikouhjw/gdutthesis/releases/latest)
 
 ## 欢迎使用 gdutthesis（广东工业大学论文模板）
