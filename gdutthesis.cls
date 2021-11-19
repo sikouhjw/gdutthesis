@@ -193,7 +193,7 @@
   {
     { no-math           } { fontspec },
     { titles            } { tocloft  },
-    { UseMSWordMultipleLineSpacing, MSWordLineSpacingMultiple=1.5 } { zhlineskip },
+    { UseMSWordMultipleLineSpacing, MSWordLineSpacingMultiple=1.568 } { zhlineskip },
     { firstpage=true,angle=0,color=black,opacity=0.5 } { background },
   }
   { \PassOptionsToPackage #1 }
@@ -1015,6 +1015,7 @@
 \ctex_after_end_preamble:n
   {
     \gdutmaketitle
+    \linespread{\ZhLS@bodylinespread}\selectfont
   }
 %% 定义双语章节
 \let\mychapter=\chapter
