@@ -1467,8 +1467,10 @@
       \end{CJKfilltwosides*}
     } & \l__gdut_info_supervisor_tl \\
     \cline{2-2}
-    & \l__gdut_info_supervisor_two_tl \\
-    \cline{2-2}
+    \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
+    {}
+    {& \l__gdut_info_supervisor_two_tl \\
+    \cline{2-2}}
     \multirow{4}*{
       \begin{CJKfilltwosides*}{0pt}
         学科（专业）或领域名称：\\
