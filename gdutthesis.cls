@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \RequirePackage{expl3}
 \ProvidesExplClass{gdutthesis}
-  {2021/05/01}{v1.0}{Thesis Template for Guangdong University of Technology}
+  {2021/11/09}{v0.1c}{Thesis Template for Guangdong University of Technology}
 \RequirePackage { xtemplate, l3keys2e }
 \clist_map_inline:nn { xtemplate, l3keys2e }
   {
