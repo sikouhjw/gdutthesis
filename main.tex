@@ -16,7 +16,8 @@
 ]{gdutthesis}
 
 % 宏包在这里加载
-\usepackage{siunitx,zhlipsum,lipsum}
+\usepackage{siunitx}[=v2]
+\usepackage{zhlipsum,lipsum}
 
 \gdutsetup{
   style = {
@@ -134,12 +135,12 @@
     \toprule
     控制卡技术指标              & 具体参数                      \\
     \midrule
-    控制电机的脉冲信号频率范围  & $\qty{1}{Hz}\sim\qty{2}{MHz}$ \\
-    控制电机的脉冲信号频率精度  & \qty{0.0625}{Hz}              \\
-    脉冲信号输出最大电流        & \qty{20}{mA}                  \\
+    控制电机的脉冲信号频率范围  & $\SI{1}{Hz}\sim\SI{2}{MHz}$ \\
+    控制电机的脉冲信号频率精度  & \SI{0.0625}{Hz}              \\
+    脉冲信号输出最大电流        & \SI{20}{mA}                  \\
     脉冲信号长度                & 28 位有符号                   \\
-    直线插补精度                & $\pm \qty{0.8}{pulse}$        \\
-    圆弧插补精度                & $\pm \qty{1.5}{pulse}$        \\
+    直线插补精度                & $\pm \SI{0.8}{pulse}$        \\
+    圆弧插补精度                & $\pm \SI{1.5}{pulse}$        \\
     支持的插补坐标系个数        & 2                             \\
     \bottomrule
   \end{tabular}
