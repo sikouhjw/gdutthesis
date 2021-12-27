@@ -383,6 +383,16 @@
   footskip    = 12pt,
 }
 \bool_if:NT \g__gdut_draft_bool { \geometry { showframe } }
+\bool_new:N \l__gdut_cover_bool
+\keys_define:nn { gdut / style }
+  {
+    cover .choice:,
+    cover .value_required:n = true,
+    cover / true   .code:n =
+      { \bool_set_true:N  \l__gdut_cover_bool },
+    cover / false .code:n =
+      { \bool_set_false:N \l__gdut_cover_bool },
+  }
 \tl_new:N \g__gdut_fontset_tl
 \tl_new:N \g__gdut_cjk_fontset_tl
 \keys_define:nn { gdut / style }
@@ -1015,7 +1025,6 @@
 \ctex_after_end_preamble:n
   {
     \gdutmaketitle
-    \linespread{\ZhLS@bodylinespread}\selectfont
   }
 %% 定义双语章节
 \let\mychapter=\chapter
@@ -1373,6 +1382,7 @@
   }
 \keys_set:nn { gdut }
   {
+    style   / cover           = false,
     style   / font            = times,
     style   / cjk-font        = fandol,
     style   / fullwidth-stop  = false,
@@ -1384,8 +1394,7 @@
 \NewDocumentCommand \gdutsetup { m }
   { \keys_set:nn { gdut } {#1} }
 
-\cs_new:Npn \gdutmaketitle { 
-  \frontmatter\pagestyle{empty}\pagenumbering{Alph}
+\cs_new:Npn \gdutcover {
   \setlength{\paperwidth}{420mm}
   \setlength{\pdfpagewidth}{420mm}
   \setlength{\paperheight}{297mm}
@@ -1434,16 +1443,17 @@
   \setlength{\pdfpagewidth}{210mm}
   \setlength{\paperheight}{297mm}
   \setlength{\pdfpageheight}{297mm}
-  % \vspace*{2\baselineskip-5pt}
-  % \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
-  % \begingroup \centering \l__gdut_info_degree_tl \par \endgroup
-  % \vspace*{3\baselineskip-0.5pt}
-  % \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
-  % \vspace*{3.3\baselineskip-1pt}
-  % \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
-  % \vspace*{9\baselineskip+2pt}
-  % \begingroup \centering\zihao{4} \zhnumsetup{time=Chinese}\exp_args:No \zhdate{ \l__gdut_info_date_tl }\zhnumsetup{time=Arabic}\par \endgroup
   \newpage
+}
+\cs_new:Npn \gdutmaketitle {
+  \__gdut_background_type:
+  \frontmatter\pagestyle{empty}\pagenumbering{Alph}
+  \bool_if:NTF \l__gdut_cover_bool
+  {
+    \gdutcover
+    \linespread{\ZhLS@bodylinespread}\selectfont
+  }
+  { }
   \vspace*{0.4\baselineskip-1.5pt}
   \begingroup \centering
     \begin{tabular}{>{\zihao{4}}r@{\hspace*{8\ccwd}}>{\zihao{4}\raggedright\arraybackslash}p{6\ccwd}@{\hspace*{6\ccwd}}>{\zihao{4}}p{12\ccwd}}
@@ -1490,7 +1500,6 @@
   \end{tabular}
   \par \endgroup
   \newpage
-  \vspace*{0.9\baselineskip}
   \begingroup \centering\zihao{4}
     A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~Master
   \par \endgroup
@@ -1535,9 +1544,14 @@
   }
 \cs_new_protected:Npn \__gdut_background_type:
   {
-    \clist_item:Nn \c__gdut_background_clist
+    \bool_if:NTF \l__gdut_cover_bool
+    {
+      \clist_item:Nn \c__gdut_background_clist
       { \g__gdut_thesis_type_int }
+    }
+    {
+      \backgroundsetup{ contents = { } }
+    }
   }
-\__gdut_background_type:
 \allowdisplaybreaks[4]
 \endinput
