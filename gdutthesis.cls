@@ -1310,7 +1310,7 @@
     hyperlink / color  .code:n =
       { \gdut_hyperref_setup:n { colorlinks = true } },
     hyperlink / none   .code:n =
-      { \gdut_hyperref_setup:n { hidelinks  = true } },
+      { \gdut_hyperref_setup:n { hidelinks         } },
     hyperlink-color .choice:,
     hyperlink-color .value_required:n = true,
     \clist_map_function:nN

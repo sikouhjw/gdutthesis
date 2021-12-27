@@ -15,6 +15,7 @@
 gdutthesis.pdf
 main.pdf
 *.tec
+example/*.pdf
 
 ## Intermediate documents:
 *.dvi

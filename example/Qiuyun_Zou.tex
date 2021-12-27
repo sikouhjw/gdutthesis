@@ -1,4 +1,198 @@
-\documentclass{../gdutthesis}
+\documentclass[type=master]{../gdutthesis}
+
+\usepackage{physics}
+
+\newcommand{\mbb}{\symbb}
+\newcommand{\mbfit}{\symbfit}
+\newcommand{\mbf}{\symbfup}
+\newcommand{\mscr}{\symscr}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\Diag}{Diag}
+
+\gdutsetup{
+  style = {
+    cover           = {false},
+    font            = {times*},
+    cjk-font        = {fandol},
+    cjk-font        = {windows},
+    bib-backend     = {bibtex},
+    fullwidth-stop  = {false},
+    hyperlink       = {none},
+  },
+  info = {
+    title           = {贝叶斯推论快速近似算法研究},
+    title*          = {Research on Fast Approximate Algorithm based Bayesian Inference},
+    date            = {2019/6/1},
+    author          = {邹秋云},
+    author*         = {Zou Qiuyun},
+    supervisor      = {张浩川\qquad 副教授},
+    supervisor*     = {A/Prof. Zhang Haochuan},
+    supervisor-two  = {none},
+    supervisor-two* = {none},
+    department      = {自动化学院},
+    department*     = {Automation},
+    major           = {控制科学与工程},
+    student-id      = {2111604051},
+    chairman        = {none},
+    degree          = {工学硕士},
+    degree*         = {Master of Engineering Science},
+    keywords        = {信号重构, 贝叶斯估计, 近似消息传递, 期望传播},
+    keywords*       = {signal recovery, Bayesian estimation, approximate message passing, expectation propagation},
+    secret-level    = {none},
+  }
+}
+
 \begin{document}
-  1
+
+\begin{abstract}
+  本篇论文主要研究了贝叶斯算法及其在可逆问题中用于重构目标信号的应用。更
+  确切地说，本文归纳推导了两类新奇的算法，分别是近似消息传递类算法（approximate
+  message passing-like, AMP-like）以及期望传播类算法（expectation propagation-like,
+  EP-like），其中AMP-like算法包括：近似消息传递（approximate message passing, AMP）、
+  广义近似消息传递（generalized approximate message passing, AMP）、多层广义近似消
+  息传递（multi-layer generalized approximate message passing, ML-GAMP）等；EP-like
+  算法包括：期望传播（expectation propagation, EP）、期望一致（expectation consistent,
+  EC）、广义期望一致信号重构（generalized expectation consistent signal recovery,
+  GEC-SR）、多层广义期望一致（multi-layer generalized expectation consistent, ML-GEC）
+  等。
+\end{abstract}
+
+\begin{abstract*}
+  This thesis mainly studies Bayesian algorithm and its application in inverse problem for
+  recovering the signal of interest. Specifically, this thesis has derived two novel algorithm
+  which are approximate message passing like (AMP-like) algorithm and expectation
+  propagation (EP-like) algorithm, respectively. AMP-like algorithm includes approximate
+  message passing (AMP), generalized approximate message passing (GAMP), and
+  multi-layer generalized approximate message passing (ML-GAMP) etc. EP-like algorithm
+  includes expectation propagation (EP), expectation consistent (EC), generalized expectation
+  consistent (GEC), generalized expectation consistent signal recovery (GEC-SR), and
+  multi-layer generalized expectation consistent (ML-GEC), etc.
+\end{abstract*}
+
+\begin{notation}[lp{10cm}]
+  $\mbb R, \mbb R^n, \mbb R^{m \times n}$ & 一维实数，$n$ 维实向量，$m \times n$ 维实矩阵 \\
+  $\mbb C, \mbb C^n, \mbb C^{m \times n}$ & 一维复数，$n$ 维复向量，$m \times n$ 维复矩阵 \\
+  $\triangleq$ & 定义 \\
+  $\mapsto$ & 映射 \\
+  $\mbfit H$ & 矩阵 \\
+  $\mbfit x$ & 向量 \\
+  $\mbfit I_n$ & $n \times n$ 维单位矩阵 \\
+  $\mbb E [·]$ & 数学期望 \\
+  $\mscr N (\mbfit x | \mbfit a, \mbfit A)$ & 自变量为 $\mbfit x$，均值为 $\mbfit a$，协方差为 $\mbfit A$ 的矢量高斯概率密度函数 \\
+  $\langle · \rangle$ & 算术平均或概率期望，如 $\langle \mbfit x \rangle = \frac{1}{N} \sum_{i=1}^N x_i$，$\langle x \rangle_q = \int x q(x) \dd{x}$
+\end{notation}
+
+\gduttableofcontents
+
+\mainmatter
+
+\gdutchapter{绪论}{Introduction}
+\gdutsection{研究背景和意义}{Background and Significance}
+
+标准线性模型的形式如下
+\begin{equation}
+  \mbfit y = \mbfit H \mbfit x + \mbfit w
+\end{equation}
+其中 $\mbfit y \in \mbb R^M$ 是 $M$ 维观测向量，$\mbfit H \in \mbb R^{M \times N}$
+为线性观测矩阵，$\mbfit w \in \mbb R^M$ 为噪声扰动项，$\mbfit x \in \mbb R^N$ 为目
+标信号。线性可逆问题所研究的是从参数 $(\mbfit y, \mbfit H)$ 中重构出目标信号 $\mbfit x$ 来。该问题可以归纳为 LASSO 问题
+\begin{equation}
+  \hat{ \mbfit x } = \argmax_{ \mbfit x \in \mbb R^N } \frac{1}{2} \lVert \mbfit y - \mbfit H \mbfit x \rVert_2^2 + \lambda \lVert \mbfit x \rVert_1
+\end{equation}
+其中 $\lVert · \rVert_p$ 表示 $p$-范数。
+
+GLM扩展了SLM的适用范围，更确切来说，SLM是GLM的特例。GLM模型表示如下
+\begin{equation}
+  \mbfit x \to \mbfit z = \mbfit H \mbfit x \to p( \mbfit y | \mbfit z ) \to \mbfit y
+\end{equation}
+与 SLM 所不同，GLM 用一个逐点映射的转移概率
+$p( \mbfit y | \mbfit z ) = \prod_{a=1}^M p( y_a | z_a )$
+替换了 SLM 中的加性噪声项。
+
+\gdutsection{章节安排}{Chapters' arrangement}
+
+本文主要研究贝叶斯重构算法及其应用，针对目前几个应用较为广泛的系统模型，
+总结归纳现有的几个较为前沿的算法。本文的章节安排如下
+
+\begin{itemize}
+  \item 第一章介绍了信号重构理论及其应用。针对几个应用较为广泛的系统模型，分析归
+  纳了国内外现有的工作。
+  \item 第二章为基础知识，罗列了本文所需要的数学知识点以及专业知识点，如随机过程、
+  信号处理、矩阵理论、概率论、贝叶斯估计理论、因子图等。
+  \item 第三章介绍了线性可逆问题的快速解法，推导近似消息传递算法和矢量消息传递算
+  法。为了验证算法的性能，本章应用部分给出了 Massive MIMO 信号检测器的应用，
+  根据仿真总结算法性能。
+  \item 第四章广义线性可逆问题，该类问题是对线性可逆问题的扩展。本章提出了基于 
+  EP 的 GAMP 推导方案，并将 GAMP 扩展到复数领域。针对特定的无线通信领域问题，
+  给出了具有低精度 ADC 的 Massive MIMO 信号检测器的应用，根据仿真总结算法性
+  能。
+\end{itemize}
+
+
+\gdutchapter{数学基础}{Fundamentals of Mathematics}
+
+本章给出了本文其余章节所用到的现有数学知识。这些知识点包括：常用的矩阵
+论和概率论的现有结论、贝叶斯估计原理以及因子图。
+
+\gdutsection{矩阵论与概率论}{Theory of Matrices and Probability}
+
+\paragraph{矩阵奇异值分解。}
+
+定义：设矩阵 $\mbfit H \in R^{m \times n}$，且 $\rank(\mbfit H) = r$，则存在
+$m$ 阶正交矩阵 $\mbfit U$ 和 $n$ 阶正交矩阵 $\mbfit V$ ，使得
+\begin{equation}
+  \mbfit H = \mbfit U \mbf \Sigma \mbfit V^T
+\end{equation}
+其中 $\mbf \Sigma = \begin{pmatrix}
+  \mbf \Lambda & \mbf 0 \\
+  \mbf 0       & \mbf 0
+\end{pmatrix}$，
+$\mbf \Lambda = \Diag ( \lambda_1, \lambda_2, \cdots, \lambda_r )$，
+并且 $\lambda_1 \geqslant \lambda_2 \geqslant \cdots \geqslant \lambda_r \geqslant 0$。
+
+\gdutsubsection{贝叶斯估计原理}{Principle of Bayesian Estimation}
+\gdutsubsection{最小均方误差估计}{Minimum Mean Square Error Estimation}
+
+代价函数的选择，需要从数学角度尽可能简单出发。通常考虑二次误差形、绝对误
+差、成功失败误差三种情况，如\autoref{Common_cost_function} 所示。显然，最
+小均方误差所选取的代价函数为二次误差型（Quadratic error）。
+
+\begin{figure}[htbp]
+  \subfloat[Quadratic error]{\label{Quadratic_error}
+    \includegraphics[width=0.3\textwidth]{example-image-a.pdf}
+  }
+  \quad
+  \subfloat[Hit-or-miss error]{\label{Hit-or-miss_error}
+    \includegraphics[width=0.3\textwidth]{example-image-b.pdf}
+  }
+  \quad
+  \subfloat[Absolute error]{\label{Absolute_error}
+    \includegraphics[width=0.3\textwidth]{example-image-b.pdf}
+  }
+  \bicaption{常用代价函数}{Common cost function}
+  \label{Common_cost_function}
+\end{figure}
+
+\gdutchapter{标准线性可逆问题的快速解法}{Fast Recovery of Standard Linear Inverse Problem}
+\gdutsection{应用：Massive MIMO 信号检测}{Application in Massive MIMO Signal Detection}
+
+VAMP算法，其计算量主要集中在矩阵求逆部分，假设迭代次数为 $T$，则其计算复杂度
+为 $\mscr O(TN^3)$。对比各检测器的计算复杂度，得到\autoref{Comparison_diagram_of_computational_complexity_of_detector}。
+
+\begin{table}[htbp]
+  \bicaption{检测器计算复杂度对比图}{Comparison diagram of computational complexity of detector}
+  \label{Comparison_diagram_of_computational_complexity_of_detector}
+  \begin{tabular}{cc}
+    \toprule
+    检测器类型 & 计算复杂度 \\
+    \midrule
+    ML        & $\mscr O(|S|^N)$ \\
+    LS        & $\mscr O(N^3)$   \\
+    LMMSE     & $\mscr O(N^3)$   \\
+    VAMP/EP   & $\mscr O(TN^3)$   \\
+    AMP       & $\mscr O(T(N+M))$   \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
 \end{document}
