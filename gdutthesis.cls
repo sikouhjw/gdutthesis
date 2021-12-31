@@ -200,6 +200,8 @@
   { \PassOptionsToPackage #1 }
 \LoadClass { ctexbook }
 \@namedef{ver@everypage.sty}{9999/99/99}
+\RequirePackage{silence}
+\WarningFilter{zhlineskip}{Use Microsoft Word multiple line spacing}
 \RequirePackage
   {
     amsmath,
