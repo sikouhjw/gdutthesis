@@ -193,8 +193,9 @@
   {
     { no-math           } { fontspec },
     { titles            } { tocloft  },
-    { UseMSWordMultipleLineSpacing, MSWordLineSpacingMultiple=1.568 } { zhlineskip },
-    { firstpage=true,angle=0,color=black,opacity=0.5 } { background },
+    { UseMSWordMultipleLineSpacing, MSWordLineSpacingMultiple = 1.568 } { zhlineskip    },
+    { firstpage = true, angle = 0, color = black, opacity = 0.5       } { background    },
+    { warnings-off = { mathtools-colon, mathtools-overbracket }       } { unicode-math  },
   }
   { \PassOptionsToPackage #1 }
 \LoadClass { ctexbook }
