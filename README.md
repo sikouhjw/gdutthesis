@@ -12,7 +12,7 @@
 
 本模板目前支持 XeTeX 和 LuaTeX 引擎，对其他引擎（包括 pdfTeX 和 [ApTeX](https://github.com/clerkma/ptex-ng)）的支持仍在实验阶段。本模板仅支持 UTF-8 编码。
 
-在您使用 `gdutthesis` 之前，请务必仔细阅读模板文档 `gdutthesis.pdf` 和 [Wiki](https://github.com/sikouhjw/gdutthesis/wiki)。
+在您使用 `gdutthesis` 之前，请务必仔细阅读模板文档 [`gdutthesis.pdf`](https://github.com/sikouhjw/gdutthesis/releases/latest/download/gdutthesis.pdf) 和 [Wiki](https://github.com/sikouhjw/gdutthesis/wiki)。
 
 ### 模板组成
 
