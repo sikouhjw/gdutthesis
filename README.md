@@ -45,4 +45,4 @@
 
 -----
 
-Copyright (C) 2021&ndash;2021 by sikouhjw.
+Copyright (C) 2021&ndash;2022 by sikouhjw.
