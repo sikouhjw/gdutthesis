@@ -1047,7 +1047,9 @@
             \@openbib@code
             \usecounter{enumiv}%
             \let\p@enumiv\@empty
-            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+            \renewcommand\theenumiv{\@arabic\c@enumiv}
+            \setlength{\itemsep}{0pt}
+            \setlength{\parsep}{0pt}}%
       \sloppy
       \clubpenalty4000
       \@clubpenalty \clubpenalty
@@ -1231,6 +1233,7 @@
         \IfValueT {##1}
           { \__gdut_warning:nn { invalid-option-in-bibtex } {##1} }
       }
+    \setlength { \bibsep } { 0pt }
   }
 \__gdut_msg_new:nn { invalid-option-in-bibtex }
   { Option(s)~ "#1"~ are~ invalid~ in~ BibTeX. }
@@ -1255,6 +1258,7 @@
     \clist_map_function:NN \l__gdut_bib_resource_clist \addbibresource
     \__gdut_biblatex_allow_url_break:
     \defbibheading { bibliography } [ 参考文献 ] { \gdutchapter{##1}{References}  }
+    \setlength { \bibitemsep } { 0pt }
   }
 \cs_new_protected:Npn \__gdut_pass_options_to_biblatex:n #1
   { \PassOptionsToPackage {#1} { biblatex } }
