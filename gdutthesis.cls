@@ -211,6 +211,8 @@
     everypage-1x,
     background,
     fancyhdr,
+    amsthm,
+    thmtools,
     graphicx,
     longtable,
     caption,
@@ -906,6 +908,111 @@
     fixskip     = true,
   },
 }
+\tl_new:N \l__gdut_thm_header_font_tl
+\tl_new:N \l__gdut_thm_body_font_tl
+\tl_new:N \l__gdut_thm_qed_tl
+\tl_new:N \l__gdut_thm_punct_tl
+\tl_new:N \l__gdut_thm_left_braces_tl
+\tl_new:N \l__gdut_thm_right_braces_tl
+\tl_new:N \gdutinterval
+\dim_new:N \l__gdut_indent_dim
+\keys_define:nn { gdut / theorem }
+  {
+    header-font .choice:,
+    header-font .value_required:n = true,
+    header-font / bf .code:n =
+      { \cs_set_eq:NN \l__gdut_thm_header_font_tl \bfseries },
+    header-font / sf .code:n =
+      { \cs_set_eq:NN \l__gdut_thm_header_font_tl \sffamily },
+    body-font .choice:,
+    body-font .value_required:n = true,
+    body-font / rm .code:n =
+      { \cs_set_eq:NN \l__gdut_thm_body_font_tl \normalfont },
+    body-font / kai .code:n =
+      { \cs_set_eq:NN \l__gdut_thm_body_font_tl \gdut@kai   },
+    indent .choice:,
+    indent .value_required:n = true,
+    indent / en .code:n =
+      { \dim_set:Nn \l__gdut_indent_dim {0pt}     },
+    indent / cn .code:n =
+      { \dim_set:Nn \l__gdut_indent_dim {2\ccwd}  },
+    interval .choice:,
+    interval .value_required:n = true,
+    interval / dot  .code:n =
+      { \cs_set_eq:NN \gdutinterval .  },
+    interval / dash .code:n =
+      { \cs_set_eq:NN \gdutinterval -  },
+    punct .choice:,
+    punct .value_required:n = true,
+    punct / colon .code:n =
+      { \cs_set_eq:NN \l__gdut_thm_punct_tl ：      },
+    punct / quad  .code:n =
+      { \cs_set_eq:NN \l__gdut_thm_punct_tl \quad   },
+    braces .choice:,
+    braces .value_required:n = true,
+    braces / paren    .code:n =
+      {
+        \cs_set_eq:NN \l__gdut_thm_left_braces_tl   （
+        \cs_set_eq:NN \l__gdut_thm_right_braces_tl  ）
+      },
+    braces / bracket  .code:n =
+      {
+        \cs_set_eq:NN \l__gdut_thm_left_braces_tl   【
+        \cs_set_eq:NN \l__gdut_thm_right_braces_tl  】
+      },
+    qed         .tl_set:N   = \l__gdut_thm_qed_tl,
+  }
+\RenewDocumentCommand \newtheorem { s m m }
+  {
+    \IfBooleanTF {#1}
+      {
+        \declaretheorem[style=gdut-no-number,name=#3,refname={#3},Refname={#3}]{#2}
+      }
+      {
+        \declaretheorem[style=gdut-number,name=#3,refname={#3},Refname={#3}]{#2}
+        \tl_set:cn{the #2}{\thechapter \gdutinterval \arabic{#2}}
+      }
+  }
+\ctex_at_end_preamble:n
+  {
+    \declaretheoremstyle[
+      spaceabove    = 0pt,
+      spacebelow    = 0pt,
+      postheadspace = 0pt,
+      numberwithin  = chapter,
+      headpunct     = {\l__gdut_thm_punct_tl},
+      headfont      = \l__gdut_thm_header_font_tl,
+      notefont      = \l__gdut_thm_header_font_tl,
+      notebraces    = {\l__gdut_thm_left_braces_tl}{\l__gdut_thm_right_braces_tl},
+      bodyfont      = \l__gdut_thm_body_font_tl,
+      qed           = \l__gdut_thm_qed_tl,
+      headindent    = \l__gdut_indent_dim,
+      numbered      = no,
+    ]{gdut-no-number}
+    \declaretheoremstyle[
+      spaceabove    = 0pt,
+      spacebelow    = 0pt,
+      postheadspace = 0pt,
+      numberwithin  = chapter,
+      headpunct     = {\l__gdut_thm_punct_tl},
+      headfont      = \l__gdut_thm_header_font_tl,
+      notefont      = \l__gdut_thm_header_font_tl,
+      notebraces    = {\l__gdut_thm_left_braces_tl}{\l__gdut_thm_right_braces_tl},
+      bodyfont      = \l__gdut_thm_body_font_tl,
+      qed           = ,
+      headindent    = \l__gdut_indent_dim,
+    ]{gdut-number}
+    \cs_undefine:N \proof
+    \cs_undefine:N \endproof
+    \newtheorem { axiom       } {  公理 }
+    \newtheorem { corollary   } {  推论 }
+    \newtheorem { definition  } {  定义 }
+    \newtheorem { example     } {  例   }
+    \newtheorem { lemma       } {  引理 }
+    \newtheorem { theorem     } {  定理 }
+    \newtheorem*{ proof       } {  证明 }
+  }
+
 %% 设置图表格式
 \DeclareCaptionLabelFormat{english}{#1#2}
 \captionsetup{labelsep=space,labelformat=english,font=small}
@@ -1384,8 +1491,9 @@
 }
 \keys_define:nn { gdut }
   {
-    info  .meta:nn = { gdut / info  } {#1},
-    style .meta:nn = { gdut / style } {#1}
+    info    .meta:nn = { gdut / info    } {#1},
+    style   .meta:nn = { gdut / style   } {#1},
+    theorem .meta:nn = { gdut / theorem } {#1}
   }
 \keys_set:nn { gdut }
   {
@@ -1397,6 +1505,13 @@
     style   / bib-style       = numerical,
     info    / secret-level    = none,
     info    / date            = { 2021/5/1 },
+    theorem / header-font     = bf,
+    theorem / body-font       = rm,
+    theorem / indent          = en,
+    theorem / interval        = dot,
+    theorem / punct           = colon,
+    theorem / braces          = paren,
+    theorem / qed             = \qedsymbol,
   }
 \NewDocumentCommand \gdutsetup { m }
   { \keys_set:nn { gdut } {#1} }

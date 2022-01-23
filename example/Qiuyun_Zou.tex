@@ -19,6 +19,15 @@
     fullwidth-stop  = {false},
     hyperlink       = {none},
   },
+  theorem = {
+    header-font = bf,
+    body-font   = rm,
+    indent      = en,
+    interval    = dash,
+    punct       = colon,
+    braces      = paren,
+    qed         = \qedsymbol,
+  },
   info = {
     title           = {贝叶斯推论快速近似算法研究},
     title*          = {Research on Fast Approximate Algorithm based Bayesian Inference},
@@ -149,6 +158,17 @@ $m$ 阶正交矩阵 $\mbfit U$ 和 $n$ 阶正交矩阵 $\mbfit V$ ，使得
 \end{pmatrix}$，
 $\mbf \Lambda = \Diag ( \lambda_1, \lambda_2, \cdots, \lambda_r )$，
 并且 $\lambda_1 \geqslant \lambda_2 \geqslant \cdots \geqslant \lambda_r \geqslant 0$。
+
+\gdutsubsection{概率论}{Theory of Probability}
+\begin{lemma}[标量高斯相乘引理]
+  假设 $\mscr N ( x | a, A )$，$\mscr N ( x | b, B )$，则有
+  \begin{equation}
+    \mscr N ( x | a, A ) \mscr N ( x | b, B ) = \mscr N ( 0 | a - b, A + B ) \mscr N \left( x \middle| \frac{ \frac{a}{A} + \frac{b}{B} }{ \frac{1}{A} + \frac{1}{B} }, \frac{ 1 }{ \frac{1}{A} + \frac{1}{B} } \right)
+  \end{equation}
+\end{lemma}
+\begin{proof}
+  标量高斯相乘引理的证明分为两个部分，分别是指数部分和常数部分。
+\end{proof}
 
 \gdutsubsection{贝叶斯估计原理}{Principle of Bayesian Estimation}
 \gdutsubsection{最小均方误差估计}{Minimum Mean Square Error Estimation}

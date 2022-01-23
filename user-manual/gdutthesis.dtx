@@ -1535,6 +1535,72 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %^^A! \end{function}
 %^^A!
 %
+% \subsubsection{数学环境} \label{subsubsec:数学环境}
+%
+% \begin{function}{theorem}
+%   \begin{fdusyntax}[emph={[1]theorem}]
+%     theorem = (*\marg{键值列表}*)
+%     theorem/(*\meta{key}*) = (*\meta{value}*)
+%   \end{fdusyntax}
+%   该选项包含许多子项目，用于定制数学环境的风格。具体内容见下。
+% \end{function}
+%
+% \begin{function}^^A
+%     {theorem/header-font}
+%   \begin{fdusyntax}[emph={[1]header-font}]
+%     header-font = (*<(bf)|sf>*)
+%   \end{fdusyntax}
+%   设置定理头（即标题）的字体。选择 |bf| 即使用正文字体的粗体；选择 |sf| 即使用无衬线字体。
+% \end{function}
+%
+% \begin{function}^^A
+%     {theorem/body-font}
+%   \begin{fdusyntax}[emph={[1]body-font}]
+%     body-font = (*<(rm)|kai>*)
+%   \end{fdusyntax}
+%   设置定理内容的字体。选择 |rm| 即使用正文字体；选择 |kai| 即使用 |\gdut@kai| 楷体。
+% \end{function}
+%
+% \begin{function}^^A
+%     {theorem/indent}
+%   \begin{fdusyntax}[emph={[1]indent}]
+%     indent = (*<(en)|cn>*)
+%   \end{fdusyntax}
+%   设置定理头是否缩进。选择 |en| 即不缩进；选择 |cn| 即缩进。
+% \end{function}
+%
+% \begin{function}^^A
+%     {theorem/interval}
+%   \begin{fdusyntax}[emph={[1]interval}]
+%     interval = (*<(dot)|dash>*)
+%   \end{fdusyntax}
+%   设置定理编号的分割符。选择 |dot| 即使用“.”；选择 |dash| 即使用“-”。
+% \end{function}
+%
+% \begin{function}^^A
+%     {theorem/braces}
+%   \begin{fdusyntax}[emph={[1]braces}]
+%     braces = (*<(paren)|bracket>*)
+%   \end{fdusyntax}
+%   设置定理标题的括号类型。选择 |paren| 即使用“（）”；选择 |bracket| 即使用“【】”。
+% \end{function}
+%
+% \begin{function}^^A
+%     {theorem/punct}
+%   \begin{fdusyntax}[emph={[1]punct}]
+%     punct = (*<(colon)|quad>*)
+%   \end{fdusyntax}
+%   设置定理头与内容之间的间隔符。选择 |colon| 即使用“：”；选择 |quad| 即空一字的距离。
+% \end{function}
+%
+% \begin{function}^^A
+%     {theorem/qed}
+%   \begin{fdusyntax}[emph={[1]qed}]
+%     qed = (*\marg{符号}*)
+%   \end{fdusyntax}
+%   设置定理结束标记（即证毕符号）。默认为 |\qedsymbol|。
+% \end{function}
+%
 % \subsubsection{信息录入} \label{subsubsec:信息录入}
 %^^A! \subsubsection{Personal information} \label{subsubsec:information}
 %^^A!
@@ -1953,6 +2019,39 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %   \end{fdusyntax}
 %   生成章节标题。|\gdut...| 的章节命令是为了生成中英文目录。
 % \end{function}
+%
+% \begin{function}{axiom,corollary,definition,example,lemma,proof,theorem}
+%   \begin{fdusyntax}[emph={[2]proof}]
+%     \begin{proof}(*\oarg{小标题}*)
+%       (*\meta{证明过程}*)
+%     \end{proof}
+%   \end{fdusyntax}
+%   一系列预定义的数学环境。具体含义见表~\ref{tab:theorem}。
+% \end{function}
+%
+% \begin{table}[ht]
+%   \caption{预定义的数学环境} \label{tab:theorem}
+%   \centering
+%   \begin{tabular}{cccccccc}
+%     \toprule
+%     \textbf{名称} &
+%       \env{axiom}   & \env{corollary} & \env{definition} &
+%       \env{example} & \env{lemma}     & \env{proof}      &
+%       \env{theorem} \\
+%     \midrule
+%     \textbf{含义} &
+%       公理 & 推论 & 定义 & 例 & 引理 & 证明 & 定理 \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
+%
+% 证明环境（\env{proof}）的最后会添加证毕符号。要确保
+% 该符号在正确的位置显示，|\end{proof}| 前不能有空行。
+%
+% 数学环境是以 \pkg{amsthm} 为后端、\pkg{thmtools} 为前端定制的，
+% 如果预定义的数学环境和选项不能满足您的需求，请自行阅读
+% \pkg{thmtools} 宏包手册。注意，您自行定义的数学环境名称不能与
+% 预定义数学环境的名称相同。
 %
 % \begin{function}{gdutenum,gdutenenum}
 %   \begin{fdusyntax}[emph={[2]gdutenum,gdutenenum}]
