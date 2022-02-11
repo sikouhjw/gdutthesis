@@ -97,6 +97,11 @@
     \clist_item:Nn \c__gdut_thesis_type_clist
       { \g__gdut_thesis_type_int }
   }
+\cs_new_protected:Npn \__gdut_thesis_en_type:
+  {
+    \clist_item:Nn \c__gdut_thesis_type_en_clist
+      { \g__gdut_thesis_type_int }
+  }
 % \cs_new_protected:Npn \__gdut_course_name:
 %   {
 %     \clist_item:Nn \c__gdut_course_name_clist
@@ -174,12 +179,8 @@
 % 定义可更换的名称
 \clist_const:Nn \c__gdut_thesis_type_clist
   { 博士学位, 硕士学位, 硕士专业学位 }
-% \clist_const:Nn \c__gdut_course_name_clist
-%   { 一级学科（二级学科）, 一级学科（二级学科）, 专业学位类别（领域） }
-% \clist_const:Nn \c__gdut_degree_type_clist
-%   { 工学硕士, 管理学硕士, 理学硕士, 艺术学硕士, 工程硕士, 工商管理硕士, 工程管理硕士, 会计硕士, 翻译硕士 }
-% \clist_const:Nn \c__gdut_degree_type_en_clist
-%   { Master~of~Engineering~Science, Master~of~Management~Science, Master~of~Science, Master~of~Art, Master~of~Engineering, Master~of~Business~Administration, Master~of~Engineering~Management, Master~of~Professional~Accounting, Master~of~Translation~and~Interpreting }
+\clist_const:Nn \c__gdut_thesis_type_en_clist
+  { Doctor~of~Philosophy, Master, Master }
 \clist_const:Nn \c__gdut_secret_clist { 秘密, 机密, 绝密 }
 \PassOptionsToClass
   {
@@ -908,14 +909,14 @@
     fixskip     = true,
   },
 }
-\tl_new:N \l__gdut_thm_header_font_tl
-\tl_new:N \l__gdut_thm_body_font_tl
-\tl_new:N \l__gdut_thm_qed_tl
-\tl_new:N \l__gdut_thm_punct_tl
-\tl_new:N \l__gdut_thm_left_braces_tl
-\tl_new:N \l__gdut_thm_right_braces_tl
-\tl_new:N \gdutinterval
-\dim_new:N \l__gdut_indent_dim
+\tl_new:N   \l__gdut_thm_header_font_tl
+\tl_new:N   \l__gdut_thm_body_font_tl
+\tl_new:N   \l__gdut_thm_qed_tl
+\tl_new:N   \l__gdut_thm_punct_tl
+\tl_new:N   \l__gdut_thm_left_braces_tl
+\tl_new:N   \l__gdut_thm_right_braces_tl
+\tl_new:N   \gdut@interval
+\dim_new:N  \l__gdut_indent_dim
 \keys_define:nn { gdut / theorem }
   {
     header-font .choice:,
@@ -926,7 +927,7 @@
       { \cs_set_eq:NN \l__gdut_thm_header_font_tl \sffamily },
     body-font .choice:,
     body-font .value_required:n = true,
-    body-font / rm .code:n =
+    body-font / rm  .code:n =
       { \cs_set_eq:NN \l__gdut_thm_body_font_tl \normalfont },
     body-font / kai .code:n =
       { \cs_set_eq:NN \l__gdut_thm_body_font_tl \gdut@kai   },
@@ -939,9 +940,9 @@
     interval .choice:,
     interval .value_required:n = true,
     interval / dot  .code:n =
-      { \cs_set_eq:NN \gdutinterval .  },
+      { \cs_set_eq:NN \gdut@interval .  },
     interval / dash .code:n =
-      { \cs_set_eq:NN \gdutinterval -  },
+      { \cs_set_eq:NN \gdut@interval -  },
     punct .choice:,
     punct .value_required:n = true,
     punct / colon .code:n =
@@ -960,7 +961,7 @@
         \cs_set_eq:NN \l__gdut_thm_left_braces_tl   【
         \cs_set_eq:NN \l__gdut_thm_right_braces_tl  】
       },
-    qed         .tl_set:N   = \l__gdut_thm_qed_tl,
+    qed .tl_set:N = \l__gdut_thm_qed_tl,
   }
 \RenewDocumentCommand \newtheorem { s m m }
   {
@@ -970,7 +971,7 @@
       }
       {
         \declaretheorem[style=gdut-number,name=#3,refname={#3},Refname={#3}]{#2}
-        \tl_set:cn{the #2}{\thechapter \gdutinterval \arabic{#2}}
+        \tl_set:cn{the #2}{\thechapter \gdut@interval \arabic{#2}}
       }
   }
 \ctex_at_end_preamble:n
@@ -1078,9 +1079,6 @@
 % \int_new:N \l__gdut_info_degree_type_int
 \keys_define:nn { gdut / info }
   {
-    % degree      .choices:nn  =
-    %   { Eng-Sci, Man-Sci, Sci, Art, Eng, Bus-Adm, Eng-Man, Pro-Acc, Tra-Int }
-    %   { \int_set_eq:NN \l__gdut_info_degree_type_int \l_keys_choice_int },
     title           .tl_set:N    = \l__gdut_info_title_tl,
     title*          .tl_set:N    = \l__gdut_info_title_en_tl,
     date            .tl_set:N    = \l__gdut_info_date_tl,
@@ -1092,16 +1090,13 @@
     supervisor*     .tl_set:N    = \l__gdut_info_supervisor_en_tl,
     supervisor-two  .tl_set:N    = \l__gdut_info_supervisor_two_tl,
     supervisor-two* .tl_set:N    = \l__gdut_info_supervisor_two_en_tl,
-    % instructors .clist_set:N = \l__gdut_info_instructors_clist,
     department      .tl_set:N    = \l__gdut_info_department_tl,
     department*     .tl_set:N    = \l__gdut_info_department_en_tl,
     major           .tl_set:N    = \l__gdut_info_major_tl,
     student-id      .tl_set:N    = \l__gdut_info_student_id_tl,
-    % school-id   .tl_set:N    = \l__gdut_info_school_id_tl,
     keywords        .clist_set:N = \l__gdut_info_keywords_clist,
     keywords*       .clist_set:N = \l__gdut_info_keywords_en_clist,
     chairman        .clist_set:N = \l__gdut_info_chairman_clist,
-    % clc         .tl_set:N    = \l__gdut_info_clc_tl
   }
 \bool_new:N \l__gdut_secret_bool
 \tl_new:N \l__gdut_info_secret_level_tl
@@ -1260,11 +1255,11 @@
     \dim_set_eq:NN \LTpre  \c_zero_dim
     \dim_set_eq:NN \LTpost \c_zero_dim
   }
-\bool_new:N \l__gdut_bibtex_bool
-\tl_new:N \l__gdut_bib_style_tl
-\tl_new:N \l__gdut_bib_gb_style_tl
-\tl_new:N \l__gdut_cite_style_tl
-\clist_new:N \l__gdut_bib_resource_clist
+\bool_new:N   \l__gdut_bibtex_bool
+\tl_new:N     \l__gdut_bib_style_tl
+\tl_new:N     \l__gdut_bib_gb_style_tl
+\tl_new:N     \l__gdut_cite_style_tl
+\clist_new:N  \l__gdut_bib_resource_clist
 \keys_define:nn { gdut / style }
   {
     bib-backend .choice:,
@@ -1477,8 +1472,8 @@
     \pdfstringdefDisableCommands
       {
         \cs_set_eq:NN \gdut@kai \prg_do_nothing:
-        \cs_set_eq:NN \quad    \c_space_tl
-        \cs_set_eq:NN \qquad   \c_space_tl
+        \cs_set_eq:NN \quad     \c_space_tl
+        \cs_set_eq:NN \qquad    \c_space_tl
       }
   }
 \cs_new:Npn \gduttableofcontents {
@@ -1623,9 +1618,9 @@
   \par \endgroup
   \newpage
   \begingroup \centering\zihao{4}
-    A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~Master
+    A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~\__gdut_thesis_en_type:
   \par \endgroup
-  \begingroup \centering\zihao{-4} \l__gdut_info_degree_en_tl \par \endgroup
+  \begingroup \centering\zihao{-4} (\l__gdut_info_degree_en_tl) \par \endgroup
   \vspace*{2\baselineskip}
   \begingroup \centering\zihao{-2}\sffamily
     \l__gdut_info_title_en_tl
