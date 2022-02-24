@@ -3,17 +3,23 @@
 \ProvidesExplClass{gdutthesis}
   {2021/11/09}{v0.1c}{Thesis Template for Guangdong University of Technology}
 \RequirePackage { xtemplate, l3keys2e }
-\clist_map_inline:nn { xtemplate, l3keys2e }
-  {
-    \@ifpackagelater {#1} { 2020/07/17 }
-      { } { \msg_error:nnn { gdutthesis } { l3-too-old } {#1} }
-  }
 \msg_new:nnn { gdutthesis } { l3-too-old }
   {
     Package~ "#1"~ is~ too~ old. \\\\
     Please~ update~ an~ up-to-date~ version~ of~ the~ bundles \\
     "l3kernel"~ and~ "l3packages"~ using~ your~ TeX~ package \\
     manager~ or~ from~ CTAN.
+  }
+\clist_map_inline:nn { xtemplate, l3keys2e }
+  {
+    \@ifpackagelater {#1} { 2020/07/17 }
+      { } { \msg_error:nnn { gdutthesis } { l3-too-old } {#1} }
+  }
+\msg_new:nnn { gdutthesis } { unsupported-engine }
+  {
+    The~ gdutthesis~ class~ requires~ either~ XeTeX~ or~ LuaTeX. \\\\
+    "#1"~ is~ not~ supported~ at~ present.~ You~ must~ change \\
+    your~ typesetting~ engine~ to~ "xelatex"~ or~ "lualatex".
   }
 \sys_if_engine_xetex:F
   {
@@ -22,12 +28,6 @@
         \msg_fatal:nnx { gdutthesis } { unsupported-engine }
           { \c_sys_engine_str }
       }
-  }
-\msg_new:nnn { gdutthesis } { unsupported-engine }
-  {
-    The~ gdutthesis~ class~ requires~ either~ XeTeX~ or~ LuaTeX. \\\\
-    "#1"~ is~ not~ supported~ at~ present.~ You~ must~ change \\
-    your~ typesetting~ engine~ to~ "xelatex"~ or~ "lualatex".
   }
 \int_new:N \g__gdut_thesis_type_int
 \clist_new:N \g__gdut_to_ctexbook_clist
