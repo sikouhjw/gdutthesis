@@ -1525,6 +1525,36 @@
   \enSectionTitle{CONTENTS(IN~ENGLISH)}
   \enTableOfContents
 }
+\ctex_at_end_preamble:n
+{
+  \bool_if:NTF \l__gdut_bibtex_bool
+  {
+    \NewDocumentCommand {\gdutcite} { s O{} m }
+    {
+      \IfBooleanTF {#1}
+      {
+        \setcitestyle{numbers}
+        \cite[#2]{#3}
+        \setcitestyle{super}
+      }
+      {
+        \cite[#2]{#3}
+      }
+    }
+  }
+  {
+    \NewDocumentCommand {\gdutcite} { s O{} m }
+    {
+      \IfBooleanTF {#1}
+      {
+        \parencite[#2]{#3}
+      }
+      {
+        \cite[#2]{#3}
+      }
+    }
+  }
+}
 \keys_define:nn { gdut }
   {
     info    .meta:nn = { gdut / info    } {#1},
