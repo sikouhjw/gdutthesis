@@ -390,6 +390,7 @@
 }
 \bool_if:NT \g__gdut_draft_bool { \geometry { showframe } }
 \bool_new:N \l__gdut_cover_bool
+\bool_new:N \l__gdut_open_bool
 \keys_define:nn { gdut / style }
   {
     cover .choice:,
@@ -398,6 +399,12 @@
       { \bool_set_true:N  \l__gdut_cover_bool },
     cover / false .code:n =
       { \bool_set_false:N \l__gdut_cover_bool },
+    open  .choice:,
+    open  .value_required:n = true,
+    open  / true   .code:n =
+      { \bool_set_true:N  \l__gdut_open_bool  },
+    open  / false  .code:n =
+      { \bool_set_false:N \l__gdut_open_bool  },
   }
 \tl_new:N \g__gdut_fontset_tl
 \tl_new:N \g__gdut_cjk_fontset_tl
@@ -909,6 +916,28 @@
     fixskip     = true,
   },
 }
+\ctex_at_end_preamble:n
+{
+  \bool_if:NTF \l__gdut_open_bool
+  {
+    \keys_set:nn { ctex }
+    {
+      chapter / break =
+      {
+        \clearpage
+      }
+    }
+    \xpatchcmd { \mainmatter }
+    {
+      \cleardoublepage
+    }
+    {
+      \clearpage
+    }
+    { } { \fail }
+  }
+  { }
+}
 \tl_new:N   \l__gdut_thm_header_font_tl
 \tl_new:N   \l__gdut_thm_body_font_tl
 \tl_new:N   \l__gdut_thm_qed_tl
@@ -1164,7 +1193,13 @@
 \NewDocumentCommand {\gdutstatement} { s o } {
   \IfBooleanTF {#1}
   {
-    \if@openright\cleardoublepage\else\clearpage\fi
+    \bool_if:NTF \l__gdut_open_bool
+    {
+      \clearpage
+    }
+    {
+      \if@openright\cleardoublepage\else\clearpage\fi
+    }
     \phantomsection
     \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
     \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
@@ -1189,7 +1224,13 @@
     \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
     \vspace*{\baselineskip}
     \begingroup \centering \hspace*{5\ccwd}指导教师签名：\hspace*{5\ccwd}日期：\par \endgroup
-    \ctexset{chapter/break = \if@openright\cleardoublepage\else\clearpage\fi}
+    \bool_if:NTF \l__gdut_open_bool
+    {
+      \ctexset{chapter/break = \clearpage}
+    }
+    {
+      \ctexset{chapter/break = \if@openright\cleardoublepage\else\clearpage\fi}
+    }
   }
 }
 \cs_new:Npn \gdutappendix {
@@ -1493,6 +1534,7 @@
 \keys_set:nn { gdut }
   {
     style   / cover           = false,
+    style   / open            = false,
     style   / font            = times,
     style   / cjk-font        = fandol,
     style   / fullwidth-stop  = false,
