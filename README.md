@@ -37,7 +37,7 @@
 
 ### 贡献
 
-如果您有任何改进意见或者功能需求，欢迎提交 [issue](https://github.com/sikouhjw/gdutthesis/issues) 或 [pull request](https://github.com/sikouhjw/gdutthesis/pulls)。
+如果您有任何改进意见或者功能需求，欢迎提交 [issue](https://github.com/sikouhjw/gdutthesis/issues)、[discussion](https://github.com/sikouhjw/gdutthesis/discussions) 或 [pull request](https://github.com/sikouhjw/gdutthesis/pulls)。
 
 ### 许可证
 
