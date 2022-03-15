@@ -386,7 +386,7 @@
   margin      = 2.6cm,
   headheight  = 0.77cm,
   headsep     = 0.415cm,
-  footskip    = 12pt,
+  footskip    = 0.85cm,
 }
 \bool_if:NT \g__gdut_draft_bool { \geometry { showframe } }
 \bool_new:N \l__gdut_cover_bool
