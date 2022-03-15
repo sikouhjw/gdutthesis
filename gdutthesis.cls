@@ -1657,7 +1657,7 @@
   \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
   \vspace*{\baselineskip+5.75pt}
   \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
-  \vspace*{9\baselineskip}
+  \vspace*{7.5\baselineskip}
   \begingroup \centering\zihao{4}
   \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
     \multirow{1}*{
