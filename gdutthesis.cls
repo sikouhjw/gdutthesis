@@ -1062,31 +1062,29 @@
 \setlength{\floatsep}{2\baselineskip-2\ccwd-1pt}
 \setlength{\textfloatsep}{2\baselineskip-2\ccwd-1pt}
 \setlength{\intextsep}{2\baselineskip-2\ccwd-1pt}
-\patchcmd{\@addtocurcol}%
-    {\ifnum\outputpenalty <-\@Mii \vskip -\parskip\fi}%
-    {}%
-    {\typeout{*** SUCCESS ***}}{\typeout{*** FAIL ***}}
-
-\patchcmd{\@addtocurcol}%
-    {\vskip \intextsep}%
-    {\addvspace\intextsep
-      \ifnum\outputpenalty <-\@Mii \vskip\parskip\fi}%
-    {\typeout{*** SUCCESS ***}}{\typeout{*** FAIL ***}}
-
-\patchcmd{\@addtocurcol}%
-    {\vskip\intextsep}{\fix@second@intextsep}%
-    {\typeout{*** SUCCESS ***}}%
-    {\typeout{*** FAIL ***}}
-
-\def\fix@second@intextsep {%
-% was the float seen in vertical mode?
-   \ifnum\outputpenalty <-\@Mii 
-      \aftergroup\vskip\aftergroup\intextsep
-      \aftergroup\nointerlineskip
-  \else
-      \vskip\intextsep
-  \fi
-}
+\ctex_patch_cmd:Nnn \@addtocurcol
+  {\vskip \intextsep}
+  {\edef\save@first@penalty{\the\lastpenalty}\unpenalty
+   \ifnum \lastpenalty = \@M  % hopefully the OR penalty
+     \unpenalty
+   \else
+     \penalty \save@first@penalty \relax % put it back
+   \fi
+   \ifnum\outputpenalty <-\@Mii
+     \addvspace\intextsep
+     \vskip\parskip
+   \else
+     \addvspace\intextsep
+   \fi}
+\ctex_patch_cmd:Nnn \@addtocurcol
+  {\vskip\intextsep \ifnum\outputpenalty <-\@Mii \vskip -\parskip\fi}
+  {\ifnum\outputpenalty <-\@Mii
+     \aftergroup\vskip\aftergroup\intextsep
+     \aftergroup\nointerlineskip
+   \else
+     \vskip\intextsep
+   \fi}
+\ctex_patch_cmd:Nnn \@getpen { \@M } { \@Mi }
 %% 设置浮动体格式
 \AtBeginEnvironment{figure}{%
   \def\@floatboxreset{\centering}%
