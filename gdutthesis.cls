@@ -1695,12 +1695,12 @@
   \begingroup \centering\zihao{-2}\sffamily
     \l__gdut_info_title_en_tl
   \par \endgroup
-  \vspace*{6\baselineskip}
+  \vspace*{5\baselineskip}
   \begingroup \centering\zihao{-3}\sffamily
     Candidate:~\l__gdut_info_author_en_tl\\
     Supervisor:~\l__gdut_info_supervisor_en_tl
   \par \endgroup
-  \vspace*{9\baselineskip}
+  \vspace*{8\baselineskip}
   \begingroup \centering\zihao{-4}\sffamily\linespread{1.15}\selectfont
     \exp_args:No \engdate{\l__gdut_info_date_tl}\\
     School~of~\l__gdut_info_department_en_tl\\
