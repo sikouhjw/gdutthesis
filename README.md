@@ -1,6 +1,8 @@
 # gdutthesis
 广东工业大学 LaTeX 论文模板
 
+要求发行版版本为 texlive 2021 或更高。
+
 - [support_gdutthesis@163.com](mailto:support_gdutthesis@163.com)
 - [Overleaf](https://cn.overleaf.com/latex/templates?q=gdutthesis)
 - [Releases](https://github.com/sikouhjw/gdutthesis/releases/latest)
