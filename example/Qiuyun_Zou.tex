@@ -13,6 +13,7 @@
   style = {
     cover           = {false},
     font            = {times*},
+    math-font       = {times*},
     cjk-font        = {fandol},
     cjk-font        = {windows},
     bib-backend     = {bibtex},
@@ -95,8 +96,8 @@
 
 \mainmatter
 
-\gdutchapter{绪论}{Introduction}
-\gdutsection{研究背景和意义}{Background and Significance}
+\chapter{绪论}{Introduction}
+\section{研究背景和意义}{Background and Significance}
 
 标准线性模型的形式如下
 \begin{equation}
@@ -118,7 +119,7 @@ GLM扩展了SLM的适用范围，更确切来说，SLM是GLM的特例。GLM模�
 $p( \mbfit y | \mbfit z ) = \prod_{a=1}^M p( y_a | z_a )$
 替换了 SLM 中的加性噪声项。
 
-\gdutsection{章节安排}{Chapters' arrangement}
+\section{章节安排}{Chapters' arrangement}
 
 本文主要研究贝叶斯重构算法及其应用，针对目前几个应用较为广泛的系统模型，
 总结归纳现有的几个较为前沿的算法。本文的章节安排如下
@@ -138,12 +139,12 @@ $p( \mbfit y | \mbfit z ) = \prod_{a=1}^M p( y_a | z_a )$
 \end{itemize}
 
 
-\gdutchapter{数学基础}{Fundamentals of Mathematics}
+\chapter{数学基础}{Fundamentals of Mathematics}
 
 本章给出了本文其余章节所用到的现有数学知识。这些知识点包括：常用的矩阵
 论和概率论的现有结论、贝叶斯估计原理以及因子图。
 
-\gdutsection{矩阵论与概率论}{Theory of Matrices and Probability}
+\section{矩阵论与概率论}{Theory of Matrices and Probability}
 
 \paragraph{矩阵奇异值分解。}
 
@@ -159,7 +160,7 @@ $m$ 阶正交矩阵 $\mbfit U$ 和 $n$ 阶正交矩阵 $\mbfit V$ ，使得
 $\mbf \Lambda = \Diag ( \lambda_1, \lambda_2, \cdots, \lambda_r )$，
 并且 $\lambda_1 \geqslant \lambda_2 \geqslant \cdots \geqslant \lambda_r \geqslant 0$。
 
-\gdutsubsection{概率论}{Theory of Probability}
+\subsection{概率论}{Theory of Probability}
 \begin{lemma}[标量高斯相乘引理]
   假设 $\mscr N ( x | a, A )$，$\mscr N ( x | b, B )$，则有
   \begin{equation}
@@ -170,8 +171,8 @@ $\mbf \Lambda = \Diag ( \lambda_1, \lambda_2, \cdots, \lambda_r )$，
   标量高斯相乘引理的证明分为两个部分，分别是指数部分和常数部分。
 \end{proof}
 
-\gdutsubsection{贝叶斯估计原理}{Principle of Bayesian Estimation}
-\gdutsubsection{最小均方误差估计}{Minimum Mean Square Error Estimation}
+\subsection{贝叶斯估计原理}{Principle of Bayesian Estimation}
+\subsection{最小均方误差估计}{Minimum Mean Square Error Estimation}
 
 代价函数的选择，需要从数学角度尽可能简单出发。通常考虑二次误差形、绝对误
 差、成功失败误差三种情况，如\autoref{Common_cost_function} 所示。显然，最
@@ -193,8 +194,8 @@ $\mbf \Lambda = \Diag ( \lambda_1, \lambda_2, \cdots, \lambda_r )$，
   \label{Common_cost_function}
 \end{figure}
 
-\gdutchapter{标准线性可逆问题的快速解法}{Fast Recovery of Standard Linear Inverse Problem}
-\gdutsection{应用：Massive MIMO 信号检测}{Application in Massive MIMO Signal Detection}
+\chapter{标准线性可逆问题的快速解法}{Fast Recovery of Standard Linear Inverse Problem}
+\section{应用：Massive MIMO 信号检测}{Application in Massive MIMO Signal Detection}
 
 VAMP算法，其计算量主要集中在矩阵求逆部分，假设迭代次数为 $T$，则其计算复杂度
 为 $\mscr O(TN^3)$。对比各检测器的计算复杂度，得到\autoref{Comparison_diagram_of_computational_complexity_of_detector}。

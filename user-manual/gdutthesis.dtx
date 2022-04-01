@@ -2016,17 +2016,20 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %^^A! idea to split the source file into several parts. The page
 %^^A! numbers in main matter are shown in arabic numerals.
 %^^A!
-% \begin{function}{\gdutchapter,\gdutsection,\gdutsubsection,\subsubsection,\paragraph,\subparagraph}
-%   \begin{fdusyntax}[deletetexcs={\gdutchapter,\gdutsection,\gdutsubsection,\subsubsection,\paragraph,\subparagraph},%
-%       morekeywords={\gdutchapter,\gdutsection,\gdutsubsection,\subsubsection,\paragraph,\subparagraph}]
-%     \gdutchapter(*\marg{中文标题}*)(*\marg{英文标题}*)
-%     \gdutsection(*\marg{中文标题}*)(*\marg{英文标题}*)
-%     \gdutsubsection(*\marg{中文标题}*)(*\marg{英文标题}*)
+% \begin{function}{\chapter,\section,\subsection,\subsubsection,\paragraph,\subparagraph,\gdutchapter,\gdutsection,\gdutsubsection}
+%   \begin{fdusyntax}[deletetexcs={\chapter,\section,\subsection,\gdutchapter,\gdutsection,\gdutsubsection,\subsubsection,\paragraph,\subparagraph},%
+%       morekeywords={\chapter,\section,\subsection,\gdutchapter,\gdutsection,\gdutsubsection,\subsubsection,\paragraph,\subparagraph}]
+%     \chapter(*\marg{中文标题}*)(*\marg{英文标题}*)
+%     \section(*\marg{中文标题}*)(*\marg{英文标题}*)
+%     \subsection(*\marg{中文标题}*)(*\marg{英文标题}*)
 %     \subsubsection(*\marg{中文标题}*)
 %     \paragraph(*\marg{款的引导句}*)
 %     \subparagraph(*\marg{项的引导句}*)
+%     \gdutchapter(*\marg{中文标题}*)(*\marg{英文标题}*)
+%     \gdutsection(*\marg{中文标题}*)(*\marg{英文标题}*)
+%     \gdutsubsection(*\marg{中文标题}*)(*\marg{英文标题}*)
 %   \end{fdusyntax}
-%   生成章节标题。|\gdut...| 的章节命令是为了生成中英文目录。
+%   生成章节标题。|\gdut...| 命令是过时命令，仅为兼容使用。
 % \end{function}
 %
 % \begin{function}{axiom,corollary,definition,example,lemma,proof,theorem}

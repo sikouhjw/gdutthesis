@@ -282,10 +282,15 @@
         \box_wd:N \l__ctex_tmp_box
       }
   }
-\xpatchcmd{\tableofcontents}
-  {\chapter*{\contentsname
-  \@mkboth{%
-     \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}}{\chapter{\contentsname}}
+\xpatchcmd \tableofcontents
+  {
+    \chapter*{\contentsname
+    \@mkboth{%
+      \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}
+  }
+  {
+    \gdut_chapter { \contentsname }
+  }
   {}{}
 %% 定义双语目录
 \def\en@toc@ext{tec}
@@ -307,26 +312,38 @@
 }
 
 %% provide \@enTableOfContents
-\let\@enTableOfContents\tableofcontents
+\cs_new_eq:NN \@enTableOfContents \tableofcontents
 \@ifundefined {chapter}
   { % e.g., article.cls
-    \xpatchcmd\@enTableOfContents
-      {\@starttoc{toc}}
-      {\endgroup\@starttoc{\en@toc@ext}}
-      {}{\fail}
+    \xpatchcmd \@enTableOfContents
+      {
+        \@starttoc{toc}
+      }
+      {
+        \endgroup
+        \@starttoc{\en@toc@ext}
+      }
+      { } { \fail }
   }
   { % e.g., book.cls
-    \xpatchcmd\@enTableOfContents
-      {\chapter}
+    \xpatchcmd \@enTableOfContents
+      {
+        \gdut_chapter
+      }
       {
         \begingroup
-        \chapter
+        \gdut_chapter
       }
-      {}{\fail}
-    \xpatchcmd\@enTableOfContents
-      {\@starttoc{toc}}
-      {\endgroup\@starttoc{\en@toc@ext}}
-      {}{\fail}
+      { } { \fail }
+    \xpatchcmd \@enTableOfContents
+      {
+        \@starttoc{toc}
+      }
+      {
+        \endgroup
+        \@starttoc{\en@toc@ext}
+      }
+      { } { \fail }
   }
 
 %% modify to write two toc entries
@@ -1189,14 +1206,29 @@
     \gdutmaketitle
   }
 %% 定义双语章节
-\let\mychapter=\chapter
-\let\mysection=\section
-\let\mysubsection=\subsection
-\def\gdutchapter#1#2{\enSectionTitle{#2}\mychapter{#1}}
-\def\gdutsection#1#2{\enSectionTitle{#2}\mysection{#1}}
-\def\gdutsubsection#1#2{\enSectionTitle{#2}\mysubsection{#1}}
-\def\gdutbackmatter{\ctexset{chapter/numbering=false}}
-\def\gdutbacksection#1{\section*{#1}}
+\cs_new_protected:Npn \__gdut_backup_chapter_helper:n #1
+  {
+    \cs_new_eq:cc { gdut_ #1 } { #1 }
+  }
+\clist_map_inline:nn { chapter, section, subsection    } { \__gdut_backup_chapter_helper:n {#1} }
+\cs_new_protected:Npn \__gdut_set_chapter_helper:n #1
+  {
+    \exp_args:Nc \RenewDocumentCommand { #1 } { m m }
+      {
+        \enSectionTitle { ##2 }
+        \use:c { gdut_ #1 } { ##1 }
+      }
+    \cs_new_eq:cc { gdut #1 } { #1 }
+  }
+\clist_map_inline:nn { chapter, section, subsection    } { \__gdut_set_chapter_helper:n {#1} }
+\NewDocumentCommand \gdutbackmatter { }
+  {
+    \ctexset{ chapter/numbering = false }
+  }
+\NewDocumentCommand \gdutbacksection { m }
+  {
+    \gdut_section* { #1 }
+  }
 %% 定义成果列表
 \newenvironment{results}
      {\list{\@biblabel{\@arabic\c@enumiv}}%
@@ -1235,7 +1267,7 @@
   }
   {
     \phantomsection
-    \chapter*{学位论文独创性声明}
+    \gdut_chapter*{学位论文独创性声明}
     \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
     \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
     \markboth{学位论文独创性声明及学位论文版权使用授权声明}{}
@@ -1245,7 +1277,7 @@
     \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
     \ctexset{chapter/break = {}}
     \vspace*{3\baselineskip}
-    \chapter*{学位论文版权使用授权声明}
+    \gdut_chapter*{学位论文版权使用授权声明}
     \vspace*{\baselineskip+0.9\ccwd}
     \c__gdut_auth_decl_text_tl\par
     \vspace*{\baselineskip}
@@ -1283,9 +1315,12 @@
 \NewDocumentEnvironment { abstract* } { }
   { \__gdut_abstract_en_begin: } { \__gdut_abstract_en_end: }
 \cs_new_protected:Npn \__gdut_abstract_begin:
-  { \pagestyle{fancy}\pagenumbering{Roman}\gdutchapter{摘要}{ABSTRACT(IN~CHINESE)}     }
+  { 
+    \pagestyle      { fancy }
+    \pagenumbering  { Roman }
+    \chapter { 摘要 } { ABSTRACT ( IN~CHINESE ) } }
 \cs_new_protected:Npn \__gdut_abstract_en_begin:
-  { \gdutchapter{ABSTRACT}{ABSTRACT(IN~ENGLISH)} }
+  { \chapter { ABSTRACT } { ABSTRACT ( IN~ENGLISH ) } }
 \cs_new_protected:Npn \__gdut_abstract_end:
   {
     \__gdut_keywords:nNn
@@ -1317,7 +1352,7 @@
   }
 \cs_new_protected:Npn \__gdut_notation_begin:
   {
-    \gdutchapter{物理量名称及符号表}{Table~of~physical~quantity~names~and~symbols}
+    \chapter{物理量名称及符号表}{Table~of~physical~quantity~names~and~symbols}
   }
 \cs_new_protected:Npn \__gdut_notation_long_table_setup:
   {
@@ -1397,7 +1432,7 @@
           }
       }
       { \exp_args:NV \bibliographystyle \l__gdut_bib_style_tl }
-    \cs_set:Npn \bibsection { \gdutchapter{参考文献}{References} }
+    \cs_set:Npn \bibsection { \chapter{参考文献}{References} }
     \NewDocumentCommand \printbibliography { o }
       {
         \exp_args:NV \bibliography \l__gdut_bib_resource_clist
@@ -1428,7 +1463,7 @@
   {
     \clist_map_function:NN \l__gdut_bib_resource_clist \addbibresource
     \__gdut_biblatex_allow_url_break:
-    \defbibheading { bibliography } [ 参考文献 ] { \gdutchapter{##1}{References}  }
+    \defbibheading { bibliography } [ 参考文献 ] { \chapter{##1}{References}  }
     \setlength { \bibitemsep } { 0pt }
   }
 \cs_new_protected:Npn \__gdut_pass_options_to_biblatex:n #1
@@ -1545,14 +1580,15 @@
         \cs_set_eq:NN \qquad    \c_space_tl
       }
   }
-\cs_new:Npn \gduttableofcontents {
-  \enSectionTitle{CONTENTS(IN~CHINESE)}
-  \renewcommand\cftchapaftersnumb{\hspace{6.5pt}}
-  \tableofcontents
-  \renewcommand\cftchapaftersnumb{\hspace{0pt}}
-  \enSectionTitle{CONTENTS(IN~ENGLISH)}
-  \enTableOfContents
-}
+\cs_new:Npn \gduttableofcontents
+  {
+    \renewcommand \cftchapaftersnumb { \hspace{6.5pt} }
+    \enSectionTitle { CONTENTS ( IN~CHINESE ) }
+    \tableofcontents
+    \renewcommand \cftchapaftersnumb { \hspace{0pt}   }
+    \enSectionTitle { CONTENTS ( IN~ENGLISH ) }
+    \enTableOfContents
+  }
 \ctex_at_end_preamble:n
 {
   \bool_if:NTF \l__gdut_bibtex_bool
