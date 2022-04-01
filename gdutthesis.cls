@@ -862,6 +862,11 @@
       \vskip-\headrulewidth\vskip-\myheadrulewidth
       }}%
 \renewcommand{\footrulewidth}{0pt}
+\xpatchcmd
+  { \chaptermark   }
+  { \MakeUppercase }
+  { \relax }
+  { } { }
 \pagestyle { fancy }
 %% 设置章节格式
 \keys_set:nn { ctex }
