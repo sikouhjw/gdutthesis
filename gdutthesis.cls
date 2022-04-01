@@ -407,12 +407,19 @@
       { \bool_set_false:N \l__gdut_open_bool  },
   }
 \tl_new:N \g__gdut_fontset_tl
+\tl_new:N \g__gdut_math_fontset_tl
 \tl_new:N \g__gdut_cjk_fontset_tl
 \keys_define:nn { gdut / style }
   {
     font .choices:nn =
       { garamond, libertinus, lm, palatino, times, times*, none }
       { \tl_set_eq:NN \g__gdut_fontset_tl \l_keys_choice_tl }
+  }
+\keys_define:nn { gdut / style }
+  {
+    math-font .choices:nn =
+      { garamond, libertinus, lm, palatino, times, times*, none }
+      { \tl_set_eq:NN \g__gdut_math_fontset_tl \l_keys_choice_tl }
   }
 \keys_define:nn { gdut / style }
   {
@@ -560,7 +567,6 @@
         ItalicFont     = *-oblique,
         BoldItalicFont = *-boldoblique
       }
-    \__gdut_setmathfont:nn { Garamond-Math.otf } { }
   }
 \cs_new_protected:Npn \__gdut_load_font_libertinus:
   {
@@ -588,10 +594,9 @@
         ItalicFont     = *-oblique,
         BoldItalicFont = *-boldoblique
       }
-    \__gdut_setmathfont:nn { \g__gdut_font_name_libertinus_math_tl .otf } { }
   }
 \cs_new_protected:Npn \__gdut_load_font_lm:
-  { \__gdut_setmathfont:nn { latinmodern-math.otf } { } }
+  {  }
 \cs_new_protected:Npn \__gdut_load_font_palatino:
   {
     \__gdut_setmainfont:nn { texgyrepagella }
@@ -619,7 +624,6 @@
         ItalicFont     = *-oblique,
         BoldItalicFont = *-boldoblique
       }
-    \__gdut_setmathfont:nn { texgyrepagella-math.otf } { }
   }
 \cs_new_protected:Npn \__gdut_load_font_times:
   {
@@ -648,14 +652,34 @@
         BoldItalicFont = *-bolditalic,
         Ligatures      = CommonOff
       }
-    \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
-      { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf }
   }
 \cs_new_protected:cpn { __gdut_load_font_ times* : }
   {
     \__gdut_setmainfont:nn { Times~ New~ Roman    } { }
     \__gdut_setsansfont:nn { Arial                } { }
     \__gdut_setmonofont:nn { Courier~ New         } { }
+  }
+\cs_new_protected:Npn \__gdut_load_math_font_garamond:
+  {
+    \__gdut_setmathfont:nn { Garamond-Math.otf } { }
+  }
+\cs_new_protected:Npn \__gdut_load_math_font_libertinus:
+  {
+    \__gdut_setmathfont:nn { \g__gdut_font_name_libertinus_math_tl .otf } { }
+  }
+\cs_new_protected:Npn \__gdut_load_math_font_lm:
+  { \__gdut_setmathfont:nn { latinmodern-math.otf } { } }
+\cs_new_protected:Npn \__gdut_load_math_font_palatino:
+  {
+    \__gdut_setmathfont:nn { texgyrepagella-math.otf } { }
+  }
+\cs_new_protected:Npn \__gdut_load_math_font_times:
+  {
+    \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
+      { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf }
+  }
+\cs_new_protected:cpn { __gdut_load_math_font_ times* : }
+  {
     \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
       { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf }
   }
@@ -800,8 +824,9 @@
   }
 \cs_new_protected:Npn \__gdut_load_font:
   {
-    \use:c { __gdut_load_font_     \g__gdut_fontset_tl     : }
-    \use:c { __gdut_load_cjk_font_ \g__gdut_cjk_fontset_tl : }
+    \use:c { __gdut_load_font_      \g__gdut_fontset_tl       : }
+    \use:c { __gdut_load_math_font_ \g__gdut_math_fontset_tl  : }
+    \use:c { __gdut_load_cjk_font_  \g__gdut_cjk_fontset_tl   : }
   }
 \ctex_at_end_preamble:n { \__gdut_load_font: }
 \keys_set:nn { unicode-math }
@@ -1569,6 +1594,7 @@
     style   / cover           = false,
     style   / open            = false,
     style   / font            = times,
+    style   / math-font       = times,
     style   / cjk-font        = fandol,
     style   / fullwidth-stop  = false,
     style   / hyperlink-color = default,

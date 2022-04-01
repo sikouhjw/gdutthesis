@@ -1039,12 +1039,13 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %   设置是否不分奇偶页输出新的一章，|true| 为任意页可输出新的一章，|false| 为奇数页输出新的一章。
 % \end{function}
 %
-% \begin{function}{style/font}
-%   \begin{fdusyntax}[emph={[1]font}]
-%     font = (*<garamond|libertinus|lm|palatino|(times)|times*|none>*)
+% \begin{function}{style/font,style/math-font}
+%   \begin{fdusyntax}[emph={[1]font,math-font}]
+%     font      = (*<garamond|libertinus|lm|palatino|(times)|times*|none>*)
+%     math-font = (*<garamond|libertinus|lm|palatino|(times)|times*|none>*)
 %   \end{fdusyntax}
 %^^A-
-%   设置西文字体（包括数学字体）。具体配置见表~\ref{tab:font}。
+%   设置西文、数学字体。具体配置见表~\ref{tab:font}。建议使用配套的字体。
 % \end{function}
 %^^A!   Set fonts (including math fonts). The details can be found in table~\ref{tab:font}.
 %^^A! \end{function}
@@ -1052,7 +1053,7 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %
 % \begin{table}[ht]
 % \begin{threeparttable}
-%   \caption{西文字体配置}
+%   \caption{西文、数学字体配置}
 %   \label{tab:font}
 %   \centering
 %   \begin{tabular}{ccccc}
