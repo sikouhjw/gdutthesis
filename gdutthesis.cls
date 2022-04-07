@@ -405,6 +405,7 @@
   headsep     = 0.415cm,
   footskip    = 0.85cm,
 }
+\raggedbottom
 \bool_if:NT \g__gdut_draft_bool { \geometry { showframe } }
 \bool_new:N \l__gdut_cover_bool
 \bool_new:N \l__gdut_open_bool
@@ -1092,7 +1093,7 @@
 
 %% 设置图表格式
 \DeclareCaptionLabelFormat{english}{#1#2}
-\captionsetup{labelsep=space,labelformat=english,font=small}
+\captionsetup{labelsep=space,labelformat=english,font=small,justification=centering}
 \captionsetup[figure][bi-second]{name=Fig.}
 \captionsetup[table][bi-second]{name=Table.}
 \captionsetup[subfloat]{labelformat=simple,font=small,captionskip=4pt,nearskip=-5pt,farskip=0pt}
@@ -1293,32 +1294,46 @@
     }
   }
 }
-\cs_new:Npn \gdutappendix {
-  \ctexset{chapter/numbering=true}
-  \appendix
-  \makeatletter
-  \ExplSyntaxOn
-  \xpatchcmd{\CTEX@addtocline}
+\cs_new:Npn \gdutappendix
   {
-    chapter/name   = {Chapter\ },
-    chapter/number = \arabic{chapter},
-  }{
-    chapter/name   = {Appendix\ },
-    chapter/number = \Alph{chapter},
+    \ctexset{chapter/numbering=true}
+    \appendix
+    \makeatletter
+    \ExplSyntaxOn
+    \xpatchcmd { \CTEX@addtocline }
+    {
+      chapter/name   = { Chapter\  },
+      chapter/number = \arabic{ chapter },
+    }
+    {
+      chapter/name   = { Appendix\  },
+      chapter/number = \Alph{ chapter },
+    }
+    { } { \fail }
+    \ExplSyntaxOff
+    \makeatother
   }
-  {}{}
-  \ExplSyntaxOff
-  \makeatother
-}
 \NewDocumentEnvironment { abstract  } { }
-  { \pagestyle{fancy}\__gdut_abstract_begin:    } { \__gdut_abstract_end:      }
+  {
+    \pagestyle{fancy}
+    \__gdut_abstract_begin:
+  }
+  {
+    \__gdut_abstract_end:
+  }
 \NewDocumentEnvironment { abstract* } { }
-  { \__gdut_abstract_en_begin: } { \__gdut_abstract_en_end: }
+  {
+    \__gdut_abstract_en_begin:
+  }
+  {
+    \__gdut_abstract_en_end:
+  }
 \cs_new_protected:Npn \__gdut_abstract_begin:
   { 
     \pagestyle      { fancy }
     \pagenumbering  { Roman }
-    \chapter { 摘要 } { ABSTRACT ( IN~CHINESE ) } }
+    \chapter { 摘要 } { ABSTRACT ( IN~CHINESE ) }
+  }
 \cs_new_protected:Npn \__gdut_abstract_en_begin:
   { \chapter { ABSTRACT } { ABSTRACT ( IN~ENGLISH ) } }
 \cs_new_protected:Npn \__gdut_abstract_end:
