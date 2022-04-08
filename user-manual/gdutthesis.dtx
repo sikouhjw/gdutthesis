@@ -2044,21 +2044,26 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 % \begin{table}[ht]
 %   \caption{预定义的数学环境} \label{tab:theorem}
 %   \centering
-%   \begin{tabular}{cccccccc}
+%   \begin{tabular}{cccccc}
 %     \toprule
 %     \textbf{名称} &
-%       \env{axiom}   & \env{corollary} & \env{definition} &
-%       \env{example} & \env{lemma}     & \env{proof}      &
-%       \env{theorem} \\
-%     \midrule
+%       \env{assertion} & \env{assumption}  & \env{axiom}   & \env{corollary}   & \env{definition}  \\
 %     \textbf{含义} &
-%       公理 & 推论 & 定义 & 例 & 引理 & 证明 & 定理 \\
+%       断言 & 假设 & 公理 & 推论 & 定义  \\
+%     \midrule
+%     \textbf{名称} &
+%       \env{example}   & \env{lemma}       & \env{proof}   & \env{proposition} & \env{remark}      \\
+%     \textbf{含义} &
+%       例   & 引理 & 证明 & 命题 & 注    \\
+%     \midrule
+%     \textbf{名称} & \env{theorem}       \\
+%     \textbf{含义} & 定理                \\
 %     \bottomrule
 %   \end{tabular}
 % \end{table}
 %
-% 证明环境（\env{proof}）的最后会添加证毕符号。要确保
-% 该符号在正确的位置显示，|\end{proof}| 前不能有空行。
+% 证明环境（\env{proof}）、注环境（\env{remark}）的最后会添加证毕符号。要确保
+% 该符号在正确的位置显示，|\end{proof}|、|\end{remark}| 前不能有空行。
 %
 % 数学环境是以 \pkg{amsthm} 为后端、\pkg{thmtools} 为前端定制的，
 % 如果预定义的数学环境和选项不能满足您的需求，请自行阅读

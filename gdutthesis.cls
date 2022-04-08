@@ -1082,13 +1082,17 @@
     ]{gdut-number}
     \cs_undefine:N \proof
     \cs_undefine:N \endproof
+    \newtheorem { assertion   } {  断言 }
+    \newtheorem { assumption  } {  假设 }
     \newtheorem { axiom       } {  公理 }
     \newtheorem { corollary   } {  推论 }
     \newtheorem { definition  } {  定义 }
     \newtheorem { example     } {  例   }
     \newtheorem { lemma       } {  引理 }
-    \newtheorem { theorem     } {  定理 }
     \newtheorem*{ proof       } {  证明 }
+    \newtheorem { proposition } {  命题 }
+    \newtheorem*{ remark      } {  注   }
+    \newtheorem { theorem     } {  定理 }
   }
 
 %% 设置图表格式
