@@ -1682,14 +1682,22 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %^^A! \end{function}
 %^^A!
 %
-% \begin{function}{info/supervisor,info/supervisor*,info/supervisor-two,info/supervisor-two*}
-%   \begin{fdusyntax}[emph={[1]supervisor,supervisor*,supervisor-two,supervisor-two*}]
-%     supervisor      = (*\marg{第一导师姓名及职称}*)
-%     supervisor*     = (*\marg{第一导师英文姓名（或拼音）及职称}*) 
-%     supervisor-two  = (*\marg{第二导师姓名及职称}*)
-%     supervisor-two* = (*\marg{第二导师英文姓名（或拼音）及职称}*) 
+% \begin{function}{info/supervisor,info/supervisor*,info/supervisor-two,info/supervisor-two*,info/supervisor-three,info/supervisor-three*}
+%   \begin{fdusyntax}[emph={[1]supervisor,supervisor*,supervisor-two,supervisor-two*,supervisor-three,supervisor-three*}]
+%     supervisor        = (*\{\meta{第一导师姓名}, \meta{第一导师职称}\}*)
+%     supervisor*       = (*\marg{第一导师英文姓名（或拼音）及职称}*)
+%     supervisor-two    = (*\{\meta{第二导师姓名}, \meta{第一导师职称}\}*)
+%     supervisor-two*   = (*\marg{第二导师英文姓名（或拼音）及职称}*)
+%     supervisor-three  = (*\{\meta{第三导师姓名}, \meta{第一导师职称}\}*)
+%     supervisor-three* = (*\marg{第三导师英文姓名（或拼音）及职称}*)
 %   \end{fdusyntax}
-%   导师姓名及职称。若研究生配备了双导师，请按照“第一导师、第二导师”的顺序将导师姓名（职称）列明。如果您没有第二导师且不愿生成扉页中第二导师的下划线，您可以在 |supervisor-two| 处输入 |none|。
+%   导师姓名及职称。
+%
+%   若研究生配备了双导师，请按照“第一导师、第二导师”的顺序将导师姓名（职称）列明。如果您没有第二导师且不愿生成扉页中第二导师的下划线，您可以在 |supervisor-two| 处输入 |none|。
+%
+%   若研究生配备了三导师（第三导师为企业导师），请按照“第一导师、第二导师、第三导师”的顺序将导师姓名（职称）列明。
+%   封面将会输出第一导师、第二导师；扉页会将第一导师、第二导师一起输出，第三导师作为企业导师单独输出。
+%   如果您不需要第三导师，请在 |supervisor-three| 处输入 |none|。
 % \end{function}
 %^^A! \begin{function}{info/supervisor}
 %^^A!   \begin{fdusyntax}[emph={[1]supervisor}]

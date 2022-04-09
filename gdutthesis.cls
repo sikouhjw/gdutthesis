@@ -102,21 +102,6 @@
     \clist_item:Nn \c__gdut_thesis_type_en_clist
       { \g__gdut_thesis_type_int }
   }
-% \cs_new_protected:Npn \__gdut_course_name:
-%   {
-%     \clist_item:Nn \c__gdut_course_name_clist
-%       { \g__gdut_thesis_type_int }
-%   }
-% \cs_new_protected:Npn \__gdut_degree_type:
-%   {
-%     \clist_item:Nn \c__gdut_degree_type_clist
-%       { \l__gdut_info_degree_type_int }
-%   }
-% \cs_new_protected:Npn \__gdut_degree_en_type:
-%   {
-%     \clist_item:Nn \c__gdut_degree_type_en_clist
-%       { \l__gdut_info_degree_type_int }
-%   }
 %% 模板需要自定义的命令
 % 西文日期
 \DeclareExpandableDocumentCommand \engdate { +m } {
@@ -1149,33 +1134,68 @@
   {
     title, date, author, degree, supervisor, supervisor_two, department, major, student_id, chairman,
   }
-  { \tl_new:c { l__gdut_info_ #1 _tl } }
+  {
+    \tl_new:c { l__gdut_info_ #1 _tl }
+  }
 \clist_new:N \l__gdut_info_keywords_clist
 \clist_map_inline:nn
+  {
+    supervisor, supervisor_two, supervisor-three
+  }
+  {
+    \tl_new:c { l__gdut_info_ #1 _name_tl }
+  }
+\clist_map_inline:nn
+  {
+    supervisor, supervisor_two, supervisor-three
+  }
+  {
+    \tl_new:c { l__gdut_info_ #1 _jobtitle_tl }
+  }
+\clist_map_inline:nn
   { title, author, degree, supervisor, supervisor_two, department }
-  { \tl_new:c { l__gdut_info_ #1 _en_tl } }
+  {
+    \tl_new:c { l__gdut_info_ #1 _en_tl }
+  }
 \clist_new:N \l__gdut_info_keywords_en_clist
-% \int_new:N \l__gdut_info_degree_type_int
 \keys_define:nn { gdut / info }
   {
-    title           .tl_set:N    = \l__gdut_info_title_tl,
-    title*          .tl_set:N    = \l__gdut_info_title_en_tl,
-    date            .tl_set:N    = \l__gdut_info_date_tl,
-    author          .tl_set:N    = \l__gdut_info_author_tl,
-    author*         .tl_set:N    = \l__gdut_info_author_en_tl,
-    degree          .tl_set:N    = \l__gdut_info_degree_tl,
-    degree*         .tl_set:N    = \l__gdut_info_degree_en_tl,
-    supervisor      .tl_set:N    = \l__gdut_info_supervisor_tl,
-    supervisor*     .tl_set:N    = \l__gdut_info_supervisor_en_tl,
-    supervisor-two  .tl_set:N    = \l__gdut_info_supervisor_two_tl,
-    supervisor-two* .tl_set:N    = \l__gdut_info_supervisor_two_en_tl,
-    department      .tl_set:N    = \l__gdut_info_department_tl,
-    department*     .tl_set:N    = \l__gdut_info_department_en_tl,
-    major           .tl_set:N    = \l__gdut_info_major_tl,
-    student-id      .tl_set:N    = \l__gdut_info_student_id_tl,
-    keywords        .clist_set:N = \l__gdut_info_keywords_clist,
-    keywords*       .clist_set:N = \l__gdut_info_keywords_en_clist,
-    chairman        .clist_set:N = \l__gdut_info_chairman_clist,
+    title             .tl_set:N    = \l__gdut_info_title_tl,
+    title*            .tl_set:N    = \l__gdut_info_title_en_tl,
+    date              .tl_set:N    = \l__gdut_info_date_tl,
+    author            .tl_set:N    = \l__gdut_info_author_tl,
+    author*           .tl_set:N    = \l__gdut_info_author_en_tl,
+    degree            .tl_set:N    = \l__gdut_info_degree_tl,
+    degree*           .tl_set:N    = \l__gdut_info_degree_en_tl,
+    supervisor        .clist_set:N = \l__gdut_info_supervisor_tl,
+    supervisor*       .tl_set:N    = \l__gdut_info_supervisor_en_tl,
+    supervisor-two    .clist_set:N = \l__gdut_info_supervisor_two_tl,
+    supervisor-two*   .tl_set:N    = \l__gdut_info_supervisor_two_en_tl,
+    supervisor-three  .clist_set:N = \l__gdut_info_supervisor_three_tl,
+    supervisor-three* .tl_set:N    = \l__gdut_info_supervisor_three_en_tl,
+    department        .tl_set:N    = \l__gdut_info_department_tl,
+    department*       .tl_set:N    = \l__gdut_info_department_en_tl,
+    major             .tl_set:N    = \l__gdut_info_major_tl,
+    student-id        .tl_set:N    = \l__gdut_info_student_id_tl,
+    keywords          .clist_set:N = \l__gdut_info_keywords_clist,
+    keywords*         .clist_set:N = \l__gdut_info_keywords_en_clist,
+    chairman          .tl_set:N    = \l__gdut_info_chairman_clist,
+  }
+\clist_map_inline:nn
+  {
+    supervisor, supervisor_two, supervisor_three
+  }
+  {
+    \tl_set:cn { l__gdut_info_ #1 _name_tl }
+      {
+        \clist_item:cn { l__gdut_info_ #1 _tl }
+          { 1 }
+      }
+    \tl_set:cn { l__gdut_info_ #1 _jobname_tl }
+      {
+        \clist_item:cn { l__gdut_info_ #1 _tl }
+          { 2 }
+      }
   }
 \bool_new:N \l__gdut_secret_bool
 \tl_new:N \l__gdut_info_secret_level_tl
@@ -1646,156 +1666,200 @@
   }
 \keys_set:nn { gdut }
   {
-    style   / cover           = false,
-    style   / open            = false,
-    style   / font            = times,
-    style   / math-font       = times,
-    style   / cjk-font        = fandol,
-    style   / fullwidth-stop  = false,
-    style   / hyperlink-color = default,
-    style   / bib-style       = numerical,
-    info    / secret-level    = none,
-    info    / date            = { 2021/5/1 },
-    theorem / header-font     = bf,
-    theorem / body-font       = rm,
-    theorem / indent          = en,
-    theorem / interval        = dot,
-    theorem / punct           = colon,
-    theorem / braces          = paren,
-    theorem / qed             = \qedsymbol,
+    style   / cover             = false,
+    style   / open              = false,
+    style   / font              = times,
+    style   / math-font         = times,
+    style   / cjk-font          = fandol,
+    style   / fullwidth-stop    = false,
+    style   / hyperlink-color   = default,
+    style   / bib-style         = numerical,
+    info    / supervisor-three  = none,
+    info    / secret-level      = none,
+    info    / date              = { 2021/5/1 },
+    theorem / header-font       = bf,
+    theorem / body-font         = rm,
+    theorem / indent            = en,
+    theorem / interval          = dot,
+    theorem / punct             = colon,
+    theorem / braces            = paren,
+    theorem / qed               = \qedsymbol,
   }
 \NewDocumentCommand \gdutsetup { m }
   { \keys_set:nn { gdut } {#1} }
 
-\cs_new:Npn \gdutcover {
-  \setlength{\paperwidth}{420mm}
-  \setlength{\pdfpagewidth}{420mm}
-  \setlength{\paperheight}{297mm}
-  \setlength{\pdfpageheight}{297mm}
-  \newgeometry{margin=0pt}
-    \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
-      \mbox{}%
-    \end{minipage}%
-    \parbox[c]{0.44cm}{%
-      \centering\zihao{5}\linespread{1.0807}\selectfont%
-      \mbox{}\vfill%
-      \l__gdut_info_title_tl\par%
-      \vspace{5cm}%
-      \l__gdut_info_author_tl\par%
-      \vspace{5cm}%
-      \exp_args:No \coverdate{\l__gdut_info_date_tl}\par%
-      \mbox{}\vfill%
-    }%
-    \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
-      \centering
-      \vspace*{2cm}
-      \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl \par \endgroup
-      \vspace*{3cm}
-      \begingroup \centering\zihao{4}\bfseries
-      \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
-        \multirow{4}*{
-          \begin{CJKfilltwosides*}{0pt}
-            作者姓名：\\
-            导师姓名：\\
-            学科（专业）或领域名称：\\
-            论文答辩年月：
-          \end{CJKfilltwosides*}
-        } & \l__gdut_info_author_tl \\
-        \cline{2-2}
-        & \l__gdut_info_supervisor_tl \\
-        \cline{2-2}
-        & \l__gdut_info_major_tl \\
-        \cline{2-2}
-        & \exp_args:No \coverdate{\l__gdut_info_date_tl} \\
-        \cline{2-2}
-      \end{tabular}
-      \par \endgroup
-    \end{minipage}%
-  \restoregeometry
-  \setlength{\paperwidth}{210mm}
-  \setlength{\pdfpagewidth}{210mm}
-  \setlength{\paperheight}{297mm}
-  \setlength{\pdfpageheight}{297mm}
-  \newpage
-}
-\cs_new:Npn \gdutmaketitle {
-  \__gdut_background_type:
-  \frontmatter\pagestyle{empty}\pagenumbering{Alph}
-  \bool_if:NTF \l__gdut_cover_bool
+\cs_new:Npn \gdut_name_jobname_spacer: #1
   {
-    \gdutcover
-    \linespread{\ZhLS@bodylinespread}\selectfont
+    \quad #1
   }
-  { }
-  \vspace*{0.4\baselineskip-1.5pt}
-  \begingroup \centering
-    \begin{tabular}{>{\zihao{4}}r@{\hspace*{8\ccwd}}>{\zihao{4}\raggedright\arraybackslash}p{6\ccwd}@{\hspace*{6\ccwd}}>{\zihao{4}}p{12\ccwd}}
-      分类号： &        & 学校代号：11845 \\[5pt]
-      UDC：    & 密级：\bool_if:NT \l__gdut_secret_bool {\l__gdut_info_secret_level_tl} & 学\hspace*{2\ccwd}号：\l__gdut_info_student_id_tl
-    \end{tabular}
-  \par \endgroup
-  \vspace*{1.5\baselineskip+4pt}
-  \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
-  \begingroup \centering\zihao{4} （ \l__gdut_info_degree_tl ） \par \endgroup
-  \vspace*{0.8\baselineskip+0.75pt}
-  \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
-  \vspace*{\baselineskip+5.75pt}
-  \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
-  \vspace*{7.5\baselineskip}
-  \begingroup \centering\zihao{4}
-  \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
-    \multirow{1}*{
-      \begin{CJKfilltwosides*}{11.3\ccwd}
-        导师姓名（职称）：
-      \end{CJKfilltwosides*}
-    } & \l__gdut_info_supervisor_tl \\
-    \cline{2-2}
-    \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
-    {}
-    {& \l__gdut_info_supervisor_two_tl \\
-    \cline{2-2}}
-    \multirow{4}*{
-      \begin{CJKfilltwosides*}{0pt}
-        学科（专业）或领域名称：\\
-        学生所属学院：\\
-        答辩委员会主席：\\
-        论文答辩日期：
-      \end{CJKfilltwosides*}
+\cs_new:Npn \gdutcover
+  {
+    \setlength{\paperwidth}{420mm}
+    \setlength{\pdfpagewidth}{420mm}
+    \setlength{\paperheight}{297mm}
+    \setlength{\pdfpageheight}{297mm}
+    \newgeometry{margin=0pt}
+      \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
+        \mbox{}%
+      \end{minipage}%
+      \parbox[c]{0.44cm}{%
+        \centering\zihao{5}\linespread{1.0807}\selectfont%
+        \mbox{}\vfill%
+        \l__gdut_info_title_tl\par%
+        \vspace{5cm}%
+        \l__gdut_info_author_tl\par%
+        \vspace{5cm}%
+        \exp_args:No \coverdate{\l__gdut_info_date_tl}\par%
+        \mbox{}\vfill%
+      }%
+      \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
+        \centering
+        \vspace*{2cm}
+        \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl \par \endgroup
+        \vspace*{3cm}
+        \begingroup \centering\zihao{4}\bfseries
+        \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
+          \multirow{4}*{
+            \begin{CJKfilltwosides*}{0pt}
+              作者姓名：\\
+              导师姓名：\\
+              学科（专业）或领域名称：\\
+              论文答辩年月：
+            \end{CJKfilltwosides*}
+          } & \l__gdut_info_author_tl \\
+          \cline{2-2}
+          & \l__gdut_info_supervisor_name_tl
+          \str_if_eq:NNTF \l__gdut_info_supervisor_three_tl {none}
+          { \\ }
+          {
+            \quad \l__gdut_info_supervisor_two_name_tl \\
+          }
+          \cline{2-2}
+          & \l__gdut_info_major_tl \\
+          \cline{2-2}
+          & \exp_args:No \coverdate{\l__gdut_info_date_tl} \\
+          \cline{2-2}
+        \end{tabular}
+        \par \endgroup
+      \end{minipage}%
+    \restoregeometry
+    \setlength{\paperwidth}{210mm}
+    \setlength{\pdfpagewidth}{210mm}
+    \setlength{\paperheight}{297mm}
+    \setlength{\pdfpageheight}{297mm}
+    \newpage
+  }
+\cs_new:Npn \gdutmaketitle
+  {
+    \__gdut_background_type:
+    \frontmatter
+    \pagestyle{empty}
+    \pagenumbering{Alph}
+    \bool_if:NTF \l__gdut_cover_bool
+    {
+      \gdutcover
+      \linespread{\ZhLS@bodylinespread}\selectfont
     }
-    & \l__gdut_info_major_tl \\
-    \cline{2-2}
-    & \l__gdut_info_department_tl \\
-    \cline{2-2}
-    & \l__gdut_info_chairman_clist \\
-    \cline{2-2}
-    & \exp_args:No \zhdate{\l__gdut_info_date_tl} \\
-    \cline{2-2}
-  \end{tabular}
-  \par \endgroup
-  \newpage
-  \begingroup \centering\zihao{4}
-    A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~\__gdut_thesis_en_type:
-  \par \endgroup
-  \begingroup \centering\zihao{-4} (\l__gdut_info_degree_en_tl) \par \endgroup
-  \vspace*{2\baselineskip}
-  \begingroup \centering\zihao{-2}\sffamily
-    \l__gdut_info_title_en_tl
-  \par \endgroup
-  \vspace*{5\baselineskip}
-  \begingroup \centering\zihao{-3}\sffamily
-    Candidate:~\l__gdut_info_author_en_tl\\
-    Supervisor:~\l__gdut_info_supervisor_en_tl
-  \par \endgroup
-  \vspace*{8\baselineskip}
-  \begingroup \centering\zihao{-4}\sffamily\linespread{1.15}\selectfont
-    \exp_args:No \engdate{\l__gdut_info_date_tl}\\
-    School~of~\l__gdut_info_department_en_tl\\
-    Guangdong~University~of~Technology\\
-    Guangzhou,~Guangdong,~P.~R.~China,~510006
-  \par \endgroup
-  \if@openright \cleardoublepage \else \clearpage \fi
-  \pagestyle{fancy}
-}
+    { }
+    \vspace*{0.4\baselineskip-1.5pt}
+    \begingroup \centering
+      \begin{tabular}{>{\zihao{4}}r@{\hspace*{8\ccwd}}>{\zihao{4}\raggedright\arraybackslash}p{6\ccwd}@{\hspace*{6\ccwd}}>{\zihao{4}}p{12\ccwd}}
+        分类号： &        & 学校代号：11845 \\[5pt]
+        UDC：    & 密级：\bool_if:NT \l__gdut_secret_bool {\l__gdut_info_secret_level_tl} & 学\hspace*{2\ccwd}号：\l__gdut_info_student_id_tl
+      \end{tabular}
+    \par \endgroup
+    \vspace*{1.5\baselineskip+4pt}
+    \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
+    \begingroup \centering\zihao{4} （ \l__gdut_info_degree_tl ） \par \endgroup
+    \vspace*{0.8\baselineskip+0.75pt}
+    \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
+    \vspace*{\baselineskip+5.75pt}
+    \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
+    \vspace*{7.5\baselineskip}
+    \begingroup \centering\zihao{4}
+    \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
+      \str_if_eq:NNTF \l__gdut_info_supervisor_three_tl {none}
+      {
+        \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
+        {
+          \multirow{5}*
+        }
+        {
+          \multirow{6}*
+        }
+          {
+            \begin{CJKfilltwosides*}{0pt}
+              导师姓名（职称）：\\
+              \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
+              { }
+              {
+                \\
+              }
+              学科（专业）或领域名称：\\
+              学生所属学院：\\
+              答辩委员会主席：\\
+              论文答辩日期：
+            \end{CJKfilltwosides*}
+          }
+        & \l__gdut_info_supervisor_name_tl \gdut_name_jobname_spacer: \l__gdut_info_supervisor_jobname_tl \\
+        \cline{2-2}
+        \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
+        { }
+        {
+          & \l__gdut_info_supervisor_two_name_tl \gdut_name_jobname_spacer: \l__gdut_info_supervisor_two_jobname_tl \\ \cline{2-2}
+        }
+      }
+      {
+        \multirow{6}*{
+          \begin{CJKfilltwosides*}{0pt}
+            导师姓名（职称）：\\
+            企业导师姓名（职称）：\\
+            学科（专业）或领域名称：\\
+            学生所属学院：\\
+            答辩委员会主席：\\
+            论文答辩日期：
+          \end{CJKfilltwosides*}
+        }
+        & \l__gdut_info_supervisor_name_tl        \gdut_name_jobname_spacer: \l__gdut_info_supervisor_jobname_tl        \qquad
+          \l__gdut_info_supervisor_two_name_tl    \gdut_name_jobname_spacer: \l__gdut_info_supervisor_two_jobname_tl    \\
+        \cline{2-2}
+        & \l__gdut_info_supervisor_three_name_tl  \gdut_name_jobname_spacer: \l__gdut_info_supervisor_three_jobname_tl  \\
+        \cline{2-2}
+      }
+      & \l__gdut_info_major_tl \\
+      \cline{2-2}
+      & \l__gdut_info_department_tl \\
+      \cline{2-2}
+      & \l__gdut_info_chairman_clist \\
+      \cline{2-2}
+      & \exp_args:No \zhdate{\l__gdut_info_date_tl} \\
+      \cline{2-2}
+    \end{tabular}
+    \par \endgroup
+    \newpage
+    \begingroup \centering\zihao{4}
+      A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~\__gdut_thesis_en_type:
+    \par \endgroup
+    \begingroup \centering\zihao{-4} (\l__gdut_info_degree_en_tl) \par \endgroup
+    \vspace*{2\baselineskip}
+    \begingroup \centering\zihao{-2}\sffamily
+      \l__gdut_info_title_en_tl
+    \par \endgroup
+    \vspace*{5\baselineskip}
+    \begingroup \centering\zihao{-3}\sffamily
+      Candidate:~\l__gdut_info_author_en_tl\\
+      Supervisor:~\l__gdut_info_supervisor_en_tl
+    \par \endgroup
+    \vspace*{8\baselineskip}
+    \begingroup \centering\zihao{-4}\sffamily\linespread{1.15}\selectfont
+      \exp_args:No \engdate{\l__gdut_info_date_tl}\\
+      School~of~\l__gdut_info_department_en_tl\\
+      Guangdong~University~of~Technology\\
+      Guangzhou,~Guangdong,~P.~R.~China,~510006
+    \par \endgroup
+    \if@openright \cleardoublepage \else \clearpage \fi
+    \pagestyle{fancy}
+  }
 % 设置封面背景
 \clist_const:Nn \c__gdut_background_clist
   {
