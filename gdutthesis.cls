@@ -1718,7 +1718,7 @@
         \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl \par \endgroup
         \vspace*{3cm}
         \begingroup \centering\zihao{4}\bfseries
-        \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
+        \begin{tabular}{c>{\centering\arraybackslash}p{16\ccwd}}
           \multirow{4}*{
             \begin{CJKfilltwosides*}{0pt}
               作者姓名：\\
@@ -1777,7 +1777,7 @@
     \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
     \vspace*{7.5\baselineskip}
     \begingroup \centering\zihao{4}
-    \begin{tabular}{c>{\centering\arraybackslash}p{14\ccwd}}
+    \begin{tabular}{c>{\centering\arraybackslash}p{16\ccwd}}
       \str_if_eq:NNTF \l__gdut_info_supervisor_three_tl {none}
       {
         \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
