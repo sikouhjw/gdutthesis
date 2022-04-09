@@ -391,6 +391,7 @@
   footskip    = 0.85cm,
 }
 \raggedbottom
+\sloppy
 \bool_if:NT \g__gdut_draft_bool { \geometry { showframe } }
 \bool_new:N \l__gdut_cover_bool
 \bool_new:N \l__gdut_open_bool
