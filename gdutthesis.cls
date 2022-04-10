@@ -1091,11 +1091,18 @@
 \cs_set:Npn\thetable{\thechapter-\arabic{table}}
 \cs_set:Npn\thefigure{\thechapter-\arabic{figure}}
 %% 设置引用格式
-\newcommand{\subfigureautorefname}{图}
-\newcommand{\figureautorefname}{图}
-\newcommand{\tableautorefname}{表}
-\labelformat{equation}{(#1)}
-\newcommand{\equationautorefname}{公式}
+\labelformat{ equation } { (#1) }
+\clist_map_inline:nn
+  {
+    { subfigure , 图    },
+    { figure    , 图    },
+    { table     , 表    },
+    { equation  , 公式  },
+    { appendix  , 附录  },
+  }
+  {
+    \cs_new:cpn { \clist_item:nn {#1} {1} autorefname } { \clist_item:nn {#1} {2} }
+  }
 %% 设置浮动体间距
 \setlength{\floatsep}{2\baselineskip-2\ccwd-1pt}
 \setlength{\textfloatsep}{2\baselineskip-2\ccwd-1pt}
