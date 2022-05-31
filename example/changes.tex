@@ -1,0 +1,22 @@
+\documentclass{../gdutthesis}
+
+\usepackage[commentmarkup=uwave, authormarkup=brackets, authormarkuptext=name]{changes}
+\definechangesauthor[name=Prof. Li Si, color=red]{LiSi}
+
+\gdutsetup{
+  style/cover         = {false},
+}
+
+\begin{document}
+  test \added[id=LiSi]{new text}
+
+  test \added[id=LiSi, comment=comment 1]{new text}
+
+  test \deleted[id=LiSi, comment=comment 2]{old text}
+
+  test \replaced[id=LiSi, comment=comment 3]{new text}{old text}
+
+  test \highlight[id=LiSi, comment=comment 4]{text}
+
+  test \comment[id=LiSi]{comment 5}
+\end{document}

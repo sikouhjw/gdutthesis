@@ -17,6 +17,7 @@ main.pdf
 *.tec
 example/*.pdf
 test.*
+*.loc
 
 ## Intermediate documents:
 *.dvi
