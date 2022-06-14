@@ -1675,7 +1675,7 @@
 \keys_set:nn { gdut }
   {
     style   / cover             = false,
-    style   / open              = false,
+    style   / open              = true,
     style   / font              = times,
     style   / math-font         = times,
     style   / cjk-font          = fandol,
