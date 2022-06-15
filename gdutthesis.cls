@@ -92,14 +92,19 @@
 \__gdut_msg_new:nn { unknown-option }
   { Class~ option~ "\l_keys_key_str"~ is~ unknown. }
 \ProcessKeysOptions { gdut / option }
-\cs_new_protected:Npn \__gdut_thesis_type:
+\tl_const:Nn \__gdut_thesis_type
   {
     \clist_item:Nn \c__gdut_thesis_type_clist
       { \g__gdut_thesis_type_int }
   }
-\cs_new_protected:Npn \__gdut_thesis_en_type:
+\tl_const:Nn \__gdut_thesis_en_type
   {
     \clist_item:Nn \c__gdut_thesis_type_en_clist
+      { \g__gdut_thesis_type_int }
+  }
+\tl_const:Nn \__gdut_professional_type
+  {
+    \clist_item:Nn \c__gdut_professional_clist
       { \g__gdut_thesis_type_int }
   }
 %% 模板需要自定义的命令
@@ -108,9 +113,9 @@
   \__english_date:www #1 \q_stop
 }
 \cs_new:Npn \__english_date:www #1/#2/#3 \q_stop {
-  \ifcase #2 \or January~\or February~\or March~\or %
-  April~\or May ~\or June~\or July~\or August~\or September~\or October~\or November~\or %
-  December~\fi#1
+  \ifcase #2 \or January~\or February~\or March~\or
+  April~\or May ~\or June~\or July~\or August~\or September~\or October~\or November~\or
+  December~\fi #3,~#1
 }
 
 % 封面日期
@@ -165,8 +170,10 @@
 \clist_const:Nn \c__gdut_thesis_type_clist
   { 博士学位, 硕士学位, 硕士专业学位 }
 \clist_const:Nn \c__gdut_thesis_type_en_clist
-  { Doctor~of~Philosophy, Master, Master }
+  { Doctor, Master, Master }
 \clist_const:Nn \c__gdut_secret_clist { 秘密, 机密, 绝密 }
+\clist_const:Nn \c__gdut_professional_clist
+  {一级学科（二级学科）名称, 一级学科（二级学科）名称, 专业学位类别（领域）名称}
 \PassOptionsToClass
   {
     UTF8,
@@ -880,7 +887,7 @@
 \fancyhf{}
 \fancyfoot[C]{\zihao{-5}\thepage}
 \fancyhead[CO]{\zihao{-5}\gdut@kai\gdutenkai \leftmark}
-\fancyhead[CE]{\zihao{-5}\gdut@kai\gdutenkai 广东工业大学 \__gdut_thesis_type: 论文}
+\fancyhead[CE]{\zihao{-5}\gdut@kai\gdutenkai 广东工业大学 \__gdut_thesis_type 论文}
 \renewcommand{\headrulewidth}{1.5pt}
 \renewcommand{\headruleskip}{6.2pt}
 \newcommand{\myheadrulewidth}{0.8pt}
@@ -1771,13 +1778,13 @@
     { }
     \vspace*{0.4\baselineskip-1.5pt}
     \begingroup \centering
-      \begin{tabular}{>{\zihao{4}}r@{\hspace*{8\ccwd}}>{\zihao{4}\raggedright\arraybackslash}p{6\ccwd}@{\hspace*{6\ccwd}}>{\zihao{4}}p{12\ccwd}}
-        分类号： &        & 学校代号：11845 \\[5pt]
-        UDC：    & 密级：\bool_if:NT \l__gdut_secret_bool {\l__gdut_info_secret_level_tl} & 学\hspace*{2\ccwd}号：\l__gdut_info_student_id_tl
+      \begin{tabular}{>{\zihao{4}}r@{\hspace*{7\ccwd}}>{\zihao{4}\raggedright\arraybackslash}p{6\ccwd}@{\hspace*{5\ccwd}}>{\zihao{4}}p{12\ccwd}}
+        中图分类号：  &        & 学校代号：11845 \\[5pt]
+        UDC：         & 密级：\bool_if:NT \l__gdut_secret_bool {\l__gdut_info_secret_level_tl} & 学\hspace*{2\ccwd}号：\l__gdut_info_student_id_tl
       \end{tabular}
     \par \endgroup
     \vspace*{1.5\baselineskip+4pt}
-    \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type: 论文\par \endgroup
+    \begingroup \centering\bfseries\zihao{-2} 广东工业大学 \__gdut_thesis_type 论文\par \endgroup
     \begingroup \centering\zihao{4} （ \l__gdut_info_degree_tl ） \par \endgroup
     \vspace*{0.8\baselineskip+0.75pt}
     \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl\par \endgroup
@@ -1797,13 +1804,13 @@
         }
           {
             \begin{CJKfilltwosides*}{0pt}
-              导师姓名（职称）：\\
+              指导教师姓名、职称：\\
               \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
               { }
               {
                 \\
               }
-              学科（专业）或领域名称：\\
+              \__gdut_professional_type ：\\
               学生所属学院：\\
               答辩委员会主席：\\
               论文答辩日期：
@@ -1820,9 +1827,9 @@
       {
         \multirow{6}*{
           \begin{CJKfilltwosides*}{0pt}
-            导师姓名（职称）：\\
-            企业导师姓名（职称）：\\
-            学科（专业）或领域名称：\\
+            指导教师姓名、职称：\\
+            企业导师姓名、职称：\\
+            \__gdut_professional_type ：\\
             学生所属学院：\\
             答辩委员会主席：\\
             论文答辩日期：
@@ -1846,10 +1853,11 @@
     \par \endgroup
     \newpage
     \begingroup \centering\zihao{4}
-      A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~\__gdut_thesis_en_type:
+      A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip]
+      in~Partial~Fulfillment~of~the~Requirement\\[-0.15\baselineskip]
+      for~the~Degree~of~\l__gdut_info_degree_en_tl
     \par \endgroup
-    \begingroup \centering\zihao{-4} (\l__gdut_info_degree_en_tl) \par \endgroup
-    \vspace*{2\baselineskip}
+    \vspace*{3\baselineskip}
     \begingroup \centering\zihao{-2}\sffamily
       \l__gdut_info_title_en_tl
     \par \endgroup
