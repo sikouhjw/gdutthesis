@@ -1305,7 +1305,7 @@
        {\@latex@warning{Empty `thebibliography' environment}}%
       \endlist}
 %% 定义独创性声明
-\NewDocumentCommand {\gdutstatement} { s o } {
+\NewDocumentCommand {\gdutstatement} { s O{} o o } {
   \IfBooleanTF {#1}
   {
     \bool_if:NTF \l__gdut_open_bool
@@ -1329,16 +1329,43 @@
     \vspace*{\baselineskip+0.9\ccwd}
     \c__gdut_orig_decl_text_tl\par
     \vspace*{\baselineskip}
-    \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
+    \hspace*{13\ccwd} 论文作者签名：
+    \parbox[c][\baselineskip][c]{4\ccwd}
+      {
+        \IfNoValueTF{#3}
+          { \mbox{} }
+          {
+            \includegraphics[width=4\ccwd, height=\baselineskip, keepaspectratio]{#3}
+          }
+      }
+    \hspace*{\ccwd}日期：#2\par
     \ctexset{chapter/break = {}}
     \vspace*{3\baselineskip}
     \gdut_chapter*{学位论文版权使用授权声明}
     \vspace*{\baselineskip+0.9\ccwd}
     \c__gdut_auth_decl_text_tl\par
     \vspace*{\baselineskip}
-    \begingroup \centering \hspace*{5\ccwd}论文作者签名：\hspace*{5\ccwd}日期：\par \endgroup
+    \hspace*{13\ccwd} 论文作者签名：
+    \parbox[c][\baselineskip][c]{4\ccwd}
+      {
+        \IfNoValueTF{#3}
+          { \mbox{} }
+          {
+            \includegraphics[width=4\ccwd, height=\baselineskip, keepaspectratio]{#3}
+          }
+      }
+    \hspace*{\ccwd}日期：#2\par
     \vspace*{\baselineskip}
-    \begingroup \centering \hspace*{5\ccwd}指导教师签名：\hspace*{5\ccwd}日期：\par \endgroup
+    \hspace*{13\ccwd} 指导教师签名：
+    \parbox[c][\baselineskip][c]{4\ccwd}
+      {
+        \IfNoValueTF{#3}
+          { \mbox{} }
+          {
+            \includegraphics[width=4\ccwd, height=\baselineskip, keepaspectratio]{#4}
+          }
+      }
+    \hspace*{\ccwd}日期：#2\par
     \bool_if:NTF \l__gdut_open_bool
     {
       \ctexset{chapter/break = \clearpage}
@@ -1888,7 +1915,7 @@
       Guangdong~University~of~Technology\\
       Guangzhou,~Guangdong,~P.~R.~China,~510006
     \par \endgroup
-    \if@openright \cleardoublepage \else \clearpage \fi
+    \clearpage
     \pagestyle{fancy}
   }
 % 设置封面背景

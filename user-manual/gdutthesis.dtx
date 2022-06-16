@@ -2461,10 +2461,13 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %
 % \begin{function}{\gdutstatement,\gdutstatement*}
 %   \begin{fdusyntax}[morekeywords={\gdutstatement,\gdutstatement*}]
-%     \gdutstatement
+%     \gdutstatement(*\oarg{日期}*)(*\oarg{作者签名图名}*)(*\oarg{导师签名图名}*)
 %     \gdutstatement*(*\oarg{文件名}*)
 %   \end{fdusyntax}
-%   生成学位论文独创性声明及学位论文版权使用授权声明。如您需要插入扫描版的 pdf 文件，请使用 |\gdutstatement*|。
+%   生成学位论文独创性声明及学位论文版权使用授权声明。
+%
+%   如您需要在空白声明页上添加日期、作者签名、导师签名，请使用
+%   |\gdutstatement| 的可选选项。如您需要插入扫描版的 pdf 文件，请使用 |\gdutstatement*|。
 % \end{function}
 %
 %
