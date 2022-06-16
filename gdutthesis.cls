@@ -1089,11 +1089,26 @@
   }
 
 %% 设置图表格式
-\DeclareCaptionLabelFormat{english}{#1#2}
-\captionsetup{labelsep=space,labelformat=english,font=small,justification=centering}
-\captionsetup[figure][bi-second]{name=Fig.}
-\captionsetup[table][bi-second]{name=Table.}
-\captionsetup[subfloat]{labelformat=simple,font=small,captionskip=4pt,nearskip=-5pt,farskip=0pt}
+\DeclareCaptionLabelFormat{english}{#1~#2}
+\captionsetup
+  {
+    labelsep      = space,
+    labelformat   = english,
+    font          = small,
+    labelfont     = bf,
+    justification = centering
+  }
+\captionsetup[figure][bi-second]{name=Figure}
+\captionsetup[table][bi-second]{name=Table}
+\captionsetup[subfloat]
+  {
+    labelformat = simple,
+    font        = small,
+    labelfont   = md,
+    captionskip = 4pt,
+    nearskip    = -5pt,
+    farskip     = 0pt
+  }
 \cs_set:Npn\thesubfigure{(\alph{subfigure})}
 \cs_set:Npn\thetable{\thechapter-\arabic{table}}
 \cs_set:Npn\thefigure{\thechapter-\arabic{figure}}

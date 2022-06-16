@@ -49,9 +49,9 @@
     bib-resource    = {gdutthesis-template.bib},
     bib-style       = {numerical},
     % bib-style       = {author-year},
-    fullwidth-stop  = {mapping},
+    % fullwidth-stop  = {mapping},
     % fullwidth-stop  = {catcode},
-    % fullwidth-stop  = {false},
+    fullwidth-stop  = {false},
     hyperlink       = {color},
     % hyperlink       = {border},
     % hyperlink       = {none},
@@ -135,18 +135,41 @@
 \chapter{绪论}{Introduction}
 
 \section{本课题研究背景及研究意义}{Background and significance of research}
-随着科学技术的进步，产品逐渐向精密化和高性能化发展，具有毫米及微米尺度
-微沟槽结构的金属零部件在国防军事、航空航天、新能源、新材料、生物医学、半导
-体器件等领域的高技术产品中扮演的角色愈加重要。
 
-\section{微沟槽电解加工国内外相关研究现状}{Analysis of the research status at home and abroad}
-\subsection{成型电极电解加工}{Shaped cathode electrochemical machining}
-采用与微沟槽结构形状对应的成型阴极，例如薄板阴极，片状阴极等，进行微沟
-槽电解加工，其特点是方便一次成型微沟槽形状。南京航空航天大学吕焱明等进行了
-大长宽比深窄槽电解加工阴极设计以及工艺试验研究\gdutcite{chendengyuan2000guoshi}，如\autoref{fig:example} 所示，具体参考\autoref{sub-fig-1} 和\autoref{sub-fig-2}，再参考\autoref{eq:example}，再再参考\autoref{tab:example}。
+\zhlipsum[1]
+
+\section{国内外相关研究现状}{Analysis of the research status at home and abroad}
+
+\subsection{测试}{test}
+
+测试\gdutcite{chendengyuan2000guoshi}，测试\gdutcite*{woerdelun2012jingji}。
+
+测试如\autoref{fig:example} 所示，具体参考\autoref{sub-fig-1} 和\autoref{sub-fig-2}。
+
+测试参考\autoref{eq:example}。
+
+测试参考\autoref{tab:example}。
+
+\subsubsection{测试}
+测试 test。
+\paragraph{测试 test。}
+测试 test。
+\subparagraph{测试 test。}
+测试 test。
+
 \begin{equation}\label{eq:example}
   E = mc^2
 \end{equation}
+
+\begin{align}
+  E &= mc^2 \\
+  mc^2 &= E
+\end{align}
+
+\begin{gather}
+  E = mc^2 \\
+  mc^2 = E
+\end{gather}
 
 \begin{figure}
   \subfloat[贴有模板的金属喷嘴示意图]{\label{sub-fig-1}
@@ -167,24 +190,16 @@
     \toprule
     控制卡技术指标              & 具体参数                      \\
     \midrule
-    控制电机的脉冲信号频率范围  & $\SI{1}{Hz}\sim\SI{2}{MHz}$ \\
-    控制电机的脉冲信号频率精度  & \SI{0.0625}{Hz}              \\
-    脉冲信号输出最大电流        & \SI{20}{mA}                  \\
+    控制电机的脉冲信号频率范围  & $\SI{1}{Hz}\sim\SI{2}{MHz}$   \\
+    控制电机的脉冲信号频率精度  & \SI{0.0625}{Hz}               \\
+    脉冲信号输出最大电流        & \SI{20}{mA}                   \\
     脉冲信号长度                & 28 位有符号                   \\
-    直线插补精度                & $\pm \SI{0.8}{pulse}$        \\
-    圆弧插补精度                & $\pm \SI{1.5}{pulse}$        \\
+    直线插补精度                & $\pm \SI{0.8}{pulse}$         \\
+    圆弧插补精度                & $\pm \SI{1.5}{pulse}$         \\
     支持的插补坐标系个数        & 2                             \\
     \bottomrule
   \end{tabular}
 \end{table}
-
-
-\subsubsection{微沟槽电解加工国内外相关研究现状}
-测试 test。
-\paragraph{测试 test。}
-测试 test。
-\subparagraph{测试 test。}
-测试 test\gdutcite*{woerdelun2012jingji}。
 
 \gdutbackmatter
 \chapter{结论与展望}{Conclusion and prospect}
