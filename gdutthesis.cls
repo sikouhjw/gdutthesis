@@ -237,7 +237,7 @@
 % 设置引导符
 \renewcommand{\cftdot}{.}
 \renewcommand\cftchapdotsep{\cftdotsep}
-\renewcommand{\cftdotsep}{0.1}
+\renewcommand{\cftdotsep}{0}
 % 设置引导符到页码的距离
 \newlength{\yema}
 \settowidth{\yema}{\cftchappagefont VII}
