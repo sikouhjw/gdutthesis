@@ -99,21 +99,21 @@
 \section{研究背景和意义}{Background and Significance}
 
 标准线性模型的形式如下
-\begin{equation}
+\begin{align}
   \mbfit y = \mbfit H \mbfit x + \mbfit w
-\end{equation}
+\end{align}
 其中 $\mbfit y \in \mbb R^M$ 是 $M$ 维观测向量，$\mbfit H \in \mbb R^{M \times N}$
 为线性观测矩阵，$\mbfit w \in \mbb R^M$ 为噪声扰动项，$\mbfit x \in \mbb R^N$ 为目
 标信号。线性可逆问题所研究的是从参数 $(\mbfit y, \mbfit H)$ 中重构出目标信号 $\mbfit x$ 来。该问题可以归纳为 LASSO 问题
-\begin{equation}
+\begin{align}
   \hat{ \mbfit x } = \argmax_{ \mbfit x \in \mbb R^N } \frac{1}{2} \lVert \mbfit y - \mbfit H \mbfit x \rVert_2^2 + \lambda \lVert \mbfit x \rVert_1
-\end{equation}
+\end{align}
 其中 $\lVert · \rVert_p$ 表示 $p$-范数。
 
 GLM扩展了SLM的适用范围，更确切来说，SLM是GLM的特例。GLM模型表示如下
-\begin{equation}
+\begin{align}
   \mbfit x \to \mbfit z = \mbfit H \mbfit x \to p( \mbfit y | \mbfit z ) \to \mbfit y
-\end{equation}
+\end{align}
 与 SLM 所不同，GLM 用一个逐点映射的转移概率
 $p( \mbfit y | \mbfit z ) = \prod_{a=1}^M p( y_a | z_a )$
 替换了 SLM 中的加性噪声项。
@@ -149,9 +149,9 @@ $p( \mbfit y | \mbfit z ) = \prod_{a=1}^M p( y_a | z_a )$
 
 定义：设矩阵 $\mbfit H \in R^{m \times n}$，且 $\rank(\mbfit H) = r$，则存在
 $m$ 阶正交矩阵 $\mbfit U$ 和 $n$ 阶正交矩阵 $\mbfit V$ ，使得
-\begin{equation}
+\begin{align}
   \mbfit H = \mbfit U \mbf \Sigma \mbfit V^T
-\end{equation}
+\end{align}
 其中 $\mbf \Sigma = \begin{pmatrix}
   \mbf \Lambda & \mbf 0 \\
   \mbf 0       & \mbf 0
@@ -162,9 +162,9 @@ $\mbf \Lambda = \Diag ( \lambda_1, \lambda_2, \cdots, \lambda_r )$，
 \subsection{概率论}{Theory of Probability}
 \begin{lemma}[标量高斯相乘引理]
   假设 $\mscr N ( x | a, A )$，$\mscr N ( x | b, B )$，则有
-  \begin{equation}
+  \begin{align}
     \mscr N ( x | a, A ) \mscr N ( x | b, B ) = \mscr N ( 0 | a - b, A + B ) \mscr N \left( x \middle| \frac{ \frac{a}{A} + \frac{b}{B} }{ \frac{1}{A} + \frac{1}{B} }, \frac{ 1 }{ \frac{1}{A} + \frac{1}{B} } \right)
-  \end{equation}
+  \end{align}
 \end{lemma}
 \begin{proof}
   标量高斯相乘引理的证明分为两个部分，分别是指数部分和常数部分。
