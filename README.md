@@ -4,7 +4,8 @@
 要求发行版版本为 texlive 2021 或更高。
 
 - [support_gdutthesis@163.com](mailto:support_gdutthesis@163.com)
-- [Overleaf](https://cn.overleaf.com/latex/templates?q=gdutthesis)
+- [Overleaf](https://www.overleaf.com/latex/templates/gdutthesis/wcnrhjstrbws)
+- [TeXPage](https://www.texpage.com/template/eeb04fc8-e9b5-4a52-ac6b-12049c63aa7c)
 - [Releases](https://github.com/sikouhjw/gdutthesis/releases/latest)
 - [Wiki](https://github.com/sikouhjw/gdutthesis/wiki)
 
