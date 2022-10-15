@@ -1743,6 +1743,10 @@
   {
     \quad #1
   }
+\newcommand*\CJKmovesymbol[1]{\raise.36em\hbox{#1}}
+\newcommand*\CJKmove{\punctstyle{plain}
+  \let\CJKsymbol\CJKmovesymbol
+  \let\CJKpunctsymbol\CJKsymbol}
 \cs_new:Npn \gdutcover
   {
     \setlength{\paperwidth}{420mm}
@@ -1750,18 +1754,23 @@
     \setlength{\paperheight}{297mm}
     \setlength{\pdfpageheight}{297mm}
     \newgeometry{margin=0pt}
-      \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
+      \centering\begin{minipage}[c][29.7cm]{20.78cm+0.15cm}%
         \mbox{}%
       \end{minipage}%
-      \parbox[c]{0.44cm}{%
-        \centering\zihao{5}\linespread{1.0807}\selectfont%
-        \l__gdut_info_title_tl\par%
-        \vspace{8cm}%
-        \l__gdut_info_author_tl\par%
-        \vspace{8cm}%
-        \exp_args:No \coverdate{\l__gdut_info_date_tl}\par%
+      \rotatebox[origin = c]{-90}{%
+        \parbox[c][0.44cm-0.15cm]{29.7cm}{%
+          \addCJKfontfeatures*{RawFeature={vertical}}\CJKmove%
+          \centering\zihao{5}%
+          \hspace*{2cm}%
+          \l__gdut_info_title_tl%
+          \hspace{\fill}%
+          \l__gdut_info_author_tl%
+          \hspace{\fill}%
+          \exp_args:No \coverdate{\l__gdut_info_date_tl}%
+          \hspace*{2cm}%
+        }%
       }%
-      \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
+      \begin{minipage}[c][29.7cm]{20.78cm}%
         \centering
         \vspace*{2cm}
         \begingroup \centering\sffamily\zihao{2} \l__gdut_info_title_tl \par \endgroup
