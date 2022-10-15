@@ -102,11 +102,6 @@
     \clist_item:Nn \c__gdut_thesis_type_en_clist
       { \g__gdut_thesis_type_int }
   }
-\tl_const:Nn \__gdut_professional_type
-  {
-    \clist_item:Nn \c__gdut_professional_clist
-      { \g__gdut_thesis_type_int }
-  }
 %% 模板需要自定义的命令
 % 西文日期
 \DeclareExpandableDocumentCommand \engdate { +m } {
@@ -130,8 +125,8 @@
 }
 \cs_new:Npn \__cover_date_aux:NNnnnn #1#2#3#4#5#6
 {
-  #1 {#4} #3 \c__zhnum_year_tl #3
-  #2 {#5} #3 \c__zhnum_month_tl #3
+  #1 {#4} #3 \cs_if_exist:NTF{ \c__zhnum_year_tl  }{  \c__zhnum_year_tl   }{  \zhnum_output:n { year }  } #3
+  #2 {#5} #3 \cs_if_exist:NTF{ \c__zhnum_month_tl }{  \c__zhnum_month_tl  }{  \zhnum_output:n { month } } #3
 }
 \cs_generate_variant:Nn \__cover_date_aux:nnn { V }
 \clist_map_inline:nn
@@ -172,8 +167,6 @@
 \clist_const:Nn \c__gdut_thesis_type_en_clist
   { Doctor, Master, Master }
 \clist_const:Nn \c__gdut_secret_clist { 秘密, 机密, 绝密 }
-\clist_const:Nn \c__gdut_professional_clist
-  {一级学科（二级学科）名称, 一级学科（二级学科）名称, 专业学位类别（领域）名称}
 \PassOptionsToClass
   {
     UTF8,
@@ -197,6 +190,7 @@
 \WarningFilter{zhlineskip}{Use Microsoft Word multiple line spacing}
 \RequirePackage
   {
+    zhlineskip,
     amsmath,
     unicode-math,
     geometry,
@@ -220,7 +214,6 @@
     enumitem,
     tocloft,
     subfig,
-    zhlineskip,
   }
 %% 调整目录格式
 % 纵向间距
@@ -1731,6 +1724,7 @@
     style   / fullwidth-stop    = false,
     style   / hyperlink-color   = default,
     style   / bib-style         = numerical,
+    info    / supervisor-two    = none,
     info    / supervisor-three  = none,
     info    / secret-level      = none,
     info    / date              = { 2021/5/1 },
@@ -1761,13 +1755,11 @@
       \end{minipage}%
       \parbox[c]{0.44cm}{%
         \centering\zihao{5}\linespread{1.0807}\selectfont%
-        \mbox{}\vfill%
         \l__gdut_info_title_tl\par%
-        \vspace{5cm}%
+        \vspace{8cm}%
         \l__gdut_info_author_tl\par%
-        \vspace{5cm}%
+        \vspace{8cm}%
         \exp_args:No \coverdate{\l__gdut_info_date_tl}\par%
-        \mbox{}\vfill%
       }%
       \noindent\begin{minipage}[c][29.7cm]{20.78cm}%
         \centering
@@ -1837,31 +1829,23 @@
     \begin{tabular}{c>{\centering\arraybackslash}p{16\ccwd}}
       \str_if_eq:NNTF \l__gdut_info_supervisor_three_tl {none}
       {
-        \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
+        \multirow{6}*
         {
-          \multirow{5}*
+          \begin{CJKfilltwosides*}{0pt}
+            指导教师姓名、职称：\\
+            校外指导教师姓名、职称：\\
+            学科（专业）或领域名称：\\
+            学生所属学院：\\
+            答辩委员会主席：\\
+            论文答辩日期：
+          \end{CJKfilltwosides*}
         }
-        {
-          \multirow{6}*
-        }
-          {
-            \begin{CJKfilltwosides*}{0pt}
-              指导教师姓名、职称：\\
-              \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
-              { }
-              {
-                \\
-              }
-              \__gdut_professional_type ：\\
-              学生所属学院：\\
-              答辩委员会主席：\\
-              论文答辩日期：
-            \end{CJKfilltwosides*}
-          }
         & \l__gdut_info_supervisor_name_tl \gdut_name_jobname_spacer: \l__gdut_info_supervisor_jobname_tl \\
         \cline{2-2}
         \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
-        { }
+        {
+          & 无 \\ \cline{2-2}
+        }
         {
           & \l__gdut_info_supervisor_two_name_tl \gdut_name_jobname_spacer: \l__gdut_info_supervisor_two_jobname_tl \\ \cline{2-2}
         }
@@ -1870,8 +1854,8 @@
         \multirow{6}*{
           \begin{CJKfilltwosides*}{0pt}
             指导教师姓名、职称：\\
-            企业导师姓名、职称：\\
-            \__gdut_professional_type ：\\
+            校外指导教师姓名、职称：\\
+            学科（专业）或领域名称：\\
             学生所属学院：\\
             答辩委员会主席：\\
             论文答辩日期：

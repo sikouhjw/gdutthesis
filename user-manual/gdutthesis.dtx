@@ -1640,8 +1640,12 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %     degree* = (*\marg{学位类型（英文）}*)
 %   \end{fdusyntax}
 %^^A-
-%   学位类型。学位类型为下列之一：工学博士；工学硕士；管理学博士；管理学硕士；理学硕士；艺术学硕士；经济学硕士；工程硕士；工商管理硕士；工程管理硕士；会计硕士；翻译硕士；金融硕士；社会工作硕士；艺术硕士。
+%   学位类型。
 % \end{function}
+%
+%   学位类型为下列之一（若是博士，则将“硕士”替换为“博士”、“Master”替换为“Doctor”）：
+%   工学硕士 Master of Engineering Science；理学硕士 Master of Science；经济学硕士 Master of Economics；管理学硕士 Master of Management Science；艺术学硕士 Master of Arts；工程硕士 Master of Engineering；金融硕士 Master of Finance；国际商务硕士 Master of International Business；社会工作硕士 Master of Social Work；翻译硕士 Master of Translation and Interpreting；电子信息硕士 Master of Electronic Information；机械硕士 Master of Mechanics；材料与化工硕士 Master of Materials and Chemical Engineering；资源与环境硕士 Master of Resources and Environment；能源动力硕士 Master of Energy and Power；土木水利硕士 Master of Civil and Hydraulic Engineering；生物与医药硕士 Master of Biology and Medicine；交通运输硕士 Master of Transportation；风景园林硕士 Master of Landscape Architecture；工商管理硕士 Master of Business Administration；工程管理硕士 Master of Engineering Management；会计硕士 Master of Accountancy；艺术硕士 Master of Fine Arts。
+%
 %^^A!   Degree type. This option can only be used in master degree
 %^^A!   thesis.
 %^^A! \end{function}
@@ -1693,11 +1697,11 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %   \end{fdusyntax}
 %   导师姓名及职称。
 %
-%   若研究生配备了双导师，请按照“第一导师、第二导师”的顺序将导师姓名（职称）列明。如果您没有第二导师且不愿生成扉页中第二导师的下划线，您可以在 |supervisor-two| 处输入 |none|。
+%   若研究生配备了校外指导教师，请按照“校内指导教师、校外指导教师”的顺序将导师姓名（职称）列明。如果您没有校外指导教师，请在 |supervisor-two| 处输入 |none|。
 %
-%   若研究生配备了三导师（第三导师为企业导师），请按照“第一导师、第二导师、第三导师”的顺序将导师姓名（职称）列明。
-%   封面将会输出第一导师、第二导师；扉页会将第一导师、第二导师一起输出，第三导师作为企业导师单独输出。
-%   如果您不需要第三导师，请在 |supervisor-three| 处输入 |none|。
+%   若研究生配备了三个导师（两个校内指导教师、一个校外指导教师），请按照“第一校内指导教师、第二校内指导教师、校外指导教师”的顺序将导师姓名（职称）列明。
+%   封面将会输出第一校内指导教师、第二校内指导教师；扉页会将第一校内指导教师、第二校内指导教师一起输出，校外指导教师单独输出。
+%   如果您不存在三个导师的情况，请在 |supervisor-three| 处输入 |none|。
 % \end{function}
 %^^A! \begin{function}{info/supervisor}
 %^^A!   \begin{fdusyntax}[emph={[1]supervisor}]
@@ -1785,7 +1789,7 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %   \begin{fdusyntax}[emph={[1]date}]
 %     date = (*\marg{日期}*)
 %   \end{fdusyntax}
-%   论文完成日期。默认值为文档编译日期（\tn{today}）。
+%   论文完成日期。日期输入格式为“年/月/日”。
 % \end{function}
 %^^A! \begin{function}{info/date}
 %^^A!   \begin{fdusyntax}[emph={[1]date}]
