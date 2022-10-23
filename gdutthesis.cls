@@ -257,6 +257,8 @@
 \renewcommand\thegdutenenumi{\arabic{gdutenenumi}}
 \setmythegdutenenumi{(\thegdutenenumi)}
 
+%% 设置图片存放路径
+\graphicspath{{figure/}}
 
 %% 设置目录中章后面的间距
 \cs_set_protected:Npn \CTEX@toc@width@n #1
