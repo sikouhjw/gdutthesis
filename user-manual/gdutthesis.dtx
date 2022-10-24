@@ -1907,7 +1907,7 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %^^A! \end{function}
 %^^A!
 %
-% 在本模板中，前置部分包含封面、中英文摘要、符号表以及目录等。
+% 在本模板中，前置部分包含封面、中英文摘要、符号表、缩略词表以及目录等。
 % 前置部分的页码采用大写字母和大写罗马字母，并且与正文分开计数。
 %^^A! Front matter contains table of contents, abstracts and notation
 %^^A! list. The page numbers in front matter will be shown in
@@ -2008,6 +2008,18 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %^^A!   be left-aligned.
 %^^A! \end{function}
 %^^A!
+%
+% \begin{function}{\printnoidxglossaries}
+%   生成缩略词表。为了生成完整、正确的缩略词表，您至少需要编译\emph{三次}。
+% \end{function}
+%
+% \begin{function}{\newacronym}
+%   \begin{fdusyntax}[deletetexcs={\newacronym},%
+%       morekeywords={\newacronym}]
+%     \newacronym(*[user1=\meta{中文全称}]*)(*\marg{label}*)(*\marg{缩略词}*)(*\marg{英文全称}*)
+%   \end{fdusyntax}
+%   输入缩略词。
+% \end{function}
 %
 % \subsubsection{猪肚}
 %^^A! \subsubsection{Main matter}
@@ -2400,6 +2412,13 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 % \end{function}
 %
 %
+% \begin{function}{\gls}
+%   \begin{fdusyntax}[deletetexcs={\gls},morekeywords={\gls}]
+%     \gls(*\marg{label}*)
+%   \end{fdusyntax}
+%   输出缩略词。第一次使用会输出“\meta{中文全称}（\meta{英文全称}, \meta{缩略词}）”，非第一次使用会输出“\meta{缩略词}”。
+% \end{function}
+%
 % \subsubsection{豹尾}
 %^^A! \subsubsection{Back matter}
 %^^A!
@@ -2510,6 +2529,8 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %       \item \pkg{xcolor}，提供彩色支持。
 %       \item \pkg{xeCJKfntef}，提供分散对齐环境支持。
 %       \item \pkg{hyperref}，提供交叉引用、超链接、电子书签等功能。
+%       \item \pkg{glossaries}，提供缩略词表的功能。
+%       \item \pkg{silence}，提供抑制编译警告的功能。
 %     \end{itemize}
 %   \item 开启 \kvopt{style/bib-backend}{bibtex} 后，会调用
 %     \pkg{natbib} 宏包，并依赖 \BibTeX{} 程序。参考文献样式由

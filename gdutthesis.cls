@@ -1681,35 +1681,98 @@
     \enTableOfContents
   }
 \ctex_at_end_preamble:n
-{
-  \bool_if:NTF \l__gdut_bibtex_bool
   {
-    \NewDocumentCommand {\gdutcite} { s O{} m }
+    \bool_if:NTF \l__gdut_bibtex_bool
     {
-      \IfBooleanTF {#1}
+      \NewDocumentCommand {\gdutcite} { s O{} m }
       {
-        \setcitestyle{numbers}
-        \cite[#2]{#3}
-        \setcitestyle{super}
+        \IfBooleanTF {#1}
+        {
+          \setcitestyle{numbers}
+          \cite[#2]{#3}
+          \setcitestyle{super}
+        }
+        {
+          \cite[#2]{#3}
+        }
       }
+    }
+    {
+      \NewDocumentCommand {\gdutcite} { s O{} m }
       {
-        \cite[#2]{#3}
+        \IfBooleanTF {#1}
+        {
+          \parencite[#2]{#3}
+        }
+        {
+          \cite[#2]{#3}
+        }
       }
     }
   }
+\ctex_at_end_preamble:n
   {
-    \NewDocumentCommand {\gdutcite} { s O{} m }
-    {
-      \IfBooleanTF {#1}
+    \RequirePackage { glossaries }
+    \makenoidxglossaries
+    \newglossarystyle { gdut }
       {
-        \parencite[#2]{#3}
+        \renewenvironment { theglossary }
+          {
+            \group_begin: \zihao{5}
+            \dim_set_eq:NN \LTpre  \c_zero_dim
+            \dim_set_eq:NN \LTpost \c_zero_dim
+            \begin  { longtable } { l p{\glsdescwidth} l }
+            \toprule
+          }
+          {
+            \bottomrule
+            \end    { longtable }
+            \group_end:
+          }
+        \renewcommand* { \glossaryheader }
+          {
+            \bfseries 缩略词 & \bfseries 英文全称 & \bfseries 中文全称 \\ \endhead \midrule
+          }
+        \renewcommand* { \glsgroupheading } [1] {  }
+        \renewcommand* { \glossentry      } [2]
+          {
+            \glsentryitem { ##1 }
+            \glstarget    { ##1 } { \glossentryname { ##1 } }
+              & \glossentrydesc { ##1 }
+              & \glsentryuseri  { ##1 }
+              \tabularnewline
+          }
+        \renewcommand* { \glsgroupskip } {  }
+      }
+    \setglossarystyle { gdut }
+    \newacronymstyle  { gdut }
+      {
+        \ifglshaslong   { \glslabel } { \glsgenacfmt } { \glsgenentryfmt }
       }
       {
-        \cite[#2]{#3}
+        \renewcommand*  { \GenericAcronymFields } { description = { \the\glslongtok } }
+        \renewcommand*  { \genacrfullformat     } [2]
+          {
+            \glsentryuseri { ##1 } （ \glsentrylong { ##1 } ##2, \space
+            \protect \firstacronymfont { \glsentryshort { ##1 } ） }
+          }
+        \renewcommand*  { \acronymentry      } [1] { \acronymfont { \glsentryshort { ##1 } } }
+        \renewcommand*  { \acronymsort       } [2] { ##1                   }
+        \renewcommand*  { \acronymfont       } [1] { ##1                   }
+        \renewcommand*  { \firstacronymfont  } [1] { \acronymfont { ##1 }  }
+        \renewcommand*  { \acrpluralsuffix   }     { \glspluralsuffix      }
       }
-    }
+    \setacronymstyle  { gdut }
+    \xpatchcmd\@print@noidx@glossary
+      {
+        \glossarysection[\glossarytoctitle]{\glossarytitle}
+      }
+      {
+        \chapter{缩略词表}{List~ of~ abbreviations}
+      }
+      {}{}
+    \loadglsentries   { data/glossaries }
   }
-}
 \keys_define:nn { gdut }
   {
     info    .meta:nn = { gdut / info    } {#1},
