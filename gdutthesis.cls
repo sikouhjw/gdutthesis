@@ -683,11 +683,15 @@
   {
     \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
       { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf }
+    \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
+      { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf, StylisticSet = 1, range = { cal, bfcal } }
   }
 \cs_new_protected:cpn { __gdut_load_math_font_ times* : }
   {
     \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
       { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf }
+    \__gdut_setmathfont:nn { \g__gdut_font_name_xits_math_rm_tl .otf }
+      { BoldFont = \g__gdut_font_name_xits_math_bf_tl .otf, StylisticSet = 1, range = { cal, bfcal } }
   }
 \cs_new_protected:Npn \__gdut_load_cjk_font_fandol:
   {
