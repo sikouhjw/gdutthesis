@@ -48,4 +48,4 @@
 
 -----
 
-Copyright (C) 2021&ndash;2022 by sikouhjw.
+Copyright (C) 2021&ndash;2023 by sikouhjw.
