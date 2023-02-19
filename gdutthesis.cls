@@ -1823,6 +1823,7 @@
     \setlength{\paperheight}{297mm}
     \setlength{\pdfpageheight}{297mm}
     \newgeometry{margin=0pt}
+      \begingroup
       \centering\begin{minipage}[c][29.7cm]{20.78cm+0.15cm}%
         \mbox{}%
       \end{minipage}%
@@ -1869,6 +1870,7 @@
         \end{tabular}
         \par \endgroup
       \end{minipage}%
+      \endgroup
     \restoregeometry
     \setlength{\paperwidth}{210mm}
     \setlength{\pdfpagewidth}{210mm}
