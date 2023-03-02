@@ -1159,6 +1159,11 @@
   \def\@floatboxreset{\centering}%
 }
 \AtBeginEnvironment{table}{\small}
+\cs_set:Npn \@float #1
+  {
+    \edef\reserved@a{\noexpand\@xfloat{#1}[\csname fps@#1\endcsname]}
+    \reserved@a
+  }
 \clist_map_inline:nn
   {
     title, date, author, degree, supervisor, supervisor_two, department, major, student_id, chairman,
