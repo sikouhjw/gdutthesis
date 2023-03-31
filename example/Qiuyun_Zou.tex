@@ -12,6 +12,7 @@
 \gdutsetup{
   style = {
     cover           = {false},
+    free-float      = {true},
     font            = {times*},
     math-font       = {times*},
     cjk-font        = {windows},
@@ -50,6 +51,9 @@
     secret-level    = {none},
   }
 }
+
+\usepackage{glossaries}
+\renewcommand{\loadglsentries}[1]{}
 
 \begin{document}
 
@@ -177,7 +181,7 @@ $\mbf \Lambda = \Diag ( \lambda_1, \lambda_2, \cdots, \lambda_r )$，
 差、成功失败误差三种情况，如\autoref{Common_cost_function} 所示。显然，最
 小均方误差所选取的代价函数为二次误差型（Quadratic error）。
 
-\begin{figure}[htbp]
+\begin{figure}
   \subfloat[Quadratic error]{\label{Quadratic_error}
     \includegraphics[width=0.3\textwidth]{example-image-a.pdf}
   }
@@ -199,7 +203,7 @@ $\mbf \Lambda = \Diag ( \lambda_1, \lambda_2, \cdots, \lambda_r )$，
 VAMP算法，其计算量主要集中在矩阵求逆部分，假设迭代次数为 $T$，则其计算复杂度
 为 $\mscr O(TN^3)$。对比各检测器的计算复杂度，得到\autoref{Comparison_diagram_of_computational_complexity_of_detector}。
 
-\begin{table}[htbp]
+\begin{table}
   \bicaption{检测器计算复杂度对比图}{Comparison diagram of computational complexity of detector}
   \label{Comparison_diagram_of_computational_complexity_of_detector}
   \begin{tabular}{cc}

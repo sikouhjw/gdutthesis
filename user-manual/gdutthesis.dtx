@@ -1027,7 +1027,6 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %   \begin{fdusyntax}[emph={[1]cover}]
 %     cover = (*<true|(false)>*)
 %   \end{fdusyntax}
-%^^A-
 %   设置是否输出封面。
 % \end{function}
 %
@@ -1035,8 +1034,14 @@ Copyright (C) 2017&ndash;2021 by Xiangdong Zeng <xdzeng96@gmail.com>.
 %   \begin{fdusyntax}[emph={[1]open}]
 %     open = (*<(true)|false>*)
 %   \end{fdusyntax}
-%^^A-
-%   设置是否不分奇偶页输出新的一章，|true| 为任意页可输出新的一章，|false| 为奇数页输出新的一章。
+%   设置是否不分奇偶页输出新的一章。|true| 为任意页可输出新的一章，|false| 为奇数页输出新的一章。
+% \end{function}
+%
+% \begin{function}{style/free-float}
+%   \begin{fdusyntax}[emph={[1]free-float}]
+%     free-float = (*<(true)|false>*)
+%   \end{fdusyntax}
+%   设置是否允许浮动体自由浮动。|true| 表示让浮动体自由浮动，|false| 表示可以用浮动体选项限制浮动体的位置。
 % \end{function}
 %
 % \begin{function}{style/font,style/math-font}

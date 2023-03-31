@@ -397,6 +397,7 @@
 \bool_if:NT \g__gdut_draft_bool { \geometry { showframe } }
 \bool_new:N \l__gdut_cover_bool
 \bool_new:N \l__gdut_open_bool
+\bool_new:N \l__gdut_free_float_bool
 \keys_define:nn { gdut / style }
   {
     cover .choice:,
@@ -411,6 +412,12 @@
       { \bool_set_true:N  \l__gdut_open_bool  },
     open  / false  .code:n =
       { \bool_set_false:N \l__gdut_open_bool  },
+    free-float  .choice:,
+    free-float  .value_required:n = true,
+    free-float  / true   .code:n =
+      { \bool_set_true:N  \l__gdut_free_float_bool  },
+    free-float  / false  .code:n =
+      { \bool_set_false:N \l__gdut_free_float_bool  },
   }
 \tl_new:N \g__gdut_fontset_tl
 \tl_new:N \g__gdut_math_fontset_tl
@@ -1159,10 +1166,23 @@
   \def\@floatboxreset{\centering}%
 }
 \AtBeginEnvironment{table}{\small}
-\cs_set:Npn \@float #1
+\ctex_at_end_preamble:n
   {
-    \edef\reserved@a{\noexpand\@xfloat{#1}[\csname fps@#1\endcsname]}
-    \reserved@a
+    \bool_if:NT \l__gdut_free_float_bool
+      {
+        \NewDocumentCommand \gdut@xfloat { m o } { \@xfloat #1 [tbp] }
+        \def \@float #1
+          {
+            \@ifnextchar[
+              {
+                \gdut@xfloat{#1}
+              }
+              {
+                \edef\reserved@a{\noexpand\@xfloat{#1}[\csname fps@#1\endcsname]}
+                \reserved@a
+              }
+          }
+      }
   }
 \clist_map_inline:nn
   {
@@ -1792,6 +1812,7 @@
   {
     style   / cover             = false,
     style   / open              = true,
+    style   / free-float        = true,
     style   / font              = times,
     style   / math-font         = times,
     style   / cjk-font          = fandol,
