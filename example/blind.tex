@@ -1,0 +1,60 @@
+\documentclass[
+  type=doctor
+]{../gdutthesis}
+
+\usepackage{glossaries}
+\renewcommand{\loadglsentries}[1]{}
+
+\ExplSyntaxOn
+\bool_new:N \blind_bool
+\newcommand{\EnableBlind}
+  {
+    \bool_set_true:N \blind_bool
+  }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\EnableBlind % 开启盲审模式 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bool_if:NTF \blind_bool
+  {
+    \NewDocumentCommand{\blind}{ m }
+      {
+        \l__gdut_info_student_id_tl
+      }
+  }
+  {
+    \NewDocumentCommand{\blind}{ m }
+      {
+        #1
+      }
+  }
+\ExplSyntaxOff
+
+\gdutsetup{
+  style = {
+    bib-backend     = {bibtex},
+    bib-resource    = {blind-bib.bib},
+  },
+  info = {
+    author            = {\blind{张三}},
+    author*           = {\blind{ZHANG San}},
+    supervisor        = {\blind{吕四}, 教授},
+    supervisor*       = {\blind{LYU Si}},
+    student-id        = {2112101234},
+    chairman          = {\blind{赵六\quad 教授}},
+  }
+}
+
+\begin{document}
+  \cite{zhangsan2018jet}
+
+  \begin{results}
+    \item \blind{\textbf{张三}}, \blind{李四}, 王五, 等. Jet electrochemical machining of micro dimples with conductive mask.
+    Journal of Materials Processing Technology. 2018, 257:101-111. (SCI Impact Factor 3.647,
+    WOS:000431161400010)
+    \item \blind{李四}, \blind{\textbf{张三}}, 王五, 等. Electrochemical direct-writing machining of micro- channel array.
+    Journal of Materials Processing Technology. 2019, 265:138-149. (SCI Impact Factor 3.647,
+    WOS:000451935100014)
+  \end{results}
+
+  \printbibliography
+\end{document}
