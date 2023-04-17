@@ -1745,12 +1745,13 @@
     \makenoidxglossaries
     \newglossarystyle { gdut }
       {
+        \dim_set:Nn \glsdescwidth { 0.35\textwidth }
         \renewenvironment { theglossary }
           {
             \group_begin: \zihao{5}
             \dim_set_eq:NN \LTpre  \c_zero_dim
             \dim_set_eq:NN \LTpost \c_zero_dim
-            \begin  { longtable } { l p{\glsdescwidth} l }
+            \begin  { longtable } { l p{\glsdescwidth} p{\glsdescwidth} }
             \toprule
           }
           {
