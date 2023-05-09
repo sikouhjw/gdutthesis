@@ -1472,7 +1472,7 @@
   }
 \cs_new_protected:Npn \__gdut_notation_begin:
   {
-    \chapter{物理量名称及符号表}{Table~of~physical~quantity~names~and~symbols}
+    \chapter{物理量名称及符号表}{TABLE~OF~PHYSICAL~QUANTITY~NAMES~AND~SYMBOLS}
   }
 \cs_new_protected:Npn \__gdut_notation_long_table_setup:
   {
@@ -1798,7 +1798,7 @@
         \glossarysection[\glossarytoctitle]{\glossarytitle}
       }
       {
-        \chapter{缩略词表}{List~ of~ abbreviations}
+        \chapter{缩略词表}{LIST~ OF~ ABBREVIATIONS}
       }
       {}{}
     \loadglsentries   { data/glossaries }
@@ -1986,11 +1986,10 @@
     \par \endgroup
     \newpage
     \begingroup \centering\zihao{4}
-      A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip]
-      in~Partial~Fulfillment~of~the~Requirement\\[-0.15\baselineskip]
-      for~the~Degree~of~\l__gdut_info_degree_en_tl
+      A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~\__gdut_thesis_en_type
     \par \endgroup
-    \vspace*{3\baselineskip}
+    \begingroup \centering\zihao{-4} (\l__gdut_info_degree_en_tl) \par \endgroup
+    \vspace*{2\baselineskip}
     \begingroup \centering\zihao{-2}\sffamily
       \l__gdut_info_title_en_tl
     \par \endgroup
