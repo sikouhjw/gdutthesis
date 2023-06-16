@@ -2003,7 +2003,7 @@
       \exp_args:No \engdate{\l__gdut_info_date_tl}\\
       School~of~\l__gdut_info_department_en_tl\\
       Guangdong~University~of~Technology\\
-      Guangzhou,~Guangdong,~P.~R.~China,~510006
+      Guangzhou~510006,~Guangdong,~P.~R.~China
     \par \endgroup
     \clearpage
     \pagestyle{fancy}
