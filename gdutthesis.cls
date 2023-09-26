@@ -257,6 +257,10 @@
 \renewcommand\thegdutenenumi{\arabic{gdutenenumi}}
 \setmythegdutenenumi{(\thegdutenenumi)}
 
+%% 设置表格的行距
+\RestoreTextEnvironmentLeading{tabular,longtable,tabularx}
+\SetTextEnvironmentSinglespace{1.45}
+
 %% 设置图片存放路径
 \graphicspath{{figure/}}
 
@@ -1473,10 +1477,10 @@
     \__gdut_notation_begin:
     \group_begin: \zihao{5}
       \__gdut_notation_long_table_setup:
-      \longtable {#1}
+      \begin  { longtable } {#1}
   }
   {
-      \endlongtable
+      \end    { longtable }
     \group_end:
   }
 \cs_new_protected:Npn \__gdut_notation_begin:
