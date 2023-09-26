@@ -1270,6 +1270,11 @@
       },
     secret-level .value_required:n = true,
   }
+\tl_new:c { l__gdut_info_ delay_time _name_tl }
+\keys_define:nn { gdut / info }
+  {
+    delay-time  .clist_set:N = \l__gdut_info_delay_time_name_tl,
+  }
 %% 设置数学间距
 \ctex_after_end_preamble:n
   {
@@ -1827,6 +1832,7 @@
     info    / supervisor-two    = none,
     info    / supervisor-three  = none,
     info    / secret-level      = none,
+    info    / delay-time        = none,
     info    / date              = { 2021/5/1 },
     theorem / header-font       = bf,
     theorem / body-font         = rm,
@@ -1921,6 +1927,11 @@
       \linespread{\ZhLS@bodylinespread}\selectfont
     }
     { }
+    \str_if_eq:NNTF \l__gdut_info_delay_time_name_tl {none}
+      { }
+      {
+        \mbox{}\hfill \begingroup \sffamily\zihao{3}延期公开 \uline{\l__gdut_info_delay_time_name_tl} 年 \par \endgroup
+      }
     \vspace*{0.4\baselineskip-1.5pt}
     \begingroup \centering
       \begin{tabular}{>{\zihao{4}}r@{\hspace*{7\ccwd}}>{\zihao{4}\raggedright\arraybackslash}p{6\ccwd}@{\hspace*{5\ccwd}}>{\zihao{4}}p{12\ccwd}}
@@ -1936,30 +1947,52 @@
     \vspace*{\baselineskip+5.75pt}
     \begingroup \centering\zihao{3} \l__gdut_info_author_tl\par \endgroup
     \vspace*{7.5\baselineskip}
+    \str_if_eq:NNTF \l__gdut_info_supervisor_three_tl {none}
+      {
+        \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
+          {
+            \vspace*{1.1\baselineskip}
+          }
+          { }
+      }
+      { }
     \begingroup \centering\zihao{4}
     \begin{tabular}{c>{\centering\arraybackslash}p{16\ccwd}}
       \str_if_eq:NNTF \l__gdut_info_supervisor_three_tl {none}
       {
-        \multirow{6}*
-        {
-          \begin{CJKfilltwosides*}{0pt}
-            指导教师姓名、职称：\\
-            校外指导教师姓名、职称：\\
-            学科（专业）或领域名称：\\
-            学生所属学院：\\
-            答辩委员会主席：\\
-            论文答辩日期：
-          \end{CJKfilltwosides*}
-        }
+        \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
+          {
+            \multirow{5}*
+            {
+              \begin{CJKfilltwosides*}{0pt}
+                指导教师姓名、职称：\\
+                学科（专业）或领域名称：\\
+                学生所属学院：\\
+                答辩委员会主席：\\
+                论文答辩日期：
+              \end{CJKfilltwosides*}
+            }
+          }
+          {
+            \multirow{6}*
+            {
+              \begin{CJKfilltwosides*}{0pt}
+                指导教师姓名、职称：\\
+                校外指导教师姓名、职称：\\
+                学科（专业）或领域名称：\\
+                学生所属学院：\\
+                答辩委员会主席：\\
+                论文答辩日期：
+              \end{CJKfilltwosides*}
+            }
+          }
         & \l__gdut_info_supervisor_name_tl \gdut_name_jobname_spacer: \l__gdut_info_supervisor_jobname_tl \\
         \cline{2-2}
         \str_if_eq:NNTF \l__gdut_info_supervisor_two_tl {none}
-        {
-          & 无 \\ \cline{2-2}
-        }
-        {
-          & \l__gdut_info_supervisor_two_name_tl \gdut_name_jobname_spacer: \l__gdut_info_supervisor_two_jobname_tl \\ \cline{2-2}
-        }
+          { }
+          {
+            & \l__gdut_info_supervisor_two_name_tl \gdut_name_jobname_spacer: \l__gdut_info_supervisor_two_jobname_tl \\ \cline{2-2}
+          }
       }
       {
         \multirow{6}*{
