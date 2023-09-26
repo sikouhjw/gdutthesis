@@ -1,0 +1,24 @@
+\documentclass{../gdutthesis}
+
+\usepackage[algochapter]{algorithm2e}
+\renewcommand{\algorithmcfname}{算法}
+
+\usepackage{glossaries}
+\renewcommand{\loadglsentries}[1]{}
+\gdutsetup{
+  style/cover         = {false},
+}
+
+\begin{document}
+
+\mainmatter
+
+\chapter{测试}{test}
+
+\autoref{alg:test}
+
+\begin{algorithm}
+  \caption{test}\label{alg:test}
+\end{algorithm}
+
+\end{document}

@@ -1123,16 +1123,20 @@
 \cs_set:Npn\thefigure{\thechapter-\arabic{figure}}
 %% 设置引用格式
 \labelformat{ equation } { (#1) }
-\clist_map_inline:nn
+\ctex_after_end_preamble:n
   {
-    { subfigure , 图    },
-    { figure    , 图    },
-    { table     , 表    },
-    { equation  , 公式  },
-    { appendix  , 附录  },
-  }
-  {
-    \cs_new:cpn { \clist_item:nn {#1} {1} autorefname } { \clist_item:nn {#1} {2} }
+    \clist_map_inline:nn
+    {
+      { subfigure , 图    },
+      { figure    , 图    },
+      { table     , 表    },
+      { equation  , 公式  },
+      { appendix  , 附录  },
+      { algorithm , 算法  },
+    }
+    {
+      \cs_set:cpn { \clist_item:nn {#1} {1} autorefname } { \clist_item:nn {#1} {2} }
+    }
   }
 %% 设置浮动体间距
 \setlength{\floatsep}{2\baselineskip-2\ccwd-1pt}
