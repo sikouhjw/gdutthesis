@@ -909,7 +909,6 @@
   { \MakeUppercase }
   { \relax }
   { } { }
-\pagestyle { fancy }
 %% 设置章节格式
 \keys_set:nn { ctex }
 {
@@ -1101,7 +1100,7 @@
     labelsep      = space,
     labelformat   = english,
     font          = small,
-    labelfont     = bf,
+    labelfont     = md,
     justification = centering
   }
 \captionsetup[figure][bi-second]{name=Figure}
@@ -1330,6 +1329,12 @@
       \endlist}
 %% 定义独创性声明
 \NewDocumentCommand {\gdutstatement} { s O{} o o } {
+  \keys_set:nn { ctex }
+    {
+      chapter = {
+        pagestyle   = empty,
+      }
+    }
   \IfBooleanTF {#1}
   {
     \bool_if:NTF \l__gdut_open_bool
@@ -1339,16 +1344,10 @@
     {
       \if@openright\cleardoublepage\else\clearpage\fi
     }
-    \phantomsection
-    \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
-    \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
     \includepdf {#2}
   }
   {
-    \phantomsection
     \gdut_chapter*{学位论文独创性声明}
-    \addcontentsline{toc}{chapter}{学位论文独创性声明及学位论文版权使用授权声明}
-    \addcontentsline{tec}{chapter}{Statement~of~original~authorship~and~copyright~licensing~declaration}
     \markboth{学位论文独创性声明及学位论文版权使用授权声明}{}
     \vspace*{\baselineskip+0.9\ccwd}
     \c__gdut_orig_decl_text_tl\par
@@ -1398,6 +1397,13 @@
       \ctexset{chapter/break = \if@openright\cleardoublepage\else\clearpage\fi}
     }
   }
+  \newpage
+  \keys_set:nn { ctex }
+    {
+      chapter = {
+        pagestyle   = fancy,
+      }
+    }
 }
 \cs_new:Npn \gdutappendix
   {
@@ -1420,7 +1426,6 @@
   }
 \NewDocumentEnvironment { abstract  } { }
   {
-    \pagestyle{fancy}
     \__gdut_abstract_begin:
   }
   {
@@ -1434,8 +1439,7 @@
     \__gdut_abstract_en_end:
   }
 \cs_new_protected:Npn \__gdut_abstract_begin:
-  { 
-    \pagestyle      { fancy }
+  {
     \pagenumbering  { Roman }
     \chapter { 摘要 } { ABSTRACT ( IN~CHINESE ) }
   }
@@ -1985,11 +1989,12 @@
     \end{tabular}
     \par \endgroup
     \newpage
-    \begingroup \centering\zihao{4}
-      A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip] for~the~Degree~of~\__gdut_thesis_en_type
+    \begingroup \centering\zihao{3}
+      A~Dissertation~Submitted~to~Guangdong~University~of~Technology\\[-0.15\baselineskip]
+      in~Partial~Fulfillment~of~the~Requirement\\[-0.15\baselineskip]
+      for~the~Degree~of~\l__gdut_info_degree_en_tl
     \par \endgroup
-    \begingroup \centering\zihao{-4} (\l__gdut_info_degree_en_tl) \par \endgroup
-    \vspace*{2\baselineskip}
+    \vspace*{3\baselineskip}
     \begingroup \centering\zihao{-2}\sffamily
       \l__gdut_info_title_en_tl
     \par \endgroup

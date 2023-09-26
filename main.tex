@@ -114,6 +114,10 @@
 
 \begin{document}
 
+\gdutstatement% 空白声明页
+% \gdutstatement[日期][作者签名][导师签名]% 签名为图片
+% \gdutstatement*[扫描件]% 扫描件为 A4 大小的 pdf 文件
+
 \input{data/abstract}
 
 \input{data/notation.tex}
@@ -126,18 +130,14 @@
 
 \input{data/chap01.tex}
 
-\gdutbackmatter
-
 \input{data/conclusion.tex}
+
+\gdutbackmatter
 
 \nocite{*}% 列出全部参考文献
 \printbibliography
 
 \input{data/result.tex}
-
-\gdutstatement% 空白声明页
-% \gdutstatement[日期][作者签名][导师签名]% 签名为图片
-% \gdutstatement*[扫描件]% 扫描件为 A4 大小的 pdf 文件
 
 \input{data/acknowledgement.tex}
 
