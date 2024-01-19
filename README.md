@@ -5,7 +5,7 @@
 
 - [support_gdutthesis@163.com](mailto:support_gdutthesis@163.com)
 - [Overleaf](https://www.overleaf.com/latex/templates/gdutthesis/wcnrhjstrbws)
-- [TeXPage](https://www.texpage.com/template/eeb04fc8-e9b5-4a52-ac6b-12049c63aa7c)
+- [TeXPage](https://www.texpage.com/template/413b22d9-4ea2-4e83-9f92-2f91bb89a3c1)
 - [Releases](https://github.com/sikouhjw/gdutthesis/releases/latest)
 - [Wiki](https://github.com/sikouhjw/gdutthesis/wiki)
 
