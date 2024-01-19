@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \RequirePackage{expl3}
 \ProvidesExplClass{gdutthesis}
-  {2022/12/22}{v0.1e}{Thesis Template for Guangdong University of Technology}
+  {2024/01/19}{v0.1f}{Thesis Template for Guangdong University of Technology}
 \RequirePackage { xtemplate, l3keys2e }
 \msg_new:nnn { gdutthesis } { l3-too-old }
   {

@@ -31,6 +31,10 @@
   - `gdutthesis.dtx`
   - `fdudoc.cls`
 
+### 模板使用须知
+
+- [格式检查与字体配置](https://github.com/sikouhjw/gdutthesis/discussions/44#discussioncomment-2357996)
+- [浮动体浮动与选项](https://github.com/sikouhjw/gdutthesis/discussions/73)
 
 ### 重要提醒
 
@@ -48,4 +52,4 @@
 
 -----
 
-Copyright (C) 2021&ndash;2023 by sikouhjw.
+Copyright (C) 2021&ndash;2024 by sikouhjw.
