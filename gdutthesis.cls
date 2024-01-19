@@ -1173,11 +1173,13 @@
   \def\@floatboxreset{\centering}%
 }
 \AtBeginEnvironment{table}{\small}
+\def \fps@figure  { !tp }
+\def \fps@table   { !tp }
 \ctex_at_end_preamble:n
   {
     \bool_if:NT \l__gdut_free_float_bool
       {
-        \NewDocumentCommand \gdut@xfloat { m o } { \@xfloat #1 [tbp] }
+        \NewDocumentCommand \gdut@xfloat { m o } { \@xfloat #1 [!tp] }
         \def \@float #1
           {
             \@ifnextchar[
