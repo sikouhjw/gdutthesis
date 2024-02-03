@@ -34,7 +34,11 @@
 ### 模板使用须知
 
 - [格式检查与字体配置](https://github.com/sikouhjw/gdutthesis/discussions/44#discussioncomment-2357996)
+- [查重探讨](https://github.com/sikouhjw/gdutthesis/discussions/37)
 - [浮动体浮动与选项](https://github.com/sikouhjw/gdutthesis/discussions/73)
+- [浮动体与正文的间距](https://github.com/sikouhjw/gdutthesis/discussions/50)
+- [在 Overleaf 上使用其它中文字体配置](https://github.com/sikouhjw/gdutthesis/discussions/115)
+- [数学公式与正文的间距](https://github.com/sikouhjw/gdutthesis/discussions/34)
 
 ### 重要提醒
 
