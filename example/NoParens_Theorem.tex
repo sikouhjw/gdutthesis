@@ -1,0 +1,47 @@
+\documentclass[]{../gdutthesis}
+
+\usepackage{glossaries}
+\renewcommand{\loadglsentries}[1]{}
+
+\gdutsetup{
+  style = {
+    bib-backend     = {bibtex},
+    bib-resource    = {../ref/gdutthesis-template.bib},
+  },
+}
+
+\ExplSyntaxOn
+\makeatletter
+\declaretheoremstyle[
+  spaceabove    = 0pt,
+  spacebelow    = 0pt,
+  postheadspace = 0pt,
+  numberwithin  = chapter,
+  headpunct     = {\l__gdut_thm_punct_tl},
+  headfont      = \l__gdut_thm_header_font_tl,
+  notefont      = \l__gdut_thm_header_font_tl,
+  notebraces    = {}{},
+  bodyfont      = \l__gdut_thm_body_font_tl,
+  qed           = ,
+  headindent    = \l__gdut_indent_dim,
+]{gdut-No-Parens}
+
+\NewDocumentCommand \mynewtheorem { s m m }
+  {
+    \declaretheorem[style=gdut-No-Parens,name=#3,refname={#3},Refname={#3}]{#2}
+    \tl_set:cn{the #2}{\thechapter \gdut@interval \arabic{#2}}
+  }
+\makeatother
+\ExplSyntaxOff
+
+\mynewtheorem{mylemma}{引理}
+
+\begin{document}
+
+\begin{mylemma}[\cite{chendengyuan2000guoshi}]
+  test
+\end{mylemma}
+
+\printbibliography
+
+\end{document}
