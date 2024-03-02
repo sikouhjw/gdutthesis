@@ -18,6 +18,7 @@ main.pdf
 example/*.pdf
 test.*
 *.loc
+gdutthesis.code-workspace
 
 ## Intermediate documents:
 *.dvi

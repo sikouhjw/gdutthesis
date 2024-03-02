@@ -97,6 +97,11 @@
     \clist_item:Nn \c__gdut_thesis_type_clist
       { \g__gdut_thesis_type_int }
   }
+\tl_const:Nn \__gdut_thesis_cover_type
+  {
+    \clist_item:Nn \c__gdut_thesis_cover_type_clist
+      { \g__gdut_thesis_type_int }
+  }
 \tl_const:Nn \__gdut_thesis_en_type
   {
     \clist_item:Nn \c__gdut_thesis_type_en_clist
@@ -164,6 +169,8 @@
 % 定义可更换的名称
 \clist_const:Nn \c__gdut_thesis_type_clist
   { 博士学位, 硕士学位, 硕士专业学位 }
+\clist_const:Nn \c__gdut_thesis_cover_type_clist
+  { 博士学位, 硕士学位, 硕士学位 }
 \clist_const:Nn \c__gdut_thesis_type_en_clist
   { Doctor, Master, Master }
 \clist_const:Nn \c__gdut_secret_clist { 秘密, 机密, 绝密 }
@@ -1877,13 +1884,15 @@
       \rotatebox[origin = c]{-90}{%
         \parbox[c][0.44cm-0.15cm]{29.7cm}{%
           \addCJKfontfeatures*{RawFeature={vertical}}\CJKmove%
-          \centering\zihao{5}%
+          \centering\zihao{5}\xeCJKsetup{CJKglue=\hskip 5pt}%
           \hspace*{2cm}%
           \l__gdut_info_title_tl%
           \hspace{\fill}%
           \l__gdut_info_author_tl%
           \hspace{\fill}%
-          \exp_args:No \coverdate{\l__gdut_info_date_tl}%
+          广东工业大学
+          \__gdut_thesis_cover_type
+          论文
           \hspace*{2cm}%
         }%
       }%
