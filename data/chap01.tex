@@ -25,12 +25,9 @@
 \subparagraph{测试 test。}
 测试 test。
 
-\begin{equation}\label{eq:example}
-  E = mc^2
-\end{equation}
-
+% 大部分情况使用 align/gather 环境，小部分间距异常情况可尝试使用 equation 环境
 \begin{align}
-  E &= mc^2 \\
+  E &= mc^2 \label{eq:example} \\
   mc^2 &= E
 \end{align}
 

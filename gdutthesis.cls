@@ -1288,10 +1288,10 @@
 %% 设置数学间距
 \ctex_after_end_preamble:n
   {
-    \setlength{\abovedisplayskip}{\baselineskip-\ccwd+0.15\baselineskip}
-    \setlength{\belowdisplayskip}{0.15\baselineskip}
-    \setlength{\abovedisplayshortskip}{\baselineskip-\ccwd+0.15\baselineskip}
-    \setlength{\belowdisplayshortskip}{0.15\baselineskip}
+    \setlength{\abovedisplayskip}{0.5\baselineskip - 0.5\ccwd + 3pt}
+    \setlength{\belowdisplayskip}{0pt}
+    \setlength{\abovedisplayshortskip}{0pt}
+    \setlength{\belowdisplayshortskip}{0.5\baselineskip - 0.5\ccwd}
   }
 %% 输出封面
 \ctex_after_end_preamble:n

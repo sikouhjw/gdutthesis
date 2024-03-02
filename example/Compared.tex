@@ -293,38 +293,38 @@ LabVIEW 软件的运动控制系统和数据采集系统，完成了模板喷嘴
 槽为对称结构，为简化计算过程，将三维模型简化为二维模型，分别从微沟槽横截面
 YOZ 与纵截面 XOY 两个平面进行单点微坑成形过程和微沟槽成形过程二维仿真计算。
 单点微坑仿真中电解加工计算时间 $t$ 和微沟槽仿真中模板喷嘴扫描速度 $v$ 之间满足
-\begin{equation}
+\begin{align}
   t = d/v
-\end{equation}
+\end{align}
 其中 $d$ 为模板孔径。
 
 根据欧姆定律，加工过程中工件表面电流密度 $i$ 与电场强度 $E$ 之间的关系为
-\begin{equation}
+\begin{align}
   i = \sigma E
-\end{equation}
+\end{align}
 其中 $σ$ 为电解液电导率。
 
 根据法拉第定律，加工过程中电解腐蚀速度 $v_e$ 可以表示为
-\begin{equation}
+\begin{align}
   𝑣_e = 𝜂𝜔𝑖
-\end{equation}
+\end{align}
 其中 $η$ 为电流效率，$ω$ 为材料的体积电化学当量。
 
 借鉴文献[76]，采用质量称重法测定了电解加工过程中电流效率 $𝜂$ 和电流密度 $𝑖$ 之间
 的关系为
-\begin{eqnarray}
+\begin{equation}
   \eta = \frac{0.85}{1 + e^{(10-i)/6}} - 0.1
-\end{eqnarray}
+\end{equation}
 
 因此加工过程中电解腐蚀速度 $v_e$ 与电场强度 $E$ 之间的关系可以表示为
-\begin{equation}
+\begin{align}
   𝑣_e = 𝜂𝜔𝜎𝐸
-\end{equation}
+\end{align}
 
 则电解加工深度 $h$ 与加工时间 $t$ 之间的关系为
-\begin{equation}
+\begin{align}
   ℎ = 𝑣_e 𝑡 = 𝜂𝜔𝜎𝐸𝑡
-\end{equation}
+\end{align}
 
 电解过程中加工区域的产物与焦耳热量在电解液的高速冲刷下可以被迅速带走，
 因此仿真过程中假设有以下几个前提条件：
