@@ -906,14 +906,14 @@
 \fancyhead[CO]{\zihao{-5}\gdut@kai\gdutenkai \leftmark}
 \fancyhead[CE]{\zihao{-5}\gdut@kai\gdutenkai 广东工业大学 \__gdut_thesis_type 论文}
 \renewcommand{\headrulewidth}{1.5pt}
-\renewcommand{\headruleskip}{6.2pt}
+\renewcommand{\headruleskip}{0pt}
 \newcommand{\myheadrulewidth}{0.8pt}
-  \def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi
-      \hrule\@height\headrulewidth\@width\headwidth
-      \vskip0.75pt
-      \hrule\@height\myheadrulewidth\@width\headwidth
-      \vskip-\headrulewidth\vskip-\myheadrulewidth
-      }}%
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi
+    \hrule\@height\headrulewidth\@width\headwidth
+    \vskip0.75pt
+    \hrule\@height\myheadrulewidth\@width\headwidth
+    \vskip-\headrulewidth\vskip-\myheadrulewidth\vskip5pt
+    }}%
 \renewcommand{\footrulewidth}{0pt}
 \xpatchcmd
   { \chaptermark   }
@@ -928,7 +928,7 @@
     format      = \zihao{-2}\sffamily\centering,
     pagestyle   = fancy,
     aftername   = \hspace{\ccwd},
-    beforeskip  = 0pt,
+    beforeskip  = 5pt,
     afterskip   = 1.5\baselineskip-1.5\ccwd,
     fixskip     = true,
     tocline     = \CTEXnumberline{#1}#2,
