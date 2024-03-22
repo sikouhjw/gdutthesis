@@ -1349,6 +1349,19 @@
      {\def\@noitemerr
        {\@latex@warning{Empty `thebibliography' environment}}%
       \endlist}
+\AtBeginEnvironment{results}{%
+  \providecommand{\natexlab}[1]{#1}
+  \providecommand{\url}[1]{#1}
+  \expandafter\ifx\csname urlstyle\endcsname\relax\else
+    \urlstyle{same}\fi
+  \expandafter\ifx\csname href\endcsname\relax
+    \DeclareUrlCommand\doi{\urlstyle{rm}}
+    \def\eprint#1#2{#2}
+  \else
+    \def\doi#1{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+    \let\eprint\href
+  \fi
+}
 %% 定义独创性声明
 \NewDocumentCommand {\gdutstatement} { s O{} o o } {
   \keys_set:nn { ctex }
